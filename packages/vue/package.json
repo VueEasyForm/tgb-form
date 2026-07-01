@@ -33,6 +33,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
+    "@easyform/core": "workspace:*",
     "@tsdown/css": "^0.22.0",
     "@types/node": "^25.6.2",
     "@vitejs/plugin-vue": "^6.0.6",

@@ -137,6 +137,9 @@ importers:
         specifier: ^19.2.0
         version: 19.2.6(react@19.2.6)
     devDependencies:
+      '@easyform/core':
+        specifier: workspace:*
+        version: link:../core
       '@tsconfig/strictest':
         specifier: ^2.0.8
         version: 2.0.8
@@ -173,6 +176,9 @@ importers:
 
   packages/vue:
     devDependencies:
+      '@easyform/core':
+        specifier: workspace:*
+        version: link:../core
       '@tsdown/css':
         specifier: ^0.22.0
         version: 0.22.3(jiti@2.7.0)(postcss@8.5.16)(tsdown@0.22.3)(yaml@2.9.0)

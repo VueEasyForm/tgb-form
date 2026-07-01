@@ -7,5 +7,16 @@ export default defineConfig({
 
   ignorePatterns: ['**/dist/*', '**/.astro/*'],
 
-  plugins: ['typescript', 'import', 'unicorn', 'jsx-a11y', 'oxc', 'vue'],
+  plugins: [
+    'typescript',
+    'import',
+    'unicorn',
+    'jsx-a11y',
+    'oxc',
+    'vue',
+    'react',
+    'react-perf',
+    'jsdoc',
+    'vitest',
+  ],
 });

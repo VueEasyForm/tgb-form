@@ -32,6 +32,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
+    "@easyform/core": "workspace:*",
     "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^26.0.1",
     "@types/react": "^19.2.17",
