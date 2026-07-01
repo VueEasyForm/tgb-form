@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "vueIndentScriptAndStyle": true,
+  "singleAttributePerLine": true,
+  "semi": true,
+  "singleQuote": true,
+  "sortTailwindcss": true,
+  "printWidth": 100,
+  "sortPackageJson": true,
+  "ignorePatterns": ["pnpm-lock.yaml"]
+}

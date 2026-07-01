@@ -1,0 +1,41 @@
+{
+  "name": "@easyform/core",
+  "version": "0.0.1",
+  "description": "An easy to use form library, with powerful schema-based form definition capabilities.",
+  "homepage": "https://github.com/VueEasyForm/easyform#readme",
+  "bugs": {
+    "url": "https://github.com/VueEasyForm/easyform/issues"
+  },
+  "license": "MIT",
+  "author": "The @easyform Authors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VueEasyForm/easyform.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1",
+    "@typescript/native-preview": "7.0.0-dev.20260630.1",
+    "tsdown": "^0.22.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
+  },
+  "peerDependencies": {
+    "@tanstack/form-core": "^1.33.0",
+    "valibot": "^1.4.1"
+  }
+}

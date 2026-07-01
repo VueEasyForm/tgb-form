@@ -1,0 +1,6 @@
+set -e
+
+pnpm lint-staged
+pnpm -w check-types
+pnpm -w test
+git add -u

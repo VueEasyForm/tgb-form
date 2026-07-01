@@ -1,0 +1,52 @@
+{
+  "name": "@easyform/vue",
+  "version": "0.0.1",
+  "description": "An easy to use form library for Vue, built on top of @easyform/core.",
+  "homepage": "https://github.com/VueEasyForm/easyform#readme",
+  "bugs": {
+    "url": "https://github.com/VueEasyForm/easyform/issues"
+  },
+  "license": "MIT",
+  "author": "The @easyform Authors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VueEasyForm/easyform.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json",
+    "./style.css": "./dist/style.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "play": "vite",
+    "test": "vitest --run",
+    "typecheck": "vue-tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "@tsdown/css": "^0.22.0",
+    "@types/node": "^25.6.2",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vitest/browser-playwright": "^4.1.5",
+    "playwright": "^1.59.1",
+    "tsdown": "^0.22.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.11",
+    "vitest": "^4.1.5",
+    "vitest-browser-vue": "^2.1.0",
+    "vue": "^3.5.34",
+    "vue-tsc": "^3.2.8"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  }
+}
