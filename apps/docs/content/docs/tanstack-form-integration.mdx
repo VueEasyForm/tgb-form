@@ -1,0 +1,115 @@
+---
+title: TanStack Form Integration
+description: Generate default values and submit validators for TanStack Form from an EasyForm definition.
+icon: Waypoints
+---
+
+EasyForm's TanStack bridge is intentionally small: `toTanStackOptions` extracts default values, compiles the form to a Valibot schema, and returns a TanStack-compatible options object.
+
+[Open the TanStack bridge on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/tanstack.ts).
+
+## Generate Options
+
+```ts
+import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@easyform/core';
+
+const newsletterForm = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Email',
+      rules: [
+        { kind: ValidationRuleKind.Required, message: 'Email is required' },
+        { kind: ValidationRuleKind.Email, message: 'Enter a valid email' },
+      ],
+    },
+    subscribed: {
+      type: FieldDataType.Boolean,
+      defaultValue: false,
+      label: 'Subscribe',
+    },
+  },
+});
+
+const options = toTanStackOptions(newsletterForm, {
+  formId: 'newsletter',
+});
+```
+
+`options.defaultValues` is cloned from each field's `defaultValue`.
+
+```ts
+options.defaultValues;
+// {
+//   email: '',
+//   subscribed: false,
+// }
+```
+
+`options.validators.onSubmit` is the compiled Valibot schema. Any validators you pass in are preserved and merged:
+
+```ts
+const options = toTanStackOptions(newsletterForm, {
+  formId: 'newsletter',
+  validators: {
+    onChange: ({ value }) => {
+      return value.email.endsWith('@example.com') ? undefined : 'Use your company email';
+    },
+  },
+});
+```
+
+## Use With TanStack Form
+
+Use the generated options as the base options for the framework-specific TanStack Form hook in your app.
+
+```tsx
+import { useForm } from '@tanstack/react-form';
+import { toTanStackOptions } from '@easyform/core';
+import { newsletterForm } from './forms/newsletter';
+
+export function NewsletterForm() {
+  const form = useForm({
+    ...toTanStackOptions(newsletterForm, {
+      formId: 'newsletter',
+    }),
+    onSubmit: async ({ value }) => {
+      await subscribe(value.email, value.subscribed);
+    },
+  });
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void form.handleSubmit();
+      }}
+    >
+      <form.Field name="email">
+        {(field) => (
+          <input
+            name={field.name}
+            value={field.state.value}
+            onBlur={field.handleBlur}
+            onChange={(event) => field.handleChange(event.target.value)}
+          />
+        )}
+      </form.Field>
+      <button type="submit">Subscribe</button>
+    </form>
+  );
+}
+```
+
+## Defaults Only
+
+Use `getDefaultValues` if you want defaults without the validation schema.
+
+```ts
+import { getDefaultValues } from '@easyform/core';
+
+const defaultValues = getDefaultValues(newsletterForm);
+```
+
+This is useful when a renderer registry owns validation placement or when you are writing tests around generated field values.

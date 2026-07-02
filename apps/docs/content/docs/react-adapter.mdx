@@ -1,0 +1,125 @@
+---
+title: React Adapter
+description: Wire EasyForm definitions into React renderer components and TanStack React Form.
+icon: Atom
+---
+
+Use EasyForm's core APIs to keep definitions portable, then resolve renderers to React components at the app boundary. The React package is the place for framework-specific adapter work; the current stable contract is the core registry and TanStack option flow.
+
+[Open the React package on GitHub](https://github.com/VueEasyForm/easyform/tree/main/packages/react).
+
+## React Renderer Contract
+
+```tsx
+import type { FieldApi } from '@tanstack/react-form';
+import type { FieldDefinition } from '@easyform/core';
+
+type EasyFormReactFieldProps = {
+  definition: FieldDefinition;
+  field: FieldApi<any, any, any, any>;
+};
+
+export function TextInput({ definition, field }: EasyFormReactFieldProps) {
+  return (
+    <label>
+      <span>{definition.label}</span>
+      <input
+        name={field.name}
+        value={field.state.value}
+        placeholder={String(definition.props?.placeholder ?? '')}
+        onBlur={field.handleBlur}
+        onChange={(event) => field.handleChange(event.target.value)}
+      />
+    </label>
+  );
+}
+```
+
+## Registry And Form
+
+```tsx
+import {
+  createRendererRegistry,
+  defineForm,
+  FieldDataType,
+  resolveRenderer,
+  toTanStackOptions,
+} from '@easyform/core';
+import { useForm } from '@tanstack/react-form';
+import { CheckboxInput, TextInput } from './fields';
+
+const renderers = createRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+    [FieldDataType.Boolean]: CheckboxInput,
+  },
+});
+
+const formDefinition = defineForm(
+  {
+    fields: {
+      email: {
+        type: FieldDataType.String,
+        defaultValue: '',
+        label: 'Email',
+        props: { placeholder: 'you@example.com' },
+      },
+      subscribed: {
+        type: FieldDataType.Boolean,
+        defaultValue: true,
+        label: 'Subscribe me',
+      },
+    },
+  },
+  { renderers },
+);
+
+export function NewsletterForm() {
+  const form = useForm({
+    ...toTanStackOptions(formDefinition, { formId: 'newsletter' }),
+    onSubmit: async ({ value }) => {
+      await subscribe(value);
+    },
+  });
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void form.handleSubmit();
+      }}
+    >
+      {Object.entries(formDefinition.fields).map(([name, definition]) => {
+        const Renderer = resolveRenderer(definition, renderers);
+
+        return (
+          <form.Field
+            key={name}
+            name={name}
+          >
+            {(field) => (
+              <Renderer
+                definition={definition}
+                field={field}
+              />
+            )}
+          </form.Field>
+        );
+      })}
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+## Adapter Responsibilities
+
+| Concern                       | Belongs in                                  |
+| ----------------------------- | ------------------------------------------- |
+| Field definitions             | `@easyform/core`                            |
+| Default values and validation | `toTanStackOptions`                         |
+| Component lookup              | `createRendererRegistry`, `resolveRenderer` |
+| DOM events and display state  | React renderer components                   |
+| Layout, labels, error display | React adapter or app components             |
+
+Keep renderer components small. They should translate `FieldDefinition` plus TanStack field state into the specific input component your design system expects.

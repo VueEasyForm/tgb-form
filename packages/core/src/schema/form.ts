@@ -14,7 +14,9 @@ import { cloneJson, isJsonObject, type JsonValue } from './json';
  * Optional registries used by {@link defineForm} and {@link deserializeForm}.
  */
 export type DefineFormOptions = {
+  /** Runtime registry used to resolve field custom validators by name. */
   readonly validators?: ValidatorRegistry;
+  /** Runtime registry used to resolve renderer component names and field-type defaults. */
   readonly renderers?: RendererRegistry;
 };
 
@@ -22,6 +24,7 @@ export type DefineFormOptions = {
  * Normalized {@link FormDefinition} with optional runtime-only {@link ValidatorRegistry}.
  */
 export type RuntimeFormDefinition = FormDefinition & {
+  /** Runtime-only validator registry attached by {@link defineForm} when provided. */
   readonly validators?: ValidatorRegistry;
 };
 
@@ -32,12 +35,18 @@ export type FieldDefinitionInput<TComponentName extends string = string> = Omit<
   FieldDefinition,
   'component' | 'element' | 'fields'
 > & {
+  /** Renderer registry name, narrowed to known names when renderers are provided. */
   readonly component?: TComponentName;
+  /** Child authoring definitions for object-valued fields. */
   readonly fields?: FormFieldsDefinitionInput<TComponentName>;
+  /** Element authoring definition for array-valued fields. */
   readonly element?: FieldDefinitionInput<TComponentName>;
 };
 
 export type FormFieldsDefinitionInput<TComponentName extends string = string> = {
+  /**
+   * Authoring field definition keyed by its stable form field name.
+   */
   readonly [name: string]: FieldDefinitionInput<TComponentName>;
 };
 
@@ -49,6 +58,7 @@ export type FormDefinitionInput<TComponentName extends string = string> = Omit<
   FormDefinition,
   'fields'
 > & {
+  /** Top-level authoring field definitions keyed by form field name. */
   readonly fields: FormFieldsDefinitionInput<TComponentName>;
 };
 

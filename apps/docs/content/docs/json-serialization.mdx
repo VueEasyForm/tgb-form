@@ -1,0 +1,116 @@
+---
+title: JSON Serialize And Deserialize
+description: Save normalized form definitions and restore them with runtime registries.
+icon: Braces
+---
+
+EasyForm definitions are designed to survive a JSON round trip. `serializeForm` removes runtime-only registry references, and `deserializeForm` parses JSON back into a normalized runtime definition.
+
+[Open serialization source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/schema/form.ts).
+
+## JSON Round Trip
+
+```ts
+import {
+  defineForm,
+  deserializeForm,
+  FieldDataType,
+  serializeForm,
+  ValidationRuleKind,
+} from '@easyform/core';
+
+const form = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Email',
+      component: 'email-input',
+      props: { autocomplete: 'email' },
+      rules: [{ kind: ValidationRuleKind.Required }, { kind: ValidationRuleKind.Email }],
+    },
+  },
+});
+
+const stored = JSON.stringify(serializeForm(form));
+const restored = deserializeForm(stored);
+```
+
+## Restore With Runtime Registries
+
+Renderer and validator registries are code, so they are not serialized. Attach them when you deserialize or define a form.
+
+```ts
+import {
+  createRendererRegistry,
+  createValidatorRegistry,
+  deserializeForm,
+  FieldDataType,
+} from '@easyform/core';
+import * as v from 'valibot';
+
+const renderers = createRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+    [FieldDataType.Boolean]: CheckboxInput,
+  },
+});
+
+const validators = createValidatorRegistry().register('reservedName', ({ message }) =>
+  v.check((value: string) => !['admin', 'root'].includes(value), message),
+);
+
+const restored = deserializeForm(storedJson, {
+  renderers,
+  validators,
+});
+```
+
+## Stored Profile Definition
+
+```json
+{
+  "fields": {
+    "name": {
+      "type": "string",
+      "defaultValue": "",
+      "label": "Name",
+      "rules": [{ "kind": "required" }]
+    },
+    "contact": {
+      "type": "object",
+      "defaultValue": { "email": "" },
+      "fields": {
+        "email": {
+          "type": "string",
+          "defaultValue": "",
+          "label": "Email",
+          "rules": [{ "kind": "email" }]
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "defaultValue": [],
+      "element": {
+        "type": "string",
+        "defaultValue": ""
+      }
+    }
+  }
+}
+```
+
+## What Can Be Serialized
+
+| Property                         | JSON-safe |
+| -------------------------------- | --------- |
+| `fields`                         | yes       |
+| `meta`                           | yes       |
+| `label`, `description`, `order`  | yes       |
+| `component`, `props`             | yes       |
+| `rules`, `validators` references | yes       |
+| Renderer registry entries        | no        |
+| Validator compiler functions     | no        |
+
+Keep code in registries and keep definitions as data. That separation is what lets a form builder save definitions without knowing which app will render them later.

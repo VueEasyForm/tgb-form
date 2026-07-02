@@ -1,37 +1,92 @@
 ---
-title: Hello World
-description: Your favourite docs framework.
+title: Getting Started
+description: Define JSON-safe forms, compile validation, and hand the result to TanStack Form.
 icon: Rocket
 ---
 
-Hey there! Fumadocs is the docs framework that also works on Tanstack Start!
-
-## Heading
-
-Hello World!
+EasyForm turns form definitions into portable data. Author fields once, serialize them as JSON, validate them with Valibot, and hand defaults plus submit validation to TanStack Form.
 
 <Cards>
   <Card
-    title="Learn more about Tanstack Start"
-    href="https://tanstack.com/start"
+    title="GitHub repository"
+    href="https://github.com/VueEasyForm/easyform"
   />
   <Card
-    title="Learn more about Fumadocs"
-    href="https://fumadocs.dev"
+    title="Core package tests"
+    href="https://github.com/VueEasyForm/easyform/blob/main/packages/core/tests/index.test.ts"
   />
 </Cards>
 
-### CodeBlock
+## Install
 
-```ts
-console.log('Hello World');
+```sh
+pnpm add @easyform/core valibot @tanstack/form-core
 ```
 
-#### Table
+Add a framework adapter package when you are wiring renderers into an app:
 
-| Head                            | Description                         |
-| ------------------------------- | ----------------------------------- |
-| `hello`                         | Hello World                         |
-| very **important**              | Hey                                 |
-| _Surprisingly_                  | Fumadocs                            |
-| very long text that looks weird | hello world hello world hello world |
+```sh
+pnpm add @easyform/react
+pnpm add @easyform/vue
+```
+
+## Newsletter Form
+
+[Open this example on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/tests/index.test.ts).
+
+```ts
+import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@easyform/core';
+
+export const newsletterForm = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Email',
+      description: 'Where should we send product updates?',
+      component: 'email-input',
+      props: { autocomplete: 'email', placeholder: 'you@example.com' },
+      rules: [
+        { kind: ValidationRuleKind.Required, message: 'Email is required' },
+        { kind: ValidationRuleKind.Email, message: 'Enter a valid email address' },
+      ],
+    },
+    subscribed: {
+      type: FieldDataType.Boolean,
+      defaultValue: true,
+      label: 'Subscribe me',
+    },
+  },
+  meta: {
+    submitLabel: 'Join newsletter',
+  },
+});
+
+export const tanstackOptions = toTanStackOptions(newsletterForm, {
+  formId: 'newsletter',
+});
+```
+
+## What EasyForm Gives You
+
+| Feature                 | API                                         |
+| ----------------------- | ------------------------------------------- |
+| Normalize definitions   | `defineForm`                                |
+| Persist definitions     | `serializeForm`, `deserializeForm`          |
+| Compile validation      | `toValibotSchema`                           |
+| Create TanStack options | `toTanStackOptions`, `getDefaultValues`     |
+| Resolve UI components   | `createRendererRegistry`, `resolveRenderer` |
+| Attach code validators  | `createValidatorRegistry`                   |
+
+## Project Shape
+
+```txt
+apps/docs               Documentation app
+packages/core           Portable form schema and validation compiler
+packages/react          React adapter package
+packages/vue            Vue adapter package
+```
+
+## Next
+
+Start with [Form Definitions](/docs/form-definitions), then add [Validation](/docs/validation) and [TanStack Form Integration](/docs/tanstack-form-integration).

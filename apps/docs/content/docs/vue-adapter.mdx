@@ -1,0 +1,109 @@
+---
+title: Vue Adapter
+description: Resolve EasyForm definitions to Vue components while keeping schema, validation, and storage in core.
+icon: Component
+---
+
+EasyForm definitions are framework-neutral. In Vue, use the same core registry pattern and render fields through Vue components that understand a field definition plus the active form state.
+
+[Open the Vue package on GitHub](https://github.com/VueEasyForm/easyform/tree/main/packages/vue).
+
+## Vue Renderer Contract
+
+```vue
+<script setup lang="ts">
+  import type { FieldDefinition } from '@easyform/core';
+
+  defineProps<{
+    definition: FieldDefinition;
+    modelValue: string;
+  }>();
+
+  const emit = defineEmits<{
+    'update:modelValue': [value: string];
+  }>();
+</script>
+
+<template>
+  <label>
+    <span>{{ definition.label }}</span>
+    <input
+      :value="modelValue"
+      :placeholder="String(definition.props?.placeholder ?? '')"
+      @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+    />
+  </label>
+</template>
+```
+
+## Registry And Dynamic Components
+
+```vue
+<script setup lang="ts">
+  import {
+    createRendererRegistry,
+    defineForm,
+    FieldDataType,
+    resolveRenderer,
+    toTanStackOptions,
+  } from '@easyform/core';
+  import CheckboxInput from './fields/CheckboxInput.vue';
+  import TextInput from './fields/TextInput.vue';
+
+  const renderers = createRendererRegistry({
+    byType: {
+      [FieldDataType.String]: TextInput,
+      [FieldDataType.Boolean]: CheckboxInput,
+    },
+  });
+
+  const formDefinition = defineForm(
+    {
+      fields: {
+        name: {
+          type: FieldDataType.String,
+          defaultValue: '',
+          label: 'Name',
+          props: { placeholder: 'Ada Lovelace' },
+        },
+        publicProfile: {
+          type: FieldDataType.Boolean,
+          defaultValue: false,
+          label: 'Public profile',
+        },
+      },
+    },
+    { renderers },
+  );
+
+  const tanstackOptions = toTanStackOptions(formDefinition, {
+    formId: 'profile',
+  });
+
+  const values = reactive({ ...tanstackOptions.defaultValues });
+</script>
+
+<template>
+  <form>
+    <component
+      :is="resolveRenderer(definition, renderers)"
+      v-for="(definition, name) in formDefinition.fields"
+      :key="name"
+      v-model="values[name]"
+      :definition="definition"
+    />
+  </form>
+</template>
+```
+
+## Where Vue Fits
+
+| Concern                          | Belongs in                    |
+| -------------------------------- | ----------------------------- |
+| JSON-safe schema                 | `@easyform/core`              |
+| Validation compilation           | `toValibotSchema`             |
+| TanStack-compatible defaults     | `toTanStackOptions`           |
+| Dynamic component lookup         | renderer registry             |
+| `v-model`, slots, labels, errors | Vue adapter or app components |
+
+The Vue adapter should keep renderer concerns close to Vue while leaving definition validation and JSON compatibility in core.

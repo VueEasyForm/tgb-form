@@ -1,0 +1,101 @@
+---
+title: Custom Validators
+description: Reference app-defined Valibot validators from JSON-safe EasyForm definitions.
+icon: BadgeCheck
+---
+
+Custom validators let stored form definitions refer to code without serializing code. The JSON definition stores a validator name, optional message, and JSON-safe options. The runtime supplies a `ValidatorRegistry`.
+
+[Open validator registry source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/validator-registry.ts).
+
+## Register A Validator
+
+```ts
+import * as v from 'valibot';
+import {
+  createValidatorRegistry,
+  defineForm,
+  FieldDataType,
+  toValibotSchema,
+} from '@easyform/core';
+
+const validators = createValidatorRegistry().register('companyEmail', ({ message, options }) => {
+  const domain = String(options?.domain ?? 'example.com');
+
+  return v.check(
+    (value: string) => value.endsWith(`@${domain}`),
+    message ?? `Use a ${domain} email address`,
+  );
+});
+
+const form = defineForm(
+  {
+    fields: {
+      email: {
+        type: FieldDataType.String,
+        defaultValue: '',
+        label: 'Work email',
+        validators: [
+          {
+            name: 'companyEmail',
+            message: 'Use your company email',
+            options: { domain: 'easyform.dev' },
+          },
+        ],
+      },
+    },
+  },
+  { validators },
+);
+
+const schema = toValibotSchema(form);
+```
+
+## Chain Multiple Validators
+
+Validators run in the order declared on the field.
+
+```ts
+const validators = createValidatorRegistry()
+  .register('startsWithA', ({ message }) =>
+    v.check((value: string) => value.startsWith('A'), message),
+  )
+  .register('endsWithZ', ({ message }) => v.check((value: string) => value.endsWith('z'), message));
+
+const form = defineForm(
+  {
+    fields: {
+      code: {
+        type: FieldDataType.String,
+        defaultValue: '',
+        validators: [
+          { name: 'startsWithA', message: 'Must start with A' },
+          { name: 'endsWithZ', message: 'Must end with z' },
+        ],
+      },
+    },
+  },
+  { validators },
+);
+```
+
+## Missing Validators
+
+If a field references a validator that is not registered, schema compilation throws a clear error.
+
+```ts
+const form = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      validators: [{ name: 'uniqueEmail' }],
+    },
+  },
+});
+
+toValibotSchema(form);
+// Error: Unknown validator "uniqueEmail"
+```
+
+This fail-fast behavior keeps invalid builder output from silently bypassing runtime validation.

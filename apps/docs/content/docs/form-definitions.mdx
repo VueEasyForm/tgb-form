@@ -1,0 +1,138 @@
+---
+title: Form Definitions
+description: Author portable field definitions with JSON-safe defaults, metadata, renderer hints, and nested fields.
+icon: FileCode
+---
+
+An EasyForm definition is a JSON-safe object with a `fields` map. Each field declares its data type, default value, optional labels, renderer hints, validation rules, and nested structure.
+
+[Open the definition source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/schema/definitions.ts).
+
+## Field Shape
+
+```ts
+import { defineForm, FieldDataType } from '@easyform/core';
+
+export const profileForm = defineForm({
+  fields: {
+    displayName: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Display name',
+      description: 'Shown on your public profile.',
+      order: 1,
+      component: 'text-input',
+      props: { placeholder: 'Ada Lovelace' },
+      meta: { section: 'identity' },
+    },
+    age: {
+      type: FieldDataType.Number,
+      defaultValue: 18,
+      label: 'Age',
+      order: 2,
+    },
+    publicProfile: {
+      type: FieldDataType.Boolean,
+      defaultValue: false,
+      label: 'Public profile',
+      order: 3,
+    },
+  },
+  meta: {
+    title: 'Profile',
+  },
+});
+```
+
+## Data Types
+
+| Type                    | Default value must be |
+| ----------------------- | --------------------- |
+| `FieldDataType.String`  | `string`              |
+| `FieldDataType.Number`  | `number`              |
+| `FieldDataType.Boolean` | `boolean`             |
+| `FieldDataType.Object`  | JSON object           |
+| `FieldDataType.Array`   | JSON array            |
+
+`defineForm` validates defaults while normalizing the definition. A number field with a string default, for example, throws before the form reaches your renderer.
+
+## Nested Object And Array
+
+[Open nested validation code on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/valibot-compiler.ts).
+
+```ts
+import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+
+export const profileWithAddresses = defineForm({
+  fields: {
+    name: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Name',
+      rules: [{ kind: ValidationRuleKind.Required }],
+    },
+    contact: {
+      type: FieldDataType.Object,
+      defaultValue: { email: '', phone: '' },
+      label: 'Contact',
+      fields: {
+        email: {
+          type: FieldDataType.String,
+          defaultValue: '',
+          label: 'Email',
+          rules: [{ kind: ValidationRuleKind.Email }],
+        },
+        phone: {
+          type: FieldDataType.String,
+          defaultValue: '',
+          label: 'Phone',
+        },
+      },
+    },
+    addresses: {
+      type: FieldDataType.Array,
+      defaultValue: [],
+      label: 'Addresses',
+      element: {
+        type: FieldDataType.Object,
+        defaultValue: { street: '', city: '', postalCode: '' },
+        fields: {
+          street: {
+            type: FieldDataType.String,
+            defaultValue: '',
+            label: 'Street',
+          },
+          city: {
+            type: FieldDataType.String,
+            defaultValue: '',
+            label: 'City',
+          },
+          postalCode: {
+            type: FieldDataType.String,
+            defaultValue: '',
+            label: 'Postal code',
+          },
+        },
+      },
+    },
+  },
+});
+```
+
+## Renderer Hints Stay As Data
+
+`component` and `props` are not framework components. They are JSON-safe hints for a renderer registry:
+
+```ts
+const field = {
+  type: FieldDataType.String,
+  defaultValue: '',
+  component: 'email-input',
+  props: {
+    autocomplete: 'email',
+    placeholder: 'you@example.com',
+  },
+};
+```
+
+This keeps saved definitions portable between a builder UI, server storage, React runtime, and Vue runtime.

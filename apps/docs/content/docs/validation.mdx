@@ -1,0 +1,101 @@
+---
+title: Validation
+description: Compile EasyForm validation rules into a Valibot schema.
+icon: ShieldCheck
+---
+
+Validation rules are part of the JSON-safe form definition. EasyForm compiles them into Valibot through `toValibotSchema`, and `toTanStackOptions` uses that same schema for TanStack Form submit validation.
+
+[Open validation tests on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/tests/index.test.ts).
+
+## Built-In Rules
+
+```ts
+import * as v from 'valibot';
+import { defineForm, FieldDataType, toValibotSchema, ValidationRuleKind } from '@easyform/core';
+
+const accountForm = defineForm({
+  fields: {
+    name: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      rules: [
+        { kind: ValidationRuleKind.Required, message: 'Name is required' },
+        { kind: ValidationRuleKind.MinLength, value: 2, message: 'Name is too short' },
+      ],
+    },
+    age: {
+      type: FieldDataType.Number,
+      defaultValue: 18,
+      rules: [{ kind: ValidationRuleKind.Min, value: 18, message: 'Must be an adult' }],
+    },
+    website: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      rules: [{ kind: ValidationRuleKind.Url, message: 'Enter a valid URL' }],
+    },
+  },
+});
+
+const schema = toValibotSchema(accountForm);
+
+const result = v.safeParse(schema, {
+  name: 'Ada',
+  age: 28,
+  website: 'https://example.com',
+});
+```
+
+## Rule Reference
+
+| Rule        | Value               | Applies to                                  |
+| ----------- | ------------------- | ------------------------------------------- |
+| `Required`  | none                | strings, arrays, objects, numbers, booleans |
+| `MinLength` | number              | strings and arrays                          |
+| `MaxLength` | number              | strings and arrays                          |
+| `Pattern`   | string regex source | strings                                     |
+| `Min`       | number              | numbers                                     |
+| `Max`       | number              | numbers                                     |
+| `Email`     | none                | strings                                     |
+| `Url`       | none                | strings                                     |
+
+## Profile Example
+
+```ts
+import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+
+export const profileForm = defineForm({
+  fields: {
+    username: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Username',
+      rules: [
+        { kind: ValidationRuleKind.Required, message: 'Choose a username' },
+        { kind: ValidationRuleKind.MinLength, value: 3, message: 'Use at least 3 characters' },
+        {
+          kind: ValidationRuleKind.Pattern,
+          value: '^[a-z0-9_]+$',
+          message: 'Use lowercase letters, numbers, and underscores',
+        },
+      ],
+    },
+    bio: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Bio',
+      rules: [{ kind: ValidationRuleKind.MaxLength, value: 160 }],
+    },
+  },
+});
+```
+
+## Nested Validation
+
+Nested objects and arrays compile recursively. Custom validators are resolved from the form-level registry for top-level fields; nested fields compile built-in rules from their local definitions.
+
+```ts
+const schema = toValibotSchema(profileForm);
+```
+
+Pass the compiled schema directly to Valibot, or let `toTanStackOptions` place it under `validators.onSubmit`.

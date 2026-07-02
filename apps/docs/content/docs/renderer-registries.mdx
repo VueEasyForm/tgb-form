@@ -1,0 +1,105 @@
+---
+title: Renderer Registries
+description: Resolve JSON field definitions to framework components by component name or field type.
+icon: Boxes
+---
+
+Renderer registries are the bridge between saved form data and app-specific components. A field stores `component: 'email-input'`; your app decides what `email-input` means.
+
+[Open the renderer registry source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/renderer-registry.ts).
+
+## Registry Shape
+
+```ts
+import { createRendererRegistry, FieldDataType } from '@easyform/core';
+import { CheckboxInput, EmailInput, NumberInput, TextInput } from './fields';
+
+export const renderers = createRendererRegistry({
+  byName: {
+    'email-input': EmailInput,
+    'short-text': TextInput,
+  },
+  byType: {
+    [FieldDataType.String]: TextInput,
+    [FieldDataType.Number]: NumberInput,
+    [FieldDataType.Boolean]: CheckboxInput,
+  },
+});
+```
+
+## Resolve A Field
+
+```ts
+import { defineForm, FieldDataType, resolveRenderer } from '@easyform/core';
+import { renderers } from './renderers';
+
+const form = defineForm(
+  {
+    fields: {
+      email: {
+        type: FieldDataType.String,
+        defaultValue: '',
+        label: 'Email',
+        component: 'email-input',
+        props: { autocomplete: 'email' },
+      },
+    },
+  },
+  { renderers },
+);
+
+const Renderer = resolveRenderer(form.fields.email, renderers);
+```
+
+Resolution rules are strict:
+
+| Field definition              | Resolver behavior                             |
+| ----------------------------- | --------------------------------------------- |
+| Has `component`               | Look up `registry.byName[component]`          |
+| Has unknown `component`       | Throw `Missing renderer named "..."`          |
+| Has no `component`            | Fall back to `registry.byType[field.type]`    |
+| Has no matching type renderer | Throw `Missing renderer for field type "..."` |
+
+## Type-Checked Component Names
+
+When you pass a registry to `defineForm`, TypeScript checks `component` against the registry's `byName` keys.
+
+```ts
+const renderers = createRendererRegistry({
+  byName: {
+    known: TextInput,
+  },
+});
+
+defineForm(
+  {
+    fields: {
+      name: {
+        type: FieldDataType.String,
+        defaultValue: '',
+        component: 'known',
+      },
+    },
+  },
+  { renderers },
+);
+```
+
+## Renderer Props
+
+`props` stays JSON-safe so definitions can round-trip through storage.
+
+```ts
+const field = {
+  type: FieldDataType.String,
+  defaultValue: '',
+  component: 'email-input',
+  props: {
+    autocomplete: 'email',
+    inputMode: 'email',
+    placeholder: 'you@example.com',
+  },
+};
+```
+
+Your adapter should merge these props with runtime field state from TanStack Form or your framework form primitive.

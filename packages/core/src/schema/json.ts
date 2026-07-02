@@ -14,6 +14,9 @@ export type JsonValue = JsonPrimitive | JsonObject | JsonValue[];
  * JSON object used for metadata, renderer props, and {@link CustomValidatorReference} options.
  */
 export type JsonObject = {
+  /**
+   * JSON-serializable property value keyed by string.
+   */
   readonly [key: string]: JsonValue;
 };
 

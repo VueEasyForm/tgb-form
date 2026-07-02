@@ -1,159 +1,103 @@
-# Turborepo starter
+# EasyForm
 
-This Turborepo starter is maintained by the Turborepo core team.
+EasyForm is a schema-first form definition toolkit for teams that want form builders, generated UIs, and runtime validation without locking field definitions to one framework.
 
-## Using this example
+Definitions are plain JSON-safe data. The core package validates and normalizes those definitions, compiles them to Valibot, produces TanStack Form options, and lets React or Vue renderers resolve field definitions through registries.
 
-Run the following command:
+## Packages
 
-```sh
-npx create-turbo@latest
-```
+- `@easyform/core` - JSON-serializable form definitions, validation rules, custom validator registries, renderer registries, Valibot compilation, and TanStack Form options.
+- `@easyform/react` - React adapter package for EasyForm renderer work.
+- `@easyform/vue` - Vue adapter package for EasyForm renderer work.
+- `@easyform/docs` - TanStack Start and Fumadocs documentation app.
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+## Install
 
 ```sh
-cd my-turborepo
-turbo build
+pnpm add @easyform/core valibot @tanstack/form-core
 ```
 
-Without global `turbo`, use your package manager:
+Framework adapters are installed alongside the core package when you need them:
 
 ```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+pnpm add @easyform/react
+pnpm add @easyform/vue
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Quick Example
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+```ts
+import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@easyform/core';
+
+const newsletterForm = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Email',
+      component: 'email-input',
+      props: { autocomplete: 'email' },
+      rules: [
+        { kind: ValidationRuleKind.Required, message: 'Email is required' },
+        { kind: ValidationRuleKind.Email, message: 'Enter a valid email' },
+      ],
+    },
+    subscribed: {
+      type: FieldDataType.Boolean,
+      defaultValue: true,
+      label: 'Subscribe me',
+    },
+  },
+});
+
+const tanstackOptions = toTanStackOptions(newsletterForm, {
+  formId: 'newsletter',
+});
+```
+
+## Documentation
+
+The docs live in `apps/docs/content/docs` and cover:
+
+- Getting started
+- Form definitions
+- Validation
+- TanStack Form integration
+- Renderer registries
+- Custom validators
+- JSON serialization and deserialization
+- React and Vue adapter guidance
+- API reference
+
+Run the docs app locally:
 
 ```sh
-turbo build --filter=docs
+pnpm --filter @easyform/docs dev
 ```
 
-Without global `turbo`:
+## Development
+
+Install dependencies:
 
 ```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+pnpm install
 ```
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+Run tests and type checks:
 
 ```sh
-cd my-turborepo
-turbo dev
+pnpm test
+pnpm check-types
 ```
 
-Without global `turbo`, use your package manager:
+Build all packages and apps:
 
 ```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
+pnpm build
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Repository
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- GitHub: https://github.com/VueEasyForm/easyform
+- Issues: https://github.com/VueEasyForm/easyform/issues
+- License: MIT
