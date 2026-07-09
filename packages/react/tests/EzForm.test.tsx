@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 import { FieldDataType, defineForm, toTanStackOptions } from '@easyform/core';
 import { useForm } from '@tanstack/react-form';
-import { expect, test, vi } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { EasyForm, createReactRendererRegistry, type ReactRendererProps } from '../src';
+import { EzForm, EzField, EzFormContext, createReactRendererRegistry, type ReactRendererProps } from '../src';
 
 type FieldHarness = {
   state: {
@@ -50,41 +50,28 @@ const TextRenderer = ({ name, label, description, props, value, errors }: ReactR
   </div>
 );
 
+afterEach(() => {
+  document.body.innerHTML = '';
+});
+
 test('renders fields by order before declaration order and supports field subsets', async () => {
   const definition = defineForm({
     fields: {
-      alpha: {
-        type: FieldDataType.String,
-        defaultValue: 'a',
-      },
-      beta: {
-        type: FieldDataType.String,
-        defaultValue: 'b',
-        order: 2,
-      },
-      gamma: {
-        type: FieldDataType.String,
-        defaultValue: 'g',
-        order: 1,
-      },
-      delta: {
-        type: FieldDataType.String,
-        defaultValue: 'd',
-        order: 1,
-      },
+      alpha: { type: FieldDataType.String, defaultValue: 'a' },
+      beta: { type: FieldDataType.String, defaultValue: 'b', order: 2 },
+      gamma: { type: FieldDataType.String, defaultValue: 'g', order: 1 },
+      delta: { type: FieldDataType.String, defaultValue: 'd', order: 1 },
     },
   });
   const renderers = createReactRendererRegistry({
-    byType: {
-      [FieldDataType.String]: TextRenderer,
-    },
+    byType: { [FieldDataType.String]: TextRenderer },
   });
 
   const screen = await render(
-    <EasyForm
+    <EzForm
       definition={definition}
       fields={['alpha', 'gamma', 'delta']}
-      form={createFormHarness({ alpha: 'a', gamma: 'g', delta: 'd' })}
+      instance={createFormHarness({ alpha: 'a', gamma: 'g', delta: 'd' })}
       renderers={renderers}
     />,
   );
@@ -96,15 +83,8 @@ test('renders fields by order before declaration order and supports field subset
 test('resolves named renderers before type renderers', async () => {
   const definition = defineForm({
     fields: {
-      title: {
-        type: FieldDataType.String,
-        defaultValue: 'typed',
-      },
-      status: {
-        type: FieldDataType.String,
-        defaultValue: 'named',
-        component: 'badge',
-      },
+      title: { type: FieldDataType.String, defaultValue: 'typed' },
+      status: { type: FieldDataType.String, defaultValue: 'named', component: 'badge' },
     },
   });
   const TypeRenderer = ({ name }: ReactRendererProps) => (
@@ -114,24 +94,75 @@ test('resolves named renderers before type renderers', async () => {
     <div data-testid={`named-${name}`}>named</div>
   );
   const renderers = createReactRendererRegistry({
-    byName: {
-      badge: NamedRenderer,
-    },
-    byType: {
-      [FieldDataType.String]: TypeRenderer,
-    },
+    byName: { badge: NamedRenderer },
+    byType: { [FieldDataType.String]: TypeRenderer },
   });
 
   const screen = await render(
-    <EasyForm
+    <EzForm
       definition={definition}
-      form={createFormHarness({ title: 'typed', status: 'named' })}
+      instance={createFormHarness({ title: 'typed', status: 'named' })}
       renderers={renderers}
     />,
   );
 
   expect(screen.getByTestId('type-title')).toBeInTheDocument();
   expect(screen.getByTestId('named-status')).toBeInTheDocument();
+});
+
+test('reads renderers from EzFormContext', async () => {
+  const definition = defineForm({
+    fields: {
+      email: { type: FieldDataType.String, defaultValue: '' },
+    },
+  });
+  const renderers = createReactRendererRegistry({
+    byType: { [FieldDataType.String]: TextRenderer },
+  });
+
+  const screen = await render(
+    <EzFormContext renderers={renderers}>
+      <EzForm
+        definition={definition}
+        instance={createFormHarness({ email: 'a@b.com' })}
+      />
+    </EzFormContext>,
+  );
+
+  expect(screen.getByTestId('field-email')).toBeInTheDocument();
+});
+
+test('prop-level renderers override context renderers', async () => {
+  const definition = defineForm({
+    fields: {
+      name: { type: FieldDataType.String, defaultValue: '' },
+    },
+  });
+  const ContextRenderer = ({ name }: ReactRendererProps) => (
+    <div data-testid={`ctx-${name}`}>context</div>
+  );
+  const PropRenderer = ({ name }: ReactRendererProps) => (
+    <div data-testid={`prop-${name}`}>prop</div>
+  );
+  const contextRenderers = createReactRendererRegistry({
+    byType: { [FieldDataType.String]: ContextRenderer },
+  });
+  const propRenderers = createReactRendererRegistry({
+    byType: { [FieldDataType.String]: PropRenderer },
+  });
+
+  const screen = await render(
+    <EzFormContext renderers={contextRenderers}>
+      <EzForm
+        definition={definition}
+        instance={createFormHarness({ name: 'test' })}
+        renderers={propRenderers}
+      />
+    </EzFormContext>,
+  );
+
+  expect(screen.getByTestId('prop-name')).toBeInTheDocument();
+  expect(screen.container.querySelector('[data-testid="ctx-name"]')).toBeNull();
 });
 
 test('passes renderer field metadata, value, errors, form, and field binding', async () => {
@@ -142,9 +173,7 @@ test('passes renderer field metadata, value, errors, form, and field binding', a
         defaultValue: '',
         label: 'Email',
         description: 'Where confirmations go',
-        props: {
-          placeholder: 'you@example.test',
-        },
+        props: { placeholder: 'you@example.test' },
       },
     },
   });
@@ -156,15 +185,13 @@ test('passes renderer field metadata, value, errors, form, and field binding', a
     </div>
   ));
   const renderers = createReactRendererRegistry({
-    byType: {
-      [FieldDataType.String]: Renderer,
-    },
+    byType: { [FieldDataType.String]: Renderer },
   });
 
   const screen = await render(
-    <EasyForm
+    <EzForm
       definition={definition}
-      form={form}
+      instance={form}
       renderers={renderers}
     />,
   );
@@ -176,9 +203,7 @@ test('passes renderer field metadata, value, errors, form, and field binding', a
       form,
       label: 'Email',
       description: 'Where confirmations go',
-      props: {
-        placeholder: 'you@example.test',
-      },
+      props: { placeholder: 'you@example.test' },
       value: 'ada@example.test',
       errors: ['Required', 'Invalid'],
     }),
@@ -189,19 +214,16 @@ test('passes renderer field metadata, value, errors, form, and field binding', a
 test('throws when no renderer can be resolved', async () => {
   const definition = defineForm({
     fields: {
-      subscribed: {
-        type: FieldDataType.Boolean,
-        defaultValue: false,
-      },
+      subscribed: { type: FieldDataType.Boolean, defaultValue: false },
     },
   });
   const renderers = createReactRendererRegistry({});
 
   await expect(() =>
     render(
-      <EasyForm
+      <EzForm
         definition={definition}
-        form={createFormHarness({ subscribed: false })}
+        instance={createFormHarness({ subscribed: false })}
         renderers={renderers}
       />,
     ),
@@ -211,28 +233,23 @@ test('throws when no renderer can be resolved', async () => {
 test('submits through the provided TanStack form instance', async () => {
   const definition = defineForm({
     fields: {
-      name: {
-        type: FieldDataType.String,
-        defaultValue: '',
-      },
+      name: { type: FieldDataType.String, defaultValue: '' },
     },
   });
   const handleSubmit = vi.fn();
   const renderers = createReactRendererRegistry({
-    byType: {
-      [FieldDataType.String]: TextRenderer,
-    },
+    byType: { [FieldDataType.String]: TextRenderer },
   });
+
   const screen = await render(
-    <EasyForm
+    <EzForm
       definition={definition}
-      form={createFormHarness({ name: 'Grace' }, {}, handleSubmit)}
+      instance={createFormHarness({ name: 'Grace' }, {}, handleSubmit)}
       renderers={renderers}
     />,
   );
 
   screen.getByRole('form').element().requestSubmit();
-
   expect(handleSubmit).toHaveBeenCalledTimes(1);
 });
 
@@ -240,42 +257,75 @@ test('renders and submits with a real @tanstack/react-form instance', async () =
   const onSubmit = vi.fn();
   const definition = defineForm({
     fields: {
-      email: {
-        type: FieldDataType.String,
-        defaultValue: 'ada@example.test',
-      },
+      email: { type: FieldDataType.String, defaultValue: 'ada@example.test' },
     },
   });
   const renderers = createReactRendererRegistry({
-    byType: {
-      [FieldDataType.String]: TextRenderer,
-    },
+    byType: { [FieldDataType.String]: TextRenderer },
   });
 
   function Host() {
     const form = useForm(
-      toTanStackOptions(definition, {
-        onSubmit,
-      }),
+      toTanStackOptions(definition, { onSubmit }) as any,
     );
 
     return (
-      <EasyForm
+      <EzForm
         definition={definition}
-        form={form}
+        instance={form as any}
         renderers={renderers}
       />
     );
   }
 
   const screen = await render(<Host />);
-
   screen.getByRole('form').element().requestSubmit();
-
   await vi.waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
   expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({
-    value: {
-      email: 'ada@example.test',
+    value: { email: 'ada@example.test' },
+  });
+});
+
+test('renders children alongside fields', async () => {
+  const definition = defineForm({
+    fields: {
+      name: { type: FieldDataType.String, defaultValue: '' },
     },
   });
+  const renderers = createReactRendererRegistry({
+    byType: { [FieldDataType.String]: TextRenderer },
+  });
+
+  const screen = await render(
+    <EzForm
+      definition={definition}
+      instance={createFormHarness({ name: '' })}
+      renderers={renderers}
+    >
+      <button type="submit">Go</button>
+    </EzForm>,
+  );
+
+  expect(screen.container.querySelector('button')).toHaveTextContent('Go');
+});
+
+test('EzField throws when used outside EzForm', async () => {
+  const definition = defineForm({
+    fields: {
+      x: { type: FieldDataType.String, defaultValue: '' },
+    },
+  });
+  const renderers = createReactRendererRegistry({
+    byType: { [FieldDataType.String]: TextRenderer },
+  });
+
+  await expect(() =>
+    render(
+      <EzField
+        name="x"
+        field={definition.fields.x}
+        renderers={renderers}
+      />,
+    ),
+  ).rejects.toThrow('EzField must be used inside an EzForm');
 });
