@@ -2,7 +2,7 @@
   import { defineComponent, h, ref } from 'vue';
   import { defineForm, FieldDataType, toTanStackOptions } from '@easyform/core';
   import { useForm } from '@tanstack/vue-form';
-  import { EasyForm, createVueRendererRegistry } from '../../src';
+  import { EzForm, createVueRendererRegistry } from '../../src';
 
   const submitted = ref('');
 
@@ -83,9 +83,9 @@
   <main>
     <section class="panel">
       <h1>Vue EasyForm Adapter</h1>
-      <EasyForm
-        :form="form"
+      <EzForm
         :definition="definition"
+        :instance="form"
         :renderers="renderers"
       />
       <pre v-if="submitted">{{ submitted }}</pre>
