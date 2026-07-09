@@ -1,6 +1,7 @@
 import { resolveRenderer, type FieldDefinition } from '@easyform/core';
 import { useEzFormInstance, useEzFormRegistry } from './EzFormContext';
-import type { ReactRenderer, ReactRendererRegistry } from './types';
+import type { ReactRenderer } from './types';
+import type { ReactRendererRegistry } from './types';
 
 type FieldState = {
   readonly value?: unknown;
@@ -29,7 +30,9 @@ export function EzField({ name, field, renderers: propRenderers }: EzFieldProps)
   }
 
   if (!renderers) {
-    throw new Error('No renderer registry found. Pass renderers prop or wrap in EzFormContext.');
+    throw new Error(
+      'No renderer registry found. Pass a renderers prop to EzField or to the parent EzForm.',
+    );
   }
 
   const Field = form.Field;
