@@ -1,125 +1,190 @@
 ---
 title: React Adapter
-description: Wire EasyForm definitions into React renderer components and TanStack React Form.
+description: Render EasyForm definitions with EzForm, React renderers, and TanStack React Form.
 icon: Atom
 ---
 
-Use EasyForm's core APIs to keep definitions portable, then resolve renderers to React components at the app boundary. The React package is the place for framework-specific adapter work; the current stable contract is the core registry and TanStack option flow.
+`@easyform/react` connects portable definitions to React components. The definition stays JSON-safe; renderers stay in application code.
 
 [Open the React package on GitHub](https://github.com/VueEasyForm/easyform/tree/main/packages/react).
 
-## React Renderer Contract
+## Quick Start
 
-```tsx
-import type { FieldApi } from '@tanstack/react-form';
-import type { FieldDefinition } from '@easyform/core';
+```tsx twoslash
+import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+import {
+  EzForm,
+  EzFormContext,
+  createReactRendererRegistry,
+  type ReactRendererProps,
+} from '@easyform/react';
 
-type EasyFormReactFieldProps = {
-  definition: FieldDefinition;
-  field: FieldApi<any, any, any, any>;
+const definition = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Email',
+      component: 'email-input',
+      props: { placeholder: 'you@example.com' },
+      rules: [{ kind: ValidationRuleKind.Email, message: 'Enter a valid email' }],
+    },
+    subscribed: {
+      type: FieldDataType.Boolean,
+      defaultValue: true,
+      label: 'Subscribe',
+    },
+  },
+});
+
+type FieldBinding = {
+  handleBlur: () => void;
+  handleChange: (value: unknown) => void;
 };
 
-export function TextInput({ definition, field }: EasyFormReactFieldProps) {
+function TextInput({
+  field,
+  label,
+  name,
+  props,
+  value,
+  errors,
+}: ReactRendererProps<any, FieldBinding>) {
   return (
     <label>
-      <span>{definition.label}</span>
+      <span>{label}</span>
       <input
-        name={field.name}
-        value={field.state.value}
-        placeholder={String(definition.props?.placeholder ?? '')}
-        onBlur={field.handleBlur}
-        onChange={(event) => field.handleChange(event.target.value)}
+        name={name}
+        value={String(value ?? '')}
+        placeholder={String(props?.placeholder ?? '')}
+        onBlur={() => field.handleBlur()}
+        onChange={(event) => field.handleChange(event.currentTarget.value)}
       />
+      {errors.length > 0 ? <small>{errors.map(String).join(', ')}</small> : null}
     </label>
   );
 }
-```
 
-## Registry And Form
+function CheckboxInput({ field, label, name, value }: ReactRendererProps<any, FieldBinding>) {
+  return (
+    <label>
+      <input
+        name={name}
+        type="checkbox"
+        checked={Boolean(value)}
+        onChange={(event) => field.handleChange(event.currentTarget.checked)}
+      />
+      <span>{label}</span>
+    </label>
+  );
+}
 
-```tsx
-import {
-  createRendererRegistry,
-  defineForm,
-  FieldDataType,
-  resolveRenderer,
-  toTanStackOptions,
-} from '@easyform/core';
-import { useForm } from '@tanstack/react-form';
-import { CheckboxInput, TextInput } from './fields';
-
-const renderers = createRendererRegistry({
+const renderers = createReactRendererRegistry({
+  byName: {
+    'email-input': TextInput,
+  },
   byType: {
     [FieldDataType.String]: TextInput,
     [FieldDataType.Boolean]: CheckboxInput,
   },
 });
 
-const formDefinition = defineForm(
-  {
-    fields: {
-      email: {
-        type: FieldDataType.String,
-        defaultValue: '',
-        label: 'Email',
-        props: { placeholder: 'you@example.com' },
-      },
-      subscribed: {
-        type: FieldDataType.Boolean,
-        defaultValue: true,
-        label: 'Subscribe me',
-      },
-    },
-  },
-  { renderers },
-);
-
 export function NewsletterForm() {
-  const form = useForm({
-    ...toTanStackOptions(formDefinition, { formId: 'newsletter' }),
-    onSubmit: async ({ value }) => {
-      await subscribe(value);
-    },
-  });
-
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        void form.handleSubmit();
-      }}
-    >
-      {Object.entries(formDefinition.fields).map(([name, definition]) => {
-        const Renderer = resolveRenderer(definition, renderers);
-
-        return (
-          <form.Field
-            key={name}
-            name={name}
-          >
-            {(field) => (
-              <Renderer
-                definition={definition}
-                field={field}
-              />
-            )}
-          </form.Field>
-        );
-      })}
-      <button type="submit">Submit</button>
-    </form>
+    <EzFormContext renderers={renderers}>
+      <EzForm
+        definition={definition}
+        tanstackOptions={{
+          onSubmit: async ({ value }) => {
+            console.log(value);
+          },
+        }}
+      >
+        <button type="submit">Submit</button>
+      </EzForm>
+    </EzFormContext>
   );
 }
 ```
 
-## Adapter Responsibilities
+## What EzForm Does
 
-| Concern                       | Belongs in                                  |
-| ----------------------------- | ------------------------------------------- |
-| Field definitions             | `@easyform/core`                            |
-| Default values and validation | `toTanStackOptions`                         |
-| Component lookup              | `createRendererRegistry`, `resolveRenderer` |
-| DOM events and display state  | React renderer components                   |
-| Layout, labels, error display | React adapter or app components             |
+`EzForm`:
 
-Keep renderer components small. They should translate `FieldDefinition` plus TanStack field state into the specific input component your design system expects.
+- Calls `toTanStackOptions(definition, tanstackOptions)` when no `instance` is passed.
+- Creates a TanStack React Form instance with `useForm`.
+- Provides the form instance to child fields.
+- Renders fields by `order`, then declaration order.
+- Calls `form.handleSubmit()` on submit.
+
+Pass `fields` to render a named subset:
+
+```tsx twoslash
+<EzForm
+  definition={definition}
+  fields={['email']}
+  renderers={renderers}
+/>
+```
+
+Pass an existing TanStack form instance when you want full control:
+
+```tsx twoslash
+import { toTanStackOptions } from '@easyform/core';
+import { useForm } from '@tanstack/react-form';
+
+function NewsletterForm() {
+  const form = useForm({
+    ...toTanStackOptions(definition),
+    onSubmit: async ({ value }) => {
+      console.log(value);
+    },
+  });
+
+  return (
+    <EzForm
+      definition={definition}
+      instance={form}
+      renderers={renderers}
+    />
+  );
+}
+```
+
+## Renderer Props
+
+Every React renderer receives:
+
+| Prop          | Description                                         |
+| ------------- | --------------------------------------------------- |
+| `name`        | Field name from the definition map.                 |
+| `field`       | TanStack field binding.                             |
+| `form`        | Current TanStack form instance.                     |
+| `label`       | Field label, if present.                            |
+| `description` | Field description, if present.                      |
+| `props`       | JSON-safe renderer props from the field definition. |
+| `value`       | Current field value.                                |
+| `errors`      | Current field errors.                               |
+
+Renderer components should translate these props into the input components used by your app.
+
+## Context And Overrides
+
+Use `EzFormContext` for app-wide renderers:
+
+```tsx twoslash
+<EzFormContext renderers={renderers}>
+  <EzForm definition={definition} />
+</EzFormContext>
+```
+
+Use the `renderers` prop for a local override:
+
+```tsx twoslash
+<EzForm
+  definition={definition}
+  renderers={localRenderers}
+/>
+```
+
+Renderer resolution follows core rules: explicit `component` names resolve through `byName`; fields without `component` fall back to `byType[field.type]`.

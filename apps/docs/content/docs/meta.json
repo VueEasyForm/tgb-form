@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "index",
+    "---Start---",
+    "form-definitions",
+    "---Core---",
+    "built-in-validators",
+    "custom-validators",
+    "renderer-registries",
+    "json-serialization",
+    "tanstack-form-integration",
+    "---Adapters---",
+    "react-adapter",
+    "vue-adapter",
+    "---Reference---",
+    "api-reference"
+  ]
+}

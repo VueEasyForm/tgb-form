@@ -10,7 +10,7 @@ function Home() {
   return (
     <HomeLayout {...baseOptions()}>
       <div className="flex flex-1 flex-col items-center justify-center text-center">
-        <h1 className="mb-4 text-xl font-medium">Fumadocs on Tanstack Start.</h1>
+        <h1 className="mb-4 text-xl font-medium">EasyForm Documentations.</h1>
         <Link
           to="/docs/$"
           params={{

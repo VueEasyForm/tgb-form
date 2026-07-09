@@ -1,16 +1,16 @@
 ---
-title: Validation
-description: Compile EasyForm validation rules into a Valibot schema.
+title: Built-in Validators
+description: Use JSON-safe validation rules that compile into Valibot and TanStack Form submit validation.
 icon: ShieldCheck
 ---
 
-Validation rules are part of the JSON-safe form definition. EasyForm compiles them into Valibot through `toValibotSchema`, and `toTanStackOptions` uses that same schema for TanStack Form submit validation.
+Built-in validators are validation rules that can be stored with a form definition. EasyForm compiles them into Valibot through `toValibotSchema`; `toTanStackOptions` places the same schema under `validators.onSubmit`.
 
 [Open validation tests on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/tests/index.test.ts).
 
-## Built-In Rules
+## What
 
-```ts
+```ts twoslash
 import * as v from 'valibot';
 import { defineForm, FieldDataType, toValibotSchema, ValidationRuleKind } from '@easyform/core';
 
@@ -38,7 +38,6 @@ const accountForm = defineForm({
 });
 
 const schema = toValibotSchema(accountForm);
-
 const result = v.safeParse(schema, {
   name: 'Ada',
   age: 28,
@@ -46,7 +45,13 @@ const result = v.safeParse(schema, {
 });
 ```
 
-## Rule Reference
+## Why
+
+Common validation should travel with stored forms. Built-in validators keep required fields, length checks, numeric bounds, patterns, and string formats in JSON-safe data.
+
+Use [Custom Validators](/docs/custom-validators) when a rule needs runtime code.
+
+## Rules
 
 | Rule        | Value               | Applies to                                  |
 | ----------- | ------------------- | ------------------------------------------- |
@@ -59,9 +64,9 @@ const result = v.safeParse(schema, {
 | `Email`     | none                | strings                                     |
 | `Url`       | none                | strings                                     |
 
-## Profile Example
+## Example
 
-```ts
+```ts twoslash
 import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
 
 export const profileForm = defineForm({
@@ -80,22 +85,8 @@ export const profileForm = defineForm({
         },
       ],
     },
-    bio: {
-      type: FieldDataType.String,
-      defaultValue: '',
-      label: 'Bio',
-      rules: [{ kind: ValidationRuleKind.MaxLength, value: 160 }],
-    },
   },
 });
 ```
 
-## Nested Validation
-
-Nested objects and arrays compile recursively. Custom validators are resolved from the form-level registry for top-level fields; nested fields compile built-in rules from their local definitions.
-
-```ts
-const schema = toValibotSchema(profileForm);
-```
-
-Pass the compiled schema directly to Valibot, or let `toTanStackOptions` place it under `validators.onSubmit`.
+The rule order is preserved when the Valibot schema is built.

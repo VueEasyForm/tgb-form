@@ -1,99 +1,176 @@
 ---
 title: API Reference
-description: Core EasyForm exports, schemas, registries, and TanStack helpers.
+description: Public EasyForm exports for definitions, validation, TanStack Form, and adapters.
 icon: Library
 ---
 
-This reference covers the public exports from `@easyform/core`.
+This page lists the public APIs documented by package.
+
+## Core
 
 [Open public exports on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/index.ts).
 
-## Definition APIs
+### Definitions
 
 | API                                | Description                                                           |
 | ---------------------------------- | --------------------------------------------------------------------- |
-| `defineForm(definition, options?)` | Parses, validates, clones, and normalizes a form definition.          |
-| `serializeForm(form)`              | Returns a JSON-safe definition and omits runtime registries.          |
+| `defineForm(definition, options?)` | Parses, validates, normalizes, and clones a form definition.          |
+| `serializeForm(form)`              | Returns JSON-safe form data and removes runtime-only registries.      |
 | `deserializeForm(input, options?)` | Parses a JSON string or unknown value into a normalized runtime form. |
-| `VFormDefinition`                  | Valibot schema for form definitions.                                  |
-| `VFieldDefinition`                 | Valibot schema for field definitions.                                 |
-| `VJsonValue`                       | Valibot schema for JSON-safe values.                                  |
-| `VJsonObject`                      | Valibot schema for JSON-safe objects.                                 |
+| `VFormDefinition`                  | Valibot schema for a full form definition.                            |
+| `VFieldDefinition`                 | Valibot schema for a single field definition.                         |
 | `cloneJson(value)`                 | Deep-clones JSON-safe data.                                           |
-| `isJsonObject(value)`              | Checks whether a value is a JSON object, excluding arrays and `null`. |
+| `isJsonObject(value)`              | Checks for a plain JSON object, excluding arrays and `null`.          |
 
-## Types
-
-| Type                    | Description                                                  |
-| ----------------------- | ------------------------------------------------------------ |
-| `FormDefinition`        | Normalized serializable form definition.                     |
-| `FormDefinitionInput`   | Authoring input accepted by `defineForm`.                    |
-| `RuntimeFormDefinition` | Normalized form plus optional runtime validator registry.    |
-| `FieldDefinition`       | A single JSON-safe field definition.                         |
-| `FieldDefinitionInput`  | Authoring input for a field.                                 |
-| `FormFieldsDefinition`  | Field map keyed by field name.                               |
-| `JsonValue`             | Any JSON-serializable value accepted by EasyForm.            |
-| `JsonObject`            | JSON object used for metadata, props, and validator options. |
-
-## Enums
-
-```ts
-import { FieldDataType, ValidationRuleKind } from '@easyform/core';
+```ts twoslash
+import { defineForm, deserializeForm, serializeForm } from '@easyform/core';
 ```
+
+### Types
+
+| Type                    | Description                                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| `FormDefinition`        | Normalized JSON-safe form definition.                          |
+| `RuntimeFormDefinition` | Normalized form plus optional runtime validator registry.      |
+| `FormDefinitionInput`   | Authoring input accepted by `defineForm`.                      |
+| `FieldDefinition`       | One JSON-safe field definition.                                |
+| `FieldDefinitionInput`  | Authoring input for one field.                                 |
+| `JsonValue`             | JSON value accepted in defaults, props, metadata, and options. |
+| `JsonObject`            | JSON object used for metadata, props, and validator options.   |
+
+### Enums
 
 | Enum                 | Members                                                                       |
 | -------------------- | ----------------------------------------------------------------------------- |
 | `FieldDataType`      | `String`, `Number`, `Boolean`, `Object`, `Array`                              |
 | `ValidationRuleKind` | `Required`, `MinLength`, `MaxLength`, `Pattern`, `Min`, `Max`, `Email`, `Url` |
 
-## Validation APIs
+### Validators
 
-| API                                 | Description                                                      |
-| ----------------------------------- | ---------------------------------------------------------------- |
-| `toValibotSchema(form)`             | Compiles a normalized form into a Valibot object schema.         |
-| `createValidatorRegistry(entries?)` | Creates a runtime registry for named custom validator compilers. |
-| `VValidationRule`                   | Valibot schema for built-in validation rules.                    |
-| `VCustomValidatorReference`         | Valibot schema for custom validator references.                  |
+| API                         | Description                                              |
+| --------------------------- | -------------------------------------------------------- |
+| `toValibotSchema(form)`     | Compiles a form into a Valibot object schema.            |
+| `createValidatorRegistry()` | Creates a registry for named custom validator compilers. |
+| `VValidationRule`           | Valibot schema for built-in validation rules.            |
+| `VCustomValidatorReference` | Valibot schema for custom validator references.          |
 
-```ts
-import {
-  createValidatorRegistry,
-  FieldDataType,
-  toValibotSchema,
-  ValidationRuleKind,
-} from '@easyform/core';
+```ts twoslash
+import { createValidatorRegistry, toValibotSchema } from '@easyform/core';
 ```
 
-## Renderer APIs
+`createValidatorRegistry()` supports a fluent registration style:
 
-| API                                | Description                                                                   |
-| ---------------------------------- | ----------------------------------------------------------------------------- |
-| `createRendererRegistry(registry)` | Creates a registry while preserving literal renderer names for type checking. |
-| `resolveRenderer(field, registry)` | Resolves a field by explicit component name, then by field data type.         |
+```ts twoslash
+import * as v from 'valibot';
+import { createValidatorRegistry } from '@easyform/core';
 
-```ts
-import { createRendererRegistry, FieldDataType, resolveRenderer } from '@easyform/core';
+const validators = createValidatorRegistry()
+  .register('startsWithA', ({ message }) =>
+    v.check((value: string) => value.startsWith('A'), message),
+  )
+  .register('endsWithZ', ({ message }) => v.check((value: string) => value.endsWith('z'), message));
 ```
 
-## TanStack APIs
+### Renderer Registries
+
+| API                                | Description                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------------- |
+| `createRendererRegistry(registry)` | Creates a named and type-based renderer registry while preserving literal keys. |
+| `resolveRenderer(field, registry)` | Resolves `field.component` first, then `registry.byType[field.type]`.           |
+
+```ts twoslash
+import { createRendererRegistry, resolveRenderer } from '@easyform/core';
+```
+
+### TanStack Form
 
 [Open TanStack helpers on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/tanstack.ts).
 
-| API                                 | Description                                              |
-| ----------------------------------- | -------------------------------------------------------- |
-| `getDefaultValues(form)`            | Extracts cloned default values from the form fields map. |
-| `toTanStackOptions(form, options?)` | Returns default values plus `validators.onSubmit`.       |
-| `InferFormValues<TForm>`            | Infers value shape from each field's default value.      |
-| `EasyFormTanStackOptions`           | Pass-through options accepted by `toTanStackOptions`.    |
-| `EasyFormTanStackOutput<TForm>`     | Output type from `toTanStackOptions`.                    |
+| API                                 | Description                                           |
+| ----------------------------------- | ----------------------------------------------------- |
+| `getDefaultValues(form)`            | Extracts cloned default values from top-level fields. |
+| `toTanStackOptions(form, options?)` | Returns `defaultValues` and `validators.onSubmit`.    |
+| `InferFormValues<TForm>`            | Infers values from each field's `defaultValue`.       |
+| `EasyFormTanStackOptions`           | Pass-through options accepted by `toTanStackOptions`. |
+| `EasyFormTanStackOutput<TForm>`     | Output type from `toTanStackOptions`.                 |
 
-```ts
-import { getDefaultValues, toTanStackOptions } from '@easyform/core';
+Twoslash is enabled for TypeScript examples that benefit from inline type inspection:
+
+```ts twoslash
+type FieldDefinition<TDefault> = {
+  defaultValue: TDefault;
+};
+
+type FormDefinition = {
+  fields: Record<string, FieldDefinition<unknown>>;
+};
+
+type InferFormValues<TForm extends FormDefinition> = {
+  readonly [TKey in keyof TForm['fields']]: TForm['fields'][TKey]['defaultValue'];
+};
+
+const newsletterForm = {
+  fields: {
+    email: { defaultValue: '' },
+    subscribed: { defaultValue: true },
+  },
+};
+
+type NewsletterValues = InferFormValues<typeof newsletterForm>;
+//   ^?
+
+const values: NewsletterValues = {
+  email: 'ada@example.com',
+  subscribed: true,
+};
+
+values.email;
+//     ^?
 ```
 
-## Minimal End-To-End Example
+## React
 
-```ts
+[Open React exports on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/react/src/index.ts).
+
+| API                                     | Description                                                                   |
+| --------------------------------------- | ----------------------------------------------------------------------------- |
+| `EzFormContext`                         | Provides a React renderer registry to descendant forms and fields.            |
+| `EzForm`                                | Creates or accepts a TanStack React Form instance and renders ordered fields. |
+| `EzField`                               | Binds one field definition to the current TanStack form instance.             |
+| `createReactRendererRegistry(registry)` | Creates a typed React renderer registry.                                      |
+| `useEzFormRegistry()`                   | Reads the nearest renderer registry context.                                  |
+| `useEzFormInstance()`                   | Reads the nearest internal form instance context.                             |
+
+| Type                    | Description                                                     |
+| ----------------------- | --------------------------------------------------------------- |
+| `ReactRendererProps`    | Props passed to a React field renderer.                         |
+| `ReactRenderer`         | React component type for a field renderer.                      |
+| `ReactRendererRegistry` | Registry type for React renderers.                              |
+| `ReactEasyFormInstance` | Minimal form instance shape consumed by `EzForm` and `EzField`. |
+
+## Vue
+
+[Open Vue exports on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/vue/src/index.ts).
+
+| API                                   | Description                                                                 |
+| ------------------------------------- | --------------------------------------------------------------------------- |
+| `EzFormProvider`                      | Provides a Vue renderer registry to descendant forms and fields.            |
+| `EzForm`                              | Creates or accepts a TanStack Vue Form instance and renders ordered fields. |
+| `EzField`                             | Binds one field definition to the current TanStack form instance.           |
+| `createVueRendererRegistry(registry)` | Creates a typed Vue renderer registry.                                      |
+| `EzFormRegistriesKey`                 | Injection key for provider-level registries.                                |
+| `EzFormInstanceKey`                   | Injection key for the per-form TanStack instance.                           |
+
+| Type                   | Description                                          |
+| ---------------------- | ---------------------------------------------------- |
+| `VueRendererProps`     | Props passed to a Vue field renderer.                |
+| `VueRenderer`          | Vue component type for a field renderer.             |
+| `VueRendererRegistry`  | Registry type for Vue renderers.                     |
+| `EasyFormTanStackForm` | TanStack Vue Form instance type used by the adapter. |
+
+## End-To-End Core Example
+
+```ts twoslash
 import {
   defineForm,
   deserializeForm,
@@ -114,8 +191,8 @@ const form = defineForm({
   },
 });
 
-const json = JSON.stringify(serializeForm(form));
-const restored = deserializeForm(json);
+const stored = JSON.stringify(serializeForm(form));
+const restored = deserializeForm(stored);
 const schema = toValibotSchema(restored);
 const options = toTanStackOptions(restored);
 ```

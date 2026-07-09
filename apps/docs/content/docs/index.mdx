@@ -1,41 +1,19 @@
 ---
 title: Getting Started
-description: Define JSON-safe forms, compile validation, and hand the result to TanStack Form.
+description: Define JSON-safe forms, validate with Valibot, and render with TanStack Form.
 icon: Rocket
 ---
 
-EasyForm turns form definitions into portable data. Author fields once, serialize them as JSON, validate them with Valibot, and hand defaults plus submit validation to TanStack Form.
+Define forms as data. Render them anywhere.
 
-<Cards>
-  <Card
-    title="GitHub repository"
-    href="https://github.com/VueEasyForm/easyform"
-  />
-  <Card
-    title="Core package tests"
-    href="https://github.com/VueEasyForm/easyform/blob/main/packages/core/tests/index.test.ts"
-  />
-</Cards>
+EasyForm is a fast, flexible wrapper around TanStack Form and Valibot. It keeps form schemas JSON-safe while leaving runtime code free to choose React, Vue, custom renderers, storage, and validation extensions.
 
-## Install
+## What
 
-```sh
-pnpm add @easyform/core valibot @tanstack/form-core
-```
+EasyForm gives you a portable form definition:
 
-Add a framework adapter package when you are wiring renderers into an app:
-
-```sh
-pnpm add @easyform/react
-pnpm add @easyform/vue
-```
-
-## Newsletter Form
-
-[Open this example on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/tests/index.test.ts).
-
-```ts
-import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@easyform/core';
+```ts twoslash
+import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
 
 export const newsletterForm = defineForm({
   fields: {
@@ -43,50 +21,116 @@ export const newsletterForm = defineForm({
       type: FieldDataType.String,
       defaultValue: '',
       label: 'Email',
-      description: 'Where should we send product updates?',
       component: 'email-input',
-      props: { autocomplete: 'email', placeholder: 'you@example.com' },
+      props: { placeholder: 'you@example.com', autocomplete: 'email' },
       rules: [
         { kind: ValidationRuleKind.Required, message: 'Email is required' },
-        { kind: ValidationRuleKind.Email, message: 'Enter a valid email address' },
+        { kind: ValidationRuleKind.Email, message: 'Enter a valid email' },
       ],
     },
     subscribed: {
       type: FieldDataType.Boolean,
       defaultValue: true,
-      label: 'Subscribe me',
+      label: 'Subscribe',
     },
   },
-  meta: {
-    submitLabel: 'Join newsletter',
-  },
-});
-
-export const tanstackOptions = toTanStackOptions(newsletterForm, {
-  formId: 'newsletter',
 });
 ```
 
-## What EasyForm Gives You
+The same definition can be serialized, restored, compiled to Valibot, converted to TanStack Form options, and rendered through a registry.
 
-| Feature                 | API                                         |
-| ----------------------- | ------------------------------------------- |
-| Normalize definitions   | `defineForm`                                |
-| Persist definitions     | `serializeForm`, `deserializeForm`          |
-| Compile validation      | `toValibotSchema`                           |
-| Create TanStack options | `toTanStackOptions`, `getDefaultValues`     |
-| Resolve UI components   | `createRendererRegistry`, `resolveRenderer` |
-| Attach code validators  | `createValidatorRegistry`                   |
+## Why
 
-## Project Shape
+Most form libraries start from components. That works until the form needs to be stored, edited in a builder, generated from configuration, or rendered in more than one framework.
 
-```txt
-apps/docs               Documentation app
-packages/core           Portable form schema and validation compiler
-packages/react          React adapter package
-packages/vue            Vue adapter package
+EasyForm starts from data:
+
+| Need                   | EasyForm layer      |
+| ---------------------- | ------------------- |
+| Save a form definition | `serializeForm`     |
+| Load builder output    | `deserializeForm`   |
+| Validate values        | `toValibotSchema`   |
+| Use TanStack Form      | `toTanStackOptions` |
+| Choose UI components   | renderer registries |
+
+TanStack Form still owns form state. Valibot still owns validation. EasyForm connects them with a schema that can move through storage.
+
+## How
+
+Install the core package and one adapter:
+
+```sh
+pnpm add @easyform/core valibot @tanstack/form-core
+pnpm add @easyform/react @tanstack/react-form
+# or
+pnpm add @easyform/vue @tanstack/vue-form
+```
+
+Render in React:
+
+```tsx twoslash
+import { FieldDataType } from '@easyform/core';
+import { EzForm, createReactRendererRegistry, type ReactRendererProps } from '@easyform/react';
+import { newsletterForm } from './newsletter-form';
+
+type FieldBinding = {
+  handleBlur: () => void;
+  handleChange: (value: unknown) => void;
+};
+
+function TextInput({
+  field,
+  label,
+  name,
+  props,
+  value,
+  errors,
+}: ReactRendererProps<any, FieldBinding>) {
+  return (
+    <label>
+      <span>{label}</span>
+      <input
+        name={name}
+        value={String(value ?? '')}
+        placeholder={String(props?.placeholder ?? '')}
+        onBlur={() => field.handleBlur()}
+        onChange={(event) => field.handleChange(event.currentTarget.value)}
+      />
+      {errors.length > 0 ? <small>{errors.map(String).join(', ')}</small> : null}
+    </label>
+  );
+}
+
+const renderers = createReactRendererRegistry({
+  byName: { 'email-input': TextInput },
+  byType: { [FieldDataType.String]: TextInput },
+});
+
+export function NewsletterForm() {
+  return (
+    <EzForm
+      definition={newsletterForm}
+      renderers={renderers}
+      tanstackOptions={{
+        onSubmit: async ({ value }) => {
+          console.log(value);
+        },
+      }}
+    />
+  );
+}
+```
+
+Store and restore the definition:
+
+```ts twoslash
+import { deserializeForm, serializeForm, toTanStackOptions } from '@easyform/core';
+
+const stored = JSON.stringify(serializeForm(newsletterForm));
+const restored = deserializeForm(stored);
+const options = toTanStackOptions(restored);
 ```
 
 ## Next
 
-Start with [Form Definitions](/docs/form-definitions), then add [Validation](/docs/validation) and [TanStack Form Integration](/docs/tanstack-form-integration).
+<OtherDocs />

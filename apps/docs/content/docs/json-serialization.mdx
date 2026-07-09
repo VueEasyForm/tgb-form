@@ -4,13 +4,13 @@ description: Save normalized form definitions and restore them with runtime regi
 icon: Braces
 ---
 
-EasyForm definitions are designed to survive a JSON round trip. `serializeForm` removes runtime-only registry references, and `deserializeForm` parses JSON back into a normalized runtime definition.
+EasyForm definitions are designed to survive a JSON round trip. The stored value contains data. Runtime registries provide code after the value is loaded.
 
 [Open serialization source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/schema/form.ts).
 
-## JSON Round Trip
+## What
 
-```ts
+```ts twoslash
 import {
   defineForm,
   deserializeForm,
@@ -36,11 +36,17 @@ const stored = JSON.stringify(serializeForm(form));
 const restored = deserializeForm(stored);
 ```
 
-## Restore With Runtime Registries
+`serializeForm` returns JSON-safe form data. `deserializeForm` parses stored data and normalizes it with `defineForm`.
 
-Renderer and validator registries are code, so they are not serialized. Attach them when you deserialize or define a form.
+## Why
 
-```ts
+Form builders need durable output. A saved definition should work in local storage, a database row, a CMS field, an API response, or a file.
+
+Renderer and validator registries are code, so they are not serialized. Attach them when defining or deserializing a form.
+
+## How
+
+```ts twoslash
 import {
   createRendererRegistry,
   createValidatorRegistry,
@@ -66,7 +72,7 @@ const restored = deserializeForm(storedJson, {
 });
 ```
 
-## Stored Profile Definition
+## Stored Shape
 
 ```json
 {
@@ -112,5 +118,3 @@ const restored = deserializeForm(storedJson, {
 | `rules`, `validators` references | yes       |
 | Renderer registry entries        | no        |
 | Validator compiler functions     | no        |
-
-Keep code in registries and keep definitions as data. That separation is what lets a form builder save definitions without knowing which app will render them later.

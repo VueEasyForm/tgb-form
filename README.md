@@ -1,42 +1,49 @@
 # EasyForm
 
-EasyForm is a schema-first form definition toolkit for teams that want form builders, generated UIs, and runtime validation without locking field definitions to one framework.
+Define forms as data. Render them anywhere.
 
-Definitions are plain JSON-safe data. The core package validates and normalizes those definitions, compiles them to Valibot, produces TanStack Form options, and lets React or Vue renderers resolve field definitions through registries.
+EasyForm is a small wrapper around TanStack Form and Valibot for teams that need form builders, generated forms, and stored schemas. A form definition stays JSON-safe. Runtime code supplies renderers, validators, and framework bindings.
 
-## Packages
+## What
 
-- `@easyform/core` - JSON-serializable form definitions, validation rules, custom validator registries, renderer registries, Valibot compilation, and TanStack Form options.
-- `@easyform/react` - React adapter package for EasyForm renderer work.
-- `@easyform/vue` - Vue adapter package for EasyForm renderer work.
-- `@easyform/docs` - TanStack Start and Fumadocs documentation app.
+EasyForm gives you:
 
-## Install
+- JSON-serializable form definitions.
+- Valibot schemas generated from field rules.
+- TanStack Form options generated from the same definition.
+- Renderer registries that map stored field hints to React or Vue components.
+- Serialization and deserialization APIs for storing definitions in files, databases, CMS records, or builder output.
+
+## Why
+
+TanStack Form is a strong form state engine. Valibot is a strong validation engine. EasyForm adds the missing portable layer between them: a schema that can be authored, saved, loaded, validated, and rendered later.
+
+That layer matters when forms are not only hand-written React or Vue code. It is useful when forms come from an admin builder, tenant configuration, server data, generated templates, or shared package definitions.
+
+## Quick Start
+
+Install the core package and the framework adapter you use:
 
 ```sh
 pnpm add @easyform/core valibot @tanstack/form-core
+pnpm add @easyform/react @tanstack/react-form
+# or
+pnpm add @easyform/vue @tanstack/vue-form
 ```
 
-Framework adapters are installed alongside the core package when you need them:
-
-```sh
-pnpm add @easyform/react
-pnpm add @easyform/vue
-```
-
-## Quick Example
+Define a form:
 
 ```ts
-import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@easyform/core';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
 
-const newsletterForm = defineForm({
+export const newsletterForm = defineForm({
   fields: {
     email: {
       type: FieldDataType.String,
       defaultValue: '',
       label: 'Email',
       component: 'email-input',
-      props: { autocomplete: 'email' },
+      props: { placeholder: 'you@example.com', autocomplete: 'email' },
       rules: [
         { kind: ValidationRuleKind.Required, message: 'Email is required' },
         { kind: ValidationRuleKind.Email, message: 'Enter a valid email' },
@@ -45,55 +52,158 @@ const newsletterForm = defineForm({
     subscribed: {
       type: FieldDataType.Boolean,
       defaultValue: true,
-      label: 'Subscribe me',
+      label: 'Subscribe',
     },
   },
 });
+```
 
-const tanstackOptions = toTanStackOptions(newsletterForm, {
-  formId: 'newsletter',
+Render it in React:
+
+```tsx
+import { FieldDataType } from '@easyform/core';
+import { useForm } from '@tanstack/react-form';
+import { EzForm, createReactRendererRegistry, type ReactRendererProps } from '@easyform/react';
+import { newsletterForm } from './newsletter-form';
+
+type FieldBinding = {
+  handleBlur: () => void;
+  handleChange: (value: unknown) => void;
+};
+
+function TextInput({
+  field,
+  label,
+  name,
+  props,
+  value,
+  errors,
+}: ReactRendererProps<any, FieldBinding>) {
+  return (
+    <label>
+      <span>{label}</span>
+      <input
+        name={name}
+        value={String(value ?? '')}
+        placeholder={String(props?.placeholder ?? '')}
+        onBlur={() => field.handleBlur()}
+        onChange={(event) => field.handleChange(event.currentTarget.value)}
+      />
+      {errors.length > 0 ? <small>{errors.map(String).join(', ')}</small> : null}
+    </label>
+  );
+}
+
+const renderers = createReactRendererRegistry({
+  byName: { 'email-input': TextInput },
+  byType: { [FieldDataType.String]: TextInput },
 });
+
+export function Newsletter() {
+  return (
+    <EzForm
+      definition={newsletterForm}
+      renderers={renderers}
+      tanstackOptions={{
+        onSubmit: async ({ value }) => {
+          console.log(value);
+        },
+      }}
+    />
+  );
+}
 ```
 
-## Documentation
+Render it in Vue:
 
-The docs live in `apps/docs/content/docs` and cover:
+```vue
+<script setup lang="ts">
+  import { defineComponent, h } from 'vue';
+  import { FieldDataType } from '@easyform/core';
+  import { EzForm, createVueRendererRegistry } from '@easyform/vue';
+  import { newsletterForm } from './newsletter-form';
 
-- Getting started
-- Form definitions
-- Validation
-- TanStack Form integration
-- Renderer registries
-- Custom validators
-- JSON serialization and deserialization
-- React and Vue adapter guidance
-- API reference
+  const TextInput = defineComponent({
+    props: ['field', 'label', 'props', 'value', 'errors'],
+    setup(props) {
+      return () =>
+        h('label', [
+          h('span', props.label),
+          h('input', {
+            value: props.value,
+            placeholder: props.props?.placeholder,
+            onBlur: props.field.handleBlur,
+            onInput: (event: Event) => {
+              props.field.handleChange((event.target as HTMLInputElement).value);
+            },
+          }),
+          props.errors?.length ? h('small', props.errors.join(', ')) : null,
+        ]);
+    },
+  });
 
-Run the docs app locally:
+  const renderers = createVueRendererRegistry({
+    byName: { 'email-input': TextInput },
+    byType: { [FieldDataType.String]: TextInput },
+  });
+</script>
 
-```sh
-pnpm --filter @easyform/docs dev
+<template>
+  <EzForm
+    :definition="newsletterForm"
+    :renderers="renderers"
+    :tanstack-options="{ onSubmit: async ({ value }) => console.log(value) }"
+  />
+</template>
 ```
+
+## Core APIs
+
+| API                                 | Purpose                                                           |
+| ----------------------------------- | ----------------------------------------------------------------- |
+| `defineForm(definition, options?)`  | Parse, validate, normalize, and clone a form definition.          |
+| `serializeForm(form)`               | Return JSON-safe data and omit runtime-only registries.           |
+| `deserializeForm(input, options?)`  | Parse stored JSON or unknown data back into a runtime definition. |
+| `toValibotSchema(form)`             | Compile built-in and custom validation rules into Valibot.        |
+| `toTanStackOptions(form, options?)` | Generate TanStack defaults and `validators.onSubmit`.             |
+| `getDefaultValues(form)`            | Extract cloned default values from fields.                        |
+| `createRendererRegistry(registry)`  | Preserve renderer names and type fallbacks.                       |
+| `resolveRenderer(field, registry)`  | Resolve by `component`, then by field type.                       |
+| `createValidatorRegistry()`         | Register named Valibot validators referenced by JSON data.        |
+
+## Store And Restore
+
+```ts
+import { deserializeForm, serializeForm, toTanStackOptions } from '@easyform/core';
+import { newsletterForm } from './newsletter-form';
+
+const stored = JSON.stringify(serializeForm(newsletterForm));
+const restored = deserializeForm(stored);
+const options = toTanStackOptions(restored);
+```
+
+Renderer and validator registries are code, so they are attached at runtime instead of stored in JSON.
+
+## Packages
+
+- `@easyform/core` - schema, normalization, validation, serialization, registries, TanStack helpers.
+- `@easyform/react` - React components and renderer types for TanStack React Form.
+- `@easyform/vue` - Vue components and renderer types for TanStack Vue Form.
+- `@easyform/docs` - TanStack Start and Fumadocs documentation app.
 
 ## Development
 
-Install dependencies:
-
 ```sh
 pnpm install
-```
-
-Run tests and type checks:
-
-```sh
 pnpm test
 pnpm check-types
+pnpm build
 ```
 
-Build all packages and apps:
+Run the docs locally:
 
 ```sh
-pnpm build
+pnpm --filter @easyform/docs dev
 ```
 
 ## Repository

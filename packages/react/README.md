@@ -1,23 +1,30 @@
 # @easyform/react
 
-React adapter for EasyForm definitions.
+React adapter for EasyForm definitions and TanStack React Form.
+
+The adapter renders a `RuntimeFormDefinition` with `EzForm`, resolves fields through a React renderer registry, and passes TanStack field state to renderer components.
 
 ## Public API
 
-- `EasyForm`
-- `EasyField`
+- `EzFormContext`
+- `EzForm`
+- `EzField`
 - `createReactRendererRegistry`
-- `EasyFormProps`
-- `EasyFieldProps`
 - `ReactRenderer`
 - `ReactRendererProps`
+- `ReactRendererRegistry`
+- `ReactEasyFormInstance`
 
-## Usage
+## Quick Start
 
 ```tsx
-import { FieldDataType, defineForm, toTanStackOptions } from '@easyform/core';
-import { useForm } from '@tanstack/react-form';
-import { EasyForm, createReactRendererRegistry, type ReactRendererProps } from '@easyform/react';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+import {
+  EzForm,
+  EzFormContext,
+  createReactRendererRegistry,
+  type ReactRendererProps,
+} from '@easyform/react';
 
 const definition = defineForm({
   fields: {
@@ -25,23 +32,29 @@ const definition = defineForm({
       type: FieldDataType.String,
       defaultValue: '',
       label: 'Email',
-      props: {
-        placeholder: 'you@example.com',
-      },
+      component: 'email-input',
+      props: { placeholder: 'you@example.com' },
+      rules: [{ kind: ValidationRuleKind.Email, message: 'Enter a valid email' }],
     },
   },
 });
 
-const renderers = createReactRendererRegistry({
-  byType: {
-    [FieldDataType.String]: TextField,
-  },
-});
+type FieldBinding = {
+  handleBlur: () => void;
+  handleChange: (value: unknown) => void;
+};
 
-function TextField({ field, label, name, props, value, errors }: ReactRendererProps) {
+function TextField({
+  field,
+  label,
+  name,
+  props,
+  value,
+  errors,
+}: ReactRendererProps<any, FieldBinding>) {
   return (
     <label>
-      {label}
+      <span>{label}</span>
       <input
         name={name}
         onBlur={() => field.handleBlur()}
@@ -49,27 +62,53 @@ function TextField({ field, label, name, props, value, errors }: ReactRendererPr
         placeholder={String(props?.placeholder ?? '')}
         value={String(value ?? '')}
       />
-      {errors.map(String).join(', ')}
+      {errors.length > 0 ? <small>{errors.map(String).join(', ')}</small> : null}
     </label>
   );
 }
 
-export function ContactForm() {
-  const form = useForm({
-    ...toTanStackOptions(definition),
-    onSubmit({ value }) {
-      console.log(value);
-    },
-  });
+const renderers = createReactRendererRegistry({
+  byName: {
+    'email-input': TextField,
+  },
+  byType: {
+    [FieldDataType.String]: TextField,
+  },
+});
 
+export function ContactForm() {
   return (
-    <EasyForm
-      definition={definition}
-      form={form}
-      renderers={renderers}
-    />
+    <EzFormContext renderers={renderers}>
+      <EzForm
+        definition={definition}
+        tanstackOptions={{
+          onSubmit: async ({ value }) => {
+            console.log(value);
+          },
+        }}
+      >
+        <button type="submit">Submit</button>
+      </EzForm>
+    </EzFormContext>
   );
 }
 ```
 
-`EasyForm` renders fields by `order` and then declaration order. Pass `fields` to render a named subset. Renderer resolution follows `@easyform/core`: explicit `component` names are resolved first, then field `type`.
+## Component Props
+
+`EzForm` accepts:
+
+- `definition`: normalized form definition.
+- `instance`: optional TanStack form instance created by `useForm`.
+- `tanstackOptions`: options merged into `toTanStackOptions` when `EzForm` creates the form.
+- `renderers`: renderer registry; overrides context.
+- `fields`: optional list of field names to render.
+- `children`: content rendered after generated fields.
+
+`EzField` accepts:
+
+- `name`: field name.
+- `field`: field definition.
+- `renderers`: optional renderer registry; overrides context.
+
+Renderer props include `name`, `field`, `form`, `label`, `description`, `props`, `value`, and `errors`.

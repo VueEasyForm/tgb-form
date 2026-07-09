@@ -1,109 +1,168 @@
 ---
 title: Vue Adapter
-description: Resolve EasyForm definitions to Vue components while keeping schema, validation, and storage in core.
+description: Render EasyForm definitions with EzForm, Vue renderers, and TanStack Vue Form.
 icon: Component
 ---
 
-EasyForm definitions are framework-neutral. In Vue, use the same core registry pattern and render fields through Vue components that understand a field definition plus the active form state.
+`@easyform/vue` connects portable definitions to Vue components. The definition stays JSON-safe; renderers stay in application code.
 
 [Open the Vue package on GitHub](https://github.com/VueEasyForm/easyform/tree/main/packages/vue).
 
-## Vue Renderer Contract
+## Quick Start
 
 ```vue
 <script setup lang="ts">
-  import type { FieldDefinition } from '@easyform/core';
+  import { defineComponent, h } from 'vue';
+  import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+  import { EzForm, EzFormProvider, createVueRendererRegistry } from '@easyform/vue';
 
-  defineProps<{
-    definition: FieldDefinition;
-    modelValue: string;
-  }>();
+  const definition = defineForm({
+    fields: {
+      email: {
+        type: FieldDataType.String,
+        defaultValue: '',
+        label: 'Email',
+        component: 'email-input',
+        props: { placeholder: 'you@example.com' },
+        rules: [{ kind: ValidationRuleKind.Email, message: 'Enter a valid email' }],
+      },
+      subscribed: {
+        type: FieldDataType.Boolean,
+        defaultValue: true,
+        label: 'Subscribe',
+      },
+    },
+  });
 
-  const emit = defineEmits<{
-    'update:modelValue': [value: string];
-  }>();
-</script>
+  const TextInput = defineComponent({
+    props: ['field', 'label', 'props', 'value', 'errors'],
+    setup(props) {
+      return () =>
+        h('label', [
+          h('span', props.label),
+          h('input', {
+            value: props.value,
+            placeholder: props.props?.placeholder,
+            onBlur: props.field.handleBlur,
+            onInput: (event: Event) => {
+              props.field.handleChange((event.target as HTMLInputElement).value);
+            },
+          }),
+          props.errors?.length ? h('small', props.errors.join(', ')) : null,
+        ]);
+    },
+  });
 
-<template>
-  <label>
-    <span>{{ definition.label }}</span>
-    <input
-      :value="modelValue"
-      :placeholder="String(definition.props?.placeholder ?? '')"
-      @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    />
-  </label>
-</template>
-```
+  const CheckboxInput = defineComponent({
+    props: ['field', 'label', 'value'],
+    setup(props) {
+      return () =>
+        h('label', [
+          h('input', {
+            type: 'checkbox',
+            checked: Boolean(props.value),
+            onChange: (event: Event) => {
+              props.field.handleChange((event.target as HTMLInputElement).checked);
+            },
+          }),
+          h('span', props.label),
+        ]);
+    },
+  });
 
-## Registry And Dynamic Components
-
-```vue
-<script setup lang="ts">
-  import {
-    createRendererRegistry,
-    defineForm,
-    FieldDataType,
-    resolveRenderer,
-    toTanStackOptions,
-  } from '@easyform/core';
-  import CheckboxInput from './fields/CheckboxInput.vue';
-  import TextInput from './fields/TextInput.vue';
-
-  const renderers = createRendererRegistry({
+  const renderers = createVueRendererRegistry({
+    byName: {
+      'email-input': TextInput,
+    },
     byType: {
       [FieldDataType.String]: TextInput,
       [FieldDataType.Boolean]: CheckboxInput,
     },
   });
-
-  const formDefinition = defineForm(
-    {
-      fields: {
-        name: {
-          type: FieldDataType.String,
-          defaultValue: '',
-          label: 'Name',
-          props: { placeholder: 'Ada Lovelace' },
-        },
-        publicProfile: {
-          type: FieldDataType.Boolean,
-          defaultValue: false,
-          label: 'Public profile',
-        },
-      },
-    },
-    { renderers },
-  );
-
-  const tanstackOptions = toTanStackOptions(formDefinition, {
-    formId: 'profile',
-  });
-
-  const values = reactive({ ...tanstackOptions.defaultValues });
 </script>
 
 <template>
-  <form>
-    <component
-      :is="resolveRenderer(definition, renderers)"
-      v-for="(definition, name) in formDefinition.fields"
-      :key="name"
-      v-model="values[name]"
+  <EzFormProvider :renderers="renderers">
+    <EzForm
       :definition="definition"
+      :tanstack-options="{ onSubmit: async ({ value }) => console.log(value) }"
     />
-  </form>
+  </EzFormProvider>
 </template>
 ```
 
-## Where Vue Fits
+## What EzForm Does
 
-| Concern                          | Belongs in                    |
-| -------------------------------- | ----------------------------- |
-| JSON-safe schema                 | `@easyform/core`              |
-| Validation compilation           | `toValibotSchema`             |
-| TanStack-compatible defaults     | `toTanStackOptions`           |
-| Dynamic component lookup         | renderer registry             |
-| `v-model`, slots, labels, errors | Vue adapter or app components |
+`EzForm`:
 
-The Vue adapter should keep renderer concerns close to Vue while leaving definition validation and JSON compatibility in core.
+- Calls `toTanStackOptions(definition, tanstackOptions)` when no `instance` is passed.
+- Creates a TanStack Vue Form instance with `useForm`.
+- Provides the form instance to child fields.
+- Renders fields by `order`, then declaration order.
+- Calls `form.handleSubmit()` on submit.
+
+Pass `fields` to render a named subset:
+
+```vue
+<EzForm :definition="definition" :fields="['email']" :renderers="renderers" />
+```
+
+Pass an existing TanStack form instance when you want full control:
+
+```vue
+<script setup lang="ts">
+  import { toTanStackOptions } from '@easyform/core';
+  import { useForm } from '@tanstack/vue-form';
+
+  const form = useForm(
+    toTanStackOptions(definition, {
+      onSubmit: async ({ value }) => {
+        console.log(value);
+      },
+    }),
+  );
+</script>
+
+<template>
+  <EzForm
+    :definition="definition"
+    :instance="form"
+    :renderers="renderers"
+  />
+</template>
+```
+
+## Renderer Props
+
+Every Vue renderer receives:
+
+| Prop          | Description                                         |
+| ------------- | --------------------------------------------------- |
+| `name`        | Field name from the definition map.                 |
+| `field`       | TanStack field binding.                             |
+| `form`        | Current TanStack form instance.                     |
+| `label`       | Field label, if present.                            |
+| `description` | Field description, if present.                      |
+| `props`       | JSON-safe renderer props from the field definition. |
+| `value`       | Current field value.                                |
+| `errors`      | Current field errors.                               |
+
+Renderer components should translate these props into the input components used by your app.
+
+## Provider And Overrides
+
+Use `EzFormProvider` for app-wide renderers:
+
+```vue
+<EzFormProvider :renderers="renderers">
+  <EzForm :definition="definition" />
+</EzFormProvider>
+```
+
+Use the `renderers` prop for a local override:
+
+```vue
+<EzForm :definition="definition" :renderers="localRenderers" />
+```
+
+Renderer resolution follows core rules: explicit `component` names resolve through `byName`; fields without `component` fall back to `byType[field.type]`.

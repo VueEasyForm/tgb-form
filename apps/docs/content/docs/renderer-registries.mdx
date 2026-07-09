@@ -4,13 +4,15 @@ description: Resolve JSON field definitions to framework components by component
 icon: Boxes
 ---
 
-Renderer registries are the bridge between saved form data and app-specific components. A field stores `component: 'email-input'`; your app decides what `email-input` means.
+Renderer registries are the boundary between stored data and UI code. A field can store `component: 'email-input'`; the app decides which component that name resolves to.
 
 [Open the renderer registry source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/renderer-registry.ts).
 
-## Registry Shape
+## What
 
-```ts
+A registry has named renderers and type fallbacks:
+
+```ts twoslash
 import { createRendererRegistry, FieldDataType } from '@easyform/core';
 import { CheckboxInput, EmailInput, NumberInput, TextInput } from './fields';
 
@@ -27,9 +29,22 @@ export const renderers = createRendererRegistry({
 });
 ```
 
-## Resolve A Field
+React and Vue adapters expose framework-specific helpers with the same shape:
 
-```ts
+```ts twoslash
+import { createReactRendererRegistry } from '@easyform/react';
+import { createVueRendererRegistry } from '@easyform/vue';
+```
+
+## Why
+
+Definitions need to stay serializable. Components, hooks, and closures cannot be serialized. Registry lookup keeps code at runtime while letting saved form data name the UI it needs.
+
+## How
+
+Resolve a field with `resolveRenderer`:
+
+```ts twoslash
 import { defineForm, FieldDataType, resolveRenderer } from '@easyform/core';
 import { renderers } from './renderers';
 
@@ -51,55 +66,40 @@ const form = defineForm(
 const Renderer = resolveRenderer(form.fields.email, renderers);
 ```
 
-Resolution rules are strict:
+Resolution is strict:
 
-| Field definition              | Resolver behavior                             |
-| ----------------------------- | --------------------------------------------- |
-| Has `component`               | Look up `registry.byName[component]`          |
-| Has unknown `component`       | Throw `Missing renderer named "..."`          |
-| Has no `component`            | Fall back to `registry.byType[field.type]`    |
-| Has no matching type renderer | Throw `Missing renderer for field type "..."` |
-
-## Type-Checked Component Names
+| Field definition              | Resolver behavior                              |
+| ----------------------------- | ---------------------------------------------- |
+| Has `component`               | Look up `registry.byName[component]`.          |
+| Has unknown `component`       | Throw `Missing renderer named "..."`.          |
+| Has no `component`            | Fall back to `registry.byType[field.type]`.    |
+| Has no matching type renderer | Throw `Missing renderer for field type "..."`. |
 
 When you pass a registry to `defineForm`, TypeScript checks `component` against the registry's `byName` keys.
 
-```ts
+## Registry Shape
+
+Renderer registries are plain lookup tables:
+
+```ts twoslash
 const renderers = createRendererRegistry({
   byName: {
-    known: TextInput,
+    'email-input': EmailInput,
+  },
+  byType: {
+    [FieldDataType.String]: TextInput,
   },
 });
 
-defineForm(
-  {
-    fields: {
-      name: {
-        type: FieldDataType.String,
-        defaultValue: '',
-        component: 'known',
-      },
-    },
-  },
-  { renderers },
-);
+renderers.byName['email-input']; // EmailInput
+renderers.byType[FieldDataType.String]; // TextInput
 ```
 
-## Renderer Props
+Use the framework helpers when the registry stores React or Vue components:
 
-`props` stays JSON-safe so definitions can round-trip through storage.
-
-```ts
-const field = {
-  type: FieldDataType.String,
-  defaultValue: '',
-  component: 'email-input',
-  props: {
-    autocomplete: 'email',
-    inputMode: 'email',
-    placeholder: 'you@example.com',
-  },
-};
+```ts twoslash
+import { createReactRendererRegistry } from '@easyform/react';
+import { createVueRendererRegistry } from '@easyform/vue';
 ```
 
-Your adapter should merge these props with runtime field state from TanStack Form or your framework form primitive.
+These helpers call the core registry factory while preserving framework-specific renderer types.

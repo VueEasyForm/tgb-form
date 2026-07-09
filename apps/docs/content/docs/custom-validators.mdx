@@ -1,16 +1,36 @@
 ---
 title: Custom Validators
 description: Reference app-defined Valibot validators from JSON-safe EasyForm definitions.
-icon: BadgeCheck
+icon: Hammer
 ---
 
-Custom validators let stored form definitions refer to code without serializing code. The JSON definition stores a validator name, optional message, and JSON-safe options. The runtime supplies a `ValidatorRegistry`.
+Custom validators let stored definitions refer to runtime validation code by name.
 
 [Open validator registry source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/validator-registry.ts).
 
-## Register A Validator
+## What
 
-```ts
+A field stores a validator reference:
+
+```ts twoslash
+const validators = [
+  {
+    name: 'companyEmail',
+    message: 'Use your company email',
+    options: { domain: 'easyform.dev' },
+  },
+];
+```
+
+Runtime code registers the compiler for `companyEmail`.
+
+## Why
+
+Some checks depend on application code, remote systems, tenant settings, or private business rules. Those functions cannot live in JSON. A registry keeps stored schemas portable while still letting validation use real code.
+
+## How
+
+```ts twoslash
 import * as v from 'valibot';
 import {
   createValidatorRegistry,
@@ -51,39 +71,48 @@ const form = defineForm(
 const schema = toValibotSchema(form);
 ```
 
-## Chain Multiple Validators
+## Registry Builder Pattern
 
-Validators run in the order declared on the field.
+`createValidatorRegistry()` returns a mutable registry. `register()` adds a compiler and returns the same registry, so setup can be written as a fluent chain:
 
-```ts
+```ts twoslash
+import * as v from 'valibot';
+import { createValidatorRegistry } from '@easyform/core';
+
 const validators = createValidatorRegistry()
   .register('startsWithA', ({ message }) =>
     v.check((value: string) => value.startsWith('A'), message),
   )
   .register('endsWithZ', ({ message }) => v.check((value: string) => value.endsWith('z'), message));
-
-const form = defineForm(
-  {
-    fields: {
-      code: {
-        type: FieldDataType.String,
-        defaultValue: '',
-        validators: [
-          { name: 'startsWithA', message: 'Must start with A' },
-          { name: 'endsWithZ', message: 'Must end with z' },
-        ],
-      },
-    },
-  },
-  { validators },
-);
 ```
 
-## Missing Validators
+You can also seed the registry with an object:
 
-If a field references a validator that is not registered, schema compilation throws a clear error.
+```ts twoslash
+import * as v from 'valibot';
+import { createValidatorRegistry } from '@easyform/core';
 
-```ts
+const validators = createValidatorRegistry({
+  startsWithA: ({ message }) => v.check((value: string) => value.startsWith('A'), message),
+  endsWithZ: ({ message }) => v.check((value: string) => value.endsWith('z'), message),
+});
+```
+
+The registry exposes lookup helpers for builder UIs and diagnostics:
+
+```ts twoslash
+validators.has('startsWithA'); // true
+validators.get('startsWithA'); // ValidatorCompiler | undefined
+validators.names(); // ['startsWithA', 'endsWithZ']
+```
+
+Validators run in field order. If one compiler returns multiple Valibot pipe items, EasyForm flattens them into the same field pipeline.
+
+Missing validators fail when compiling the schema:
+
+```ts twoslash
+import { defineForm, FieldDataType, toValibotSchema } from '@easyform/core';
+
 const form = defineForm({
   fields: {
     email: {
@@ -97,5 +126,3 @@ const form = defineForm({
 toValibotSchema(form);
 // Error: Unknown validator "uniqueEmail"
 ```
-
-This fail-fast behavior keeps invalid builder output from silently bypassing runtime validation.
