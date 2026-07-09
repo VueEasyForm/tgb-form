@@ -6,7 +6,7 @@ icon: Rocket
 
 Define forms as data. Render them anywhere.
 
-EasyForm is a fast, flexible wrapper around TanStack Form and Valibot. It keeps form schemas JSON-safe while leaving runtime code free to choose React, Vue, custom renderers, storage, and validation extensions.
+EasyForm is a fast, flexible wrapper around [TanStack Form](https://tanstack.com/form) and [Valibot](https://valibot.dev). It keeps form schemas JSON-safe while leaving runtime code free to choose React, Vue, custom renderers, storage, and validation extensions.
 
 ## What
 
@@ -57,16 +57,34 @@ TanStack Form still owns form state. Valibot still owns validation. EasyForm con
 
 ## How
 
-Install the core package and one adapter:
+### Install the core packages [step]
 
-```sh
-pnpm add @easyform/core valibot @tanstack/form-core
-pnpm add @easyform/react @tanstack/react-form
-# or
-pnpm add @easyform/vue @tanstack/vue-form
+```package-install
+@easyform/core valibot @tanstack/form-core
 ```
 
-Render in React:
+### Install the adapters [step]
+
+#### React adapter
+
+```package-install
+@easyform/react @tanstack/react-form
+```
+
+#### Vue adapter
+
+```package-install
+@easyform/vue @tanstack/vue-form
+```
+
+<Callout type="idea">
+  The design of EasyForm actually allows for integrations for other frameworks too, thanks to the
+  framework-agnostic core of TanStack Form and Valibot! But we prioritize these 2 frameworks first
+  for our internal usages. If you want to contribute an adapter for your loved framework, feel free
+  to open a PR or an issue on GitHub!
+</Callout>
+
+### Render (in React): [step]
 
 ```tsx twoslash
 import { FieldDataType } from '@easyform/core';
@@ -121,7 +139,13 @@ export function NewsletterForm() {
 }
 ```
 
-Store and restore the definition:
+<Callout>
+  It's actually very similar to do so in Vue, and that's the strength of our library! We don't show
+  the example here because it would look too similar to each other and would make you confusing
+  instead. Just swap around the framework-specific parts and it will work right away!
+</Callout>
+
+### Store and restore the definition: [step]
 
 ```ts twoslash
 import { deserializeForm, serializeForm, toTanStackOptions } from '@easyform/core';

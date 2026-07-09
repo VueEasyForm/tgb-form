@@ -263,13 +263,13 @@ defineForm(
   { renderers: typeCheckedRendererRegistry },
 );
 
-// @ts-expect-error component names are checked when a renderer registry is supplied
 defineForm(
   {
     fields: {
       name: {
         type: FieldDataType.String,
         defaultValue: '',
+        // @ts-expect-error component names are checked when a renderer registry is supplied
         component: 'unknown',
       },
     },

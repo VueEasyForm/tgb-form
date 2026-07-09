@@ -3,15 +3,28 @@
 @import 'fumadocs-ui/css/preset.css';
 @import 'fumadocs-twoslash/twoslash.css';
 
+/* Fonts */
+@import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/lora';
+
+@theme {
+  /* Strategy: extending the default TailwindCSS v4, not replacing it */
+  --font-sans:
+    'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: 'Lora Variable', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono:
+    'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+}
+
 html {
-  scrollbar-gutter: stable;
+  @apply scrollbar-gutter-stable antialiased;
 }
 
-html > body[data-scroll-locked] {
-  margin-right: 0px !important;
-  --removed-body-scroll-bar-size: 0px !important;
-}
-
-.twoslash .twoslash-hover {
-  border-bottom-color: color-mix(in srgb, currentColor 55%, transparent);
+code,
+pre {
+  /* This works best for monospaced fonts per visual testing on macOS */
+  @apply subpixel-antialiased!;
 }

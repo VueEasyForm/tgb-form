@@ -1,12 +1,40 @@
 import { loader } from 'fumadocs-core/source';
-import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
+import { icons as lucideIcons } from 'lucide-react';
+import { createElement } from 'react';
 import { docs } from 'collections/server';
 import { docsRoute } from './shared';
+
+import {
+  SiReact,
+  SiVuedotjs,
+  SiReactHex,
+  SiVuedotjsHex,
+  SiJson,
+  SiJsonHex,
+  SiTanstack,
+} from '@icons-pack/react-simple-icons';
+
+const brandIcons = {
+  React: () => <SiReact />,
+  Vue: () => <SiVuedotjs />,
+  Json: () => <SiJson />,
+  Tanstack: () => <SiTanstack />,
+} satisfies Record<string, React.ComponentType>;
 
 export const source = loader({
   source: docs.toFumadocsSource(),
   baseUrl: docsRoute,
-  plugins: [lucideIconsPlugin()],
+  icon(icon) {
+    if (!icon) return;
+
+    if (icon in brandIcons) {
+      return createElement(brandIcons[icon as keyof typeof brandIcons]);
+    }
+
+    if (icon in lucideIcons) {
+      return createElement(lucideIcons[icon as keyof typeof lucideIcons]);
+    }
+  },
 });
 
 export function markdownPathToSlugs(segs: string[]) {

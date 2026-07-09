@@ -1,14 +1,24 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
-import { rehypeCodeDefaultOptions } from 'fumadocs-core/mdx-plugins';
+import { rehypeCodeDefaultOptions, remarkSteps } from 'fumadocs-core/mdx-plugins';
 import { transformerTwoslash } from 'fumadocs-twoslash';
+import {
+  createFileSystemGeneratorCache,
+  createGenerator,
+  remarkAutoTypeTable,
+} from 'fumadocs-typescript';
+import { remarkInstall } from 'fumadocs-docgen';
 import * as ts from 'typescript';
 
 const docsDir = dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = resolve(docsDir, '../..');
 
 const fromRoot = (...paths: string[]) => resolve(workspaceRoot, ...paths);
+
+const generator = createGenerator({
+  cache: createFileSystemGeneratorCache('.next/fumadocs-typescript'),
+});
 
 export const docs = defineDocs({
   dir: 'content/docs',
@@ -21,6 +31,7 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
+    remarkPlugins: [[remarkAutoTypeTable, { generator }], remarkInstall, remarkSteps],
     rehypeCodeOptions: {
       themes: {
         light: 'github-light',

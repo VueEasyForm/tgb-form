@@ -5,7 +5,9 @@ export default defineConfig({
     neverBundle: ['@easyform/core', '@tanstack/react-form', 'react', 'react-dom'],
   },
   platform: 'neutral',
-  dts: true,
+  dts: {
+    tsgo: true,
+  },
   exports: true,
   sourcemap: true,
 });
