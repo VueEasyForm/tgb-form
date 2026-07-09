@@ -1,14 +1,15 @@
-import {
-  createRendererRegistry,
-  defineForm,
-  FieldDataType,
-  toTanStackOptions,
-} from '@easyform/core';
+import { createRendererRegistry, defineForm, FieldDataType, toTanStackOptions } from '@easyform/core';
 import { useForm } from '@tanstack/vue-form';
 import { describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-vue';
 import { defineComponent, h } from 'vue';
-import { EasyField, EasyForm, createVueRendererRegistry, type VueRendererProps } from '../src';
+import {
+  EzField,
+  EzForm,
+  EzFormProvider,
+  createVueRendererRegistry,
+  type VueRendererProps,
+} from '../src';
 
 function createFormStub(
   values: Record<string, unknown> = {},
@@ -19,10 +20,7 @@ function createFormStub(
     Field: defineComponent({
       name: 'TanStackFieldStub',
       props: {
-        name: {
-          type: String,
-          required: true,
-        },
+        name: { type: String, required: true },
       },
       setup(props, { slots }) {
         return () =>
@@ -53,10 +51,7 @@ function createFormStub(
 const TraceRenderer = defineComponent({
   name: 'TraceRenderer',
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
+    name: { type: String, required: true },
     label: String,
     description: String,
     value: null,
@@ -82,38 +77,23 @@ const TraceRenderer = defineComponent({
   },
 });
 
-describe('EasyForm', () => {
+describe('EzForm', () => {
   test('renders fields by order and declaration order with an optional subset', () => {
     const definition = defineForm({
       fields: {
-        firstDeclared: {
-          type: FieldDataType.String,
-          defaultValue: '',
-        },
-        orderedSecond: {
-          type: FieldDataType.String,
-          defaultValue: '',
-          order: 2,
-        },
-        orderedFirst: {
-          type: FieldDataType.String,
-          defaultValue: '',
-          order: 1,
-        },
-        hidden: {
-          type: FieldDataType.String,
-          defaultValue: '',
-          order: 0,
-        },
+        firstDeclared: { type: FieldDataType.String, defaultValue: '' },
+        orderedSecond: { type: FieldDataType.String, defaultValue: '', order: 2 },
+        orderedFirst: { type: FieldDataType.String, defaultValue: '', order: 1 },
+        hidden: { type: FieldDataType.String, defaultValue: '', order: 0 },
       },
     });
     const registry = createVueRendererRegistry({
       byType: { [FieldDataType.String]: TraceRenderer },
     });
 
-    const page = render(EasyForm, {
+    const page = render(EzForm, {
       props: {
-        form: createFormStub(),
+        instance: createFormStub(),
         definition,
         renderers: registry,
         fields: ['firstDeclared', 'orderedSecond', 'orderedFirst'],
@@ -125,6 +105,30 @@ describe('EasyForm', () => {
         element.getAttribute('data-field'),
       ),
     ).toEqual(['orderedFirst', 'orderedSecond', 'firstDeclared']);
+  });
+
+  test('reads renderers from EzFormProvider', () => {
+    const definition = defineForm({
+      fields: {
+        name: { type: FieldDataType.String, defaultValue: '' },
+      },
+    });
+    const registry = createVueRendererRegistry({
+      byType: { [FieldDataType.String]: TraceRenderer },
+    });
+
+    const page = render(EzFormProvider, {
+      props: { renderers: registry },
+      slots: {
+        default: () =>
+          h(EzForm, {
+            instance: createFormStub({ name: 'Ada' }),
+            definition,
+          }),
+      },
+    });
+
+    expect(page.container.querySelector('output')).toBeInTheDocument();
   });
 
   test('resolves named renderers before type renderers', () => {
@@ -144,15 +148,8 @@ describe('EasyForm', () => {
     });
     const definition = defineForm({
       fields: {
-        email: {
-          type: FieldDataType.String,
-          defaultValue: '',
-          component: 'email',
-        },
-        name: {
-          type: FieldDataType.String,
-          defaultValue: '',
-        },
+        email: { type: FieldDataType.String, defaultValue: '', component: 'email' },
+        name: { type: FieldDataType.String, defaultValue: '' },
       },
     });
     const registry = createVueRendererRegistry({
@@ -160,9 +157,9 @@ describe('EasyForm', () => {
       byType: { [FieldDataType.String]: TypeRenderer },
     });
 
-    const page = render(EasyForm, {
+    const page = render(EzForm, {
       props: {
-        form: createFormStub(),
+        instance: createFormStub(),
         definition,
         renderers: registry,
       },
@@ -197,14 +194,12 @@ describe('EasyForm', () => {
         return () => {
           received({
             name: props.name,
-            fieldName: (props.field as { name: string }).name,
-            form: props.form,
             label: props.label,
             description: props.description,
             rendererProps: props.props,
             value: props.value,
             errors: props.errors,
-          } satisfies Partial<VueRendererProps>);
+          });
           return h('output', props.name);
         };
       },
@@ -225,9 +220,9 @@ describe('EasyForm', () => {
       byType: { [FieldDataType.String]: CapturingRenderer },
     });
 
-    render(EasyForm, {
+    render(EzForm, {
       props: {
-        form,
+        instance: form,
         definition,
         renderers: registry,
       },
@@ -235,8 +230,6 @@ describe('EasyForm', () => {
 
     expect(received).toHaveBeenCalledWith({
       name: 'email',
-      fieldName: 'email',
-      form,
       label: 'Email',
       description: 'Work address',
       rendererProps: { placeholder: 'ada@example.com' },
@@ -248,42 +241,57 @@ describe('EasyForm', () => {
   test('throws when no renderer can be resolved', () => {
     const definition = defineForm({
       fields: {
-        email: {
-          type: FieldDataType.String,
-          defaultValue: '',
-        },
+        email: { type: FieldDataType.String, defaultValue: '' },
       },
     });
     const registry = createRendererRegistry({});
 
     expect(() =>
-      render(EasyField, {
+      render(EzForm, {
         props: {
-          form: createFormStub(),
-          name: 'email',
-          field: definition.fields.email,
+          instance: createFormStub(),
+          definition,
           renderers: registry,
         },
       }),
     ).toThrow('Missing renderer for field type "string"');
   });
 
-  test('delegates form submission to the TanStack form instance', () => {
-    const form = createFormStub();
+  test('throws when EzField is used outside EzForm', () => {
     const definition = defineForm({
       fields: {
-        email: {
-          type: FieldDataType.String,
-          defaultValue: '',
-        },
+        x: { type: FieldDataType.String, defaultValue: '' },
       },
     });
     const registry = createVueRendererRegistry({
       byType: { [FieldDataType.String]: TraceRenderer },
     });
-    const page = render(EasyForm, {
+
+    expect(() =>
+      render(EzField, {
+        props: {
+          name: 'x',
+          field: definition.fields.x,
+          renderers: registry,
+        },
+      }),
+    ).toThrow('EzField must be used inside an EzForm');
+  });
+
+  test('delegates form submission to the TanStack form instance', () => {
+    const form = createFormStub();
+    const definition = defineForm({
+      fields: {
+        email: { type: FieldDataType.String, defaultValue: '' },
+      },
+    });
+    const registry = createVueRendererRegistry({
+      byType: { [FieldDataType.String]: TraceRenderer },
+    });
+
+    const page = render(EzForm, {
       props: {
-        form,
+        instance: form,
         definition,
         renderers: registry,
       },
@@ -300,27 +308,23 @@ describe('EasyForm', () => {
     const onSubmit = vi.fn();
     const definition = defineForm({
       fields: {
-        email: {
-          type: FieldDataType.String,
-          defaultValue: 'ada@example.com',
-        },
+        email: { type: FieldDataType.String, defaultValue: 'ada@example.com' },
       },
     });
     const registry = createVueRendererRegistry({
       byType: { [FieldDataType.String]: TraceRenderer },
     });
+
     const Host = defineComponent({
       name: 'TanStackHost',
       setup() {
         const form = useForm(
-          toTanStackOptions(definition, {
-            onSubmit,
-          }),
+          toTanStackOptions(definition, { onSubmit }) as any,
         );
 
         return () =>
-          h(EasyForm, {
-            form,
+          h(EzForm, {
+            instance: form as any,
             definition,
             renderers: registry,
           });
@@ -331,7 +335,6 @@ describe('EasyForm', () => {
     const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
     page.container.querySelector('form')?.dispatchEvent(submitEvent);
     await vi.waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
-
     expect(submitEvent.defaultPrevented).toBe(true);
     expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({
       value: { email: 'ada@example.com' },
