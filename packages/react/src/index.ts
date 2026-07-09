@@ -1,11 +1,16 @@
+export { createReactRendererRegistry } from './types';
+export { EzForm, type EzFormProps } from './EzForm';
+export { EzField, type EzFieldProps } from './EzField';
 export {
-  EasyField,
-  EasyForm,
-  createReactRendererRegistry,
-  type EasyFieldProps,
-  type EasyFormProps,
-  type ReactEasyFormInstance,
-  type ReactRenderer,
-  type ReactRendererProps,
-  type ReactRendererRegistry,
-} from './EasyForm';
+  EzFormContext,
+  useEzFormRegistry,
+  useEzFormInstance,
+  type EzFormContextProps,
+  type EzFormRegistryContextValue,
+} from './EzFormContext';
+export type {
+  ReactRenderer,
+  ReactRendererProps,
+  ReactRendererRegistry,
+  ReactEasyFormInstance,
+} from './types';

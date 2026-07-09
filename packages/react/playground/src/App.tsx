@@ -1,17 +1,7 @@
-import type { ReactNode } from 'react';
-import { useMemo, useState } from 'react';
-import { FieldDataType, defineForm } from '@easyform/core';
-import { EasyForm, createReactRendererRegistry, type ReactRendererProps } from '../../src';
-
-type PlaygroundField = {
-  readonly state: {
-    readonly value: unknown;
-    readonly meta: {
-      readonly errors: readonly string[];
-    };
-  };
-  readonly handleChange: (value: unknown) => void;
-};
+import { useState } from 'react';
+import { FieldDataType, defineForm, toTanStackOptions } from '@easyform/core';
+import { useForm } from '@tanstack/react-form';
+import { EzForm, createReactRendererRegistry, type ReactRendererProps } from '../../src';
 
 const definition = defineForm({
   fields: {
@@ -20,9 +10,7 @@ const definition = defineForm({
       defaultValue: '',
       label: 'Name',
       description: 'Shown on generated documents.',
-      props: {
-        placeholder: 'Ada Lovelace',
-      },
+      props: { placeholder: 'Ada Lovelace' },
       order: 1,
     },
     email: {
@@ -30,9 +18,7 @@ const definition = defineForm({
       defaultValue: '',
       label: 'Email',
       description: 'Used for delivery confirmations.',
-      props: {
-        placeholder: 'ada@example.com',
-      },
+      props: { placeholder: 'ada@example.com' },
       order: 2,
     },
     subscribed: {
@@ -53,53 +39,24 @@ const renderers = createReactRendererRegistry({
 });
 
 export function App() {
-  const [values, setValues] = useState<Record<string, unknown>>({
-    email: '',
-    name: '',
-    subscribed: true,
-  });
   const [submitted, setSubmitted] = useState<Record<string, unknown> | undefined>();
 
-  const form = useMemo(
-    () => ({
-      Field({
-        name,
-        children,
-      }: {
-        readonly name: string;
-        readonly children: (field: PlaygroundField) => ReactNode;
-      }) {
-        return children({
-          handleChange(value) {
-            setValues((current) => ({
-              ...current,
-              [name]: value,
-            }));
-          },
-          state: {
-            meta: {
-              errors: [],
-            },
-            value: values[name],
-          },
-        });
-      },
-      handleSubmit() {
-        setSubmitted(values);
-      },
-    }),
-    [values],
-  );
+  const form = useForm({
+    ...toTanStackOptions(definition),
+    onSubmit({ value }: { value: Record<string, unknown> }) {
+      setSubmitted(value);
+    },
+  } as any);
 
   return (
     <main className="app-shell">
-      <EasyForm
+      <EzForm
         className="easy-form"
         definition={definition}
-        form={form}
         renderers={renderers}
+        instance={form as any}
       />
-      <pre>{JSON.stringify(submitted ?? values, null, 2)}</pre>
+      <pre>{JSON.stringify(submitted ?? null, null, 2)}</pre>
     </main>
   );
 }

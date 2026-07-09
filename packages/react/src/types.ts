@@ -1,4 +1,5 @@
 import type { ComponentType, ReactNode } from 'react';
+import { createRendererRegistry } from '@easyform/core';
 import type { FieldDataType, JsonObject, RendererRegistry } from '@easyform/core';
 
 type TanStackFieldRenderer = (field: any) => ReactNode;
@@ -40,3 +41,13 @@ export type ReactRendererRegistry<
     Readonly<Record<FieldDataType, AnyReactRenderer>>
   >,
 > = RendererRegistry<TByName, TByType>;
+
+export function createReactRendererRegistry<
+  const TByName extends Readonly<Record<string, AnyReactRenderer>> = {},
+  const TByType extends Partial<Readonly<Record<FieldDataType, AnyReactRenderer>>> = {},
+>(registry: {
+  readonly byName?: TByName;
+  readonly byType?: TByType;
+}): ReactRendererRegistry<TByName, TByType> {
+  return createRendererRegistry(registry);
+}
