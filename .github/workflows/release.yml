@@ -26,6 +26,8 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
+        with:
+          cache: false # never use caching in release builds
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -33,9 +35,13 @@ jobs:
           node-version-file: package.json
           cache: pnpm
           registry-url: https://registry.npmjs.org
+          package-manager-cache: false  # never use caching in release builds
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browser
+        run: pnpm exec playwright install
 
       - name: Verify releasable packages
         run: pnpm release:check

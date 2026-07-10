@@ -197,7 +197,7 @@ pnpm --filter @tgb-form/docs dev
 
 ## Repository
 
-- GitHub: https://github.com/VueEasyForm/easyform
-- Issues: https://github.com/VueEasyForm/easyform/issues
+- GitHub: https://github.com/VueEasyForm/tgb-form
+- Issues: https://github.com/VueEasyForm/tgb-form/issues
 - Releasing: ./RELEASING.md
 - License: MIT
