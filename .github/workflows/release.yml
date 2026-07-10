@@ -51,7 +51,7 @@ jobs:
         uses: changesets/action@v1 # v2 is next, compatible with v3 CLI, but we're using v2 --> action v1
         with:
           version-script: pnpm version
-          create-github-releases: false
+          create-github-releases: true
           commit-mode: github-api
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
