@@ -1,6 +1,6 @@
 ---
 title: Custom Validators
-description: Reference app-defined Valibot validators from JSON-safe EasyForm definitions.
+description: Reference app-defined Valibot validators from JSON-safe TGB Form definitions.
 icon: Hammer
 ---
 
@@ -37,7 +37,7 @@ import {
   defineForm,
   FieldDataType,
   toValibotSchema,
-} from '@easyform/core';
+} from '@tgb-form/core';
 
 const validators = createValidatorRegistry().register('companyEmail', ({ message, options }) => {
   const domain = String(options?.domain ?? 'example.com');
@@ -77,7 +77,7 @@ const schema = toValibotSchema(form);
 
 ```ts twoslash
 import * as v from 'valibot';
-import { createValidatorRegistry } from '@easyform/core';
+import { createValidatorRegistry } from '@tgb-form/core';
 
 const validators = createValidatorRegistry()
   .register('startsWithA', ({ message }) =>
@@ -90,7 +90,7 @@ You can also seed the registry with an object:
 
 ```ts twoslash
 import * as v from 'valibot';
-import { createValidatorRegistry } from '@easyform/core';
+import { createValidatorRegistry } from '@tgb-form/core';
 
 const validators = createValidatorRegistry({
   startsWithA: ({ message }) => v.check((value: string) => value.startsWith('A'), message),
@@ -102,7 +102,7 @@ The registry exposes lookup helpers for builder UIs and diagnostics:
 
 ```ts twoslash
 import * as v from 'valibot';
-import { createValidatorRegistry } from '@easyform/core';
+import { createValidatorRegistry } from '@tgb-form/core';
 
 const validators = createValidatorRegistry({
   startsWithA: ({ message }) => v.check((value: string) => value.startsWith('A'), message),
@@ -114,12 +114,12 @@ validators.get('startsWithA'); // ValidatorCompiler | undefined
 validators.names(); // ['startsWithA', 'endsWithZ']
 ```
 
-Validators run in field order. If one compiler returns multiple Valibot pipe items, EasyForm flattens them into the same field pipeline.
+Validators run in field order. If one compiler returns multiple Valibot pipe items, TGB Form flattens them into the same field pipeline.
 
 Missing validators fail when compiling the schema:
 
 ```ts twoslash
-import { defineForm, FieldDataType, toValibotSchema } from '@easyform/core';
+import { defineForm, FieldDataType, toValibotSchema } from '@tgb-form/core';
 
 const form = defineForm({
   fields: {

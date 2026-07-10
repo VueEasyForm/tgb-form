@@ -3,15 +3,15 @@ import {
   defineForm,
   FieldDataType,
   toTanStackOptions,
-} from '@easyform/core';
+} from '@tgb-form/core';
 import { useForm } from '@tanstack/vue-form';
 import { describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-vue';
 import { defineComponent, h } from 'vue';
 import {
-  EzField,
-  EzForm,
-  EzFormProvider,
+  TgbFormField,
+  TgbForm,
+  TgbFormProvider,
   createVueRendererRegistry,
   type VueRendererProps,
 } from '../src';
@@ -82,7 +82,7 @@ const TraceRenderer = defineComponent({
   },
 });
 
-describe('EzForm', () => {
+describe('TgbForm', () => {
   test('renders fields by order and declaration order with an optional subset', () => {
     const definition = defineForm({
       fields: {
@@ -96,7 +96,7 @@ describe('EzForm', () => {
       byType: { [FieldDataType.String]: TraceRenderer },
     });
 
-    const page = render(EzForm, {
+    const page = render(TgbForm, {
       props: {
         instance: createFormStub(),
         definition,
@@ -112,7 +112,7 @@ describe('EzForm', () => {
     ).toEqual(['orderedFirst', 'orderedSecond', 'firstDeclared']);
   });
 
-  test('reads renderers from EzFormProvider', () => {
+  test('reads renderers from TgbFormProvider', () => {
     const definition = defineForm({
       fields: {
         name: { type: FieldDataType.String, defaultValue: '' },
@@ -122,11 +122,11 @@ describe('EzForm', () => {
       byType: { [FieldDataType.String]: TraceRenderer },
     });
 
-    const page = render(EzFormProvider, {
+    const page = render(TgbFormProvider, {
       props: { renderers: registry },
       slots: {
         default: () =>
-          h(EzForm, {
+          h(TgbForm, {
             instance: createFormStub({ name: 'Ada' }),
             definition,
           }),
@@ -162,7 +162,7 @@ describe('EzForm', () => {
       byType: { [FieldDataType.String]: TypeRenderer },
     });
 
-    const page = render(EzForm, {
+    const page = render(TgbForm, {
       props: {
         instance: createFormStub(),
         definition,
@@ -225,7 +225,7 @@ describe('EzForm', () => {
       byType: { [FieldDataType.String]: CapturingRenderer },
     });
 
-    render(EzForm, {
+    render(TgbForm, {
       props: {
         instance: form,
         definition,
@@ -252,7 +252,7 @@ describe('EzForm', () => {
     const registry = createRendererRegistry({});
 
     expect(() =>
-      render(EzForm, {
+      render(TgbForm, {
         props: {
           instance: createFormStub(),
           definition,
@@ -262,7 +262,7 @@ describe('EzForm', () => {
     ).toThrow('Missing renderer for field type "string"');
   });
 
-  test('throws when EzField is used outside EzForm', () => {
+  test('throws when TgbFormField is used outside TgbForm', () => {
     const definition = defineForm({
       fields: {
         x: { type: FieldDataType.String, defaultValue: '' },
@@ -273,14 +273,14 @@ describe('EzForm', () => {
     });
 
     expect(() =>
-      render(EzField, {
+      render(TgbFormField, {
         props: {
           name: 'x',
           field: definition.fields.x,
           renderers: registry,
         },
       }),
-    ).toThrow('EzField must be used inside an EzForm');
+    ).toThrow('TgbFormField must be used inside a TgbForm component');
   });
 
   test('delegates form submission to the TanStack form instance', () => {
@@ -294,7 +294,7 @@ describe('EzForm', () => {
       byType: { [FieldDataType.String]: TraceRenderer },
     });
 
-    const page = render(EzForm, {
+    const page = render(TgbForm, {
       props: {
         instance: form,
         definition,
@@ -326,7 +326,7 @@ describe('EzForm', () => {
         const form = useForm(toTanStackOptions(definition, { onSubmit }) as any);
 
         return () =>
-          h(EzForm, {
+          h(TgbForm, {
             instance: form as any,
             definition,
             renderers: registry,

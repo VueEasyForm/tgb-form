@@ -15,7 +15,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'EasyForm Documentation',
+        title: 'TGB Form Documentation',
       },
       {
         content: 'Schema-first forms for React and Vue.',

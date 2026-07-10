@@ -4,7 +4,7 @@ description: Save normalized form definitions and restore them with runtime regi
 icon: Json
 ---
 
-EasyForm definitions are designed to survive a JSON round trip. The stored value contains data. Runtime registries provide code after the value is loaded.
+TGB Form definitions are designed to survive a JSON round trip. The stored value contains data. Runtime registries provide code after the value is loaded.
 
 [Open serialization source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/schema/form.ts).
 
@@ -17,7 +17,7 @@ import {
   FieldDataType,
   serializeForm,
   ValidationRuleKind,
-} from '@easyform/core';
+} from '@tgb-form/core';
 
 const form = defineForm({
   fields: {
@@ -52,7 +52,7 @@ import {
   createValidatorRegistry,
   deserializeForm,
   FieldDataType,
-} from '@easyform/core';
+} from '@tgb-form/core';
 import * as v from 'valibot';
 
 const TextInput = (props: unknown) => props;

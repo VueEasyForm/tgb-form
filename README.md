@@ -1,12 +1,12 @@
-# EasyForm
+# TGB Form
 
 Define forms as data. Render them anywhere.
 
-EasyForm is a small wrapper around TanStack Form and Valibot for teams that need form builders, generated forms, and stored schemas. A form definition stays JSON-safe. Runtime code supplies renderers, validators, and framework bindings.
+TGB Form is a small wrapper around TanStack Form and Valibot for teams that need form builders, generated forms, and stored schemas. A form definition stays JSON-safe. Runtime code supplies renderers, validators, and framework bindings.
 
 ## What
 
-EasyForm gives you:
+TGB Form gives you:
 
 - JSON-serializable form definitions.
 - Valibot schemas generated from field rules.
@@ -17,7 +17,7 @@ EasyForm gives you:
 
 ## Why
 
-TanStack Form is a strong form state engine. Valibot is a strong validation engine. EasyForm adds the missing portable layer between them: a schema that can be authored, saved, loaded, validated, and rendered later.
+TanStack Form is a strong form state engine. Valibot is a strong validation engine. TGB Form adds the missing portable layer between them: a schema that can be authored, saved, loaded, validated, and rendered later.
 
 That layer matters when forms are not only hand-written React or Vue code. It is useful when forms come from an admin builder, tenant configuration, server data, generated templates, or shared package definitions.
 
@@ -26,16 +26,16 @@ That layer matters when forms are not only hand-written React or Vue code. It is
 Install the core package and the framework adapter you use:
 
 ```sh
-pnpm add @easyform/core valibot @tanstack/form-core
-pnpm add @easyform/react @tanstack/react-form
+pnpm add @tgb-form/core valibot @tanstack/form-core
+pnpm add @tgb-form/react @tanstack/react-form
 # or
-pnpm add @easyform/vue @tanstack/vue-form
+pnpm add @tgb-form/vue @tanstack/vue-form
 ```
 
 Define a form:
 
 ```ts
-import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
 
 export const newsletterForm = defineForm({
   fields: {
@@ -62,9 +62,9 @@ export const newsletterForm = defineForm({
 Render it in React:
 
 ```tsx
-import { FieldDataType } from '@easyform/core';
+import { FieldDataType } from '@tgb-form/core';
 import { useForm } from '@tanstack/react-form';
-import { BaseReactRendererProps, EzForm, createReactRendererRegistry } from '@easyform/react';
+import { BaseReactRendererProps, TgbForm, createReactRendererRegistry } from '@tgb-form/react';
 import { newsletterForm } from './newsletter-form';
 
 function TextInput({ field, label, name, props, value, errors }: BaseReactRendererProps) {
@@ -90,7 +90,7 @@ const renderers = createReactRendererRegistry({
 
 export function Newsletter() {
   return (
-    <EzForm
+    <TgbForm
       definition={newsletterForm}
       renderers={renderers}
       tanstackOptions={{
@@ -108,8 +108,8 @@ Render it in Vue:
 ```vue
 <script setup lang="ts">
   import { defineComponent, h } from 'vue';
-  import { FieldDataType } from '@easyform/core';
-  import { EzForm, createVueRendererRegistry } from '@easyform/vue';
+  import { FieldDataType } from '@tgb-form/core';
+  import { TgbForm, createVueRendererRegistry } from '@tgb-form/vue';
   import { newsletterForm } from './newsletter-form';
 
   const TextInput = defineComponent({
@@ -138,7 +138,7 @@ Render it in Vue:
 </script>
 
 <template>
-  <EzForm
+  <TgbForm
     :definition="newsletterForm"
     :renderers="renderers"
     :tanstack-options="{ onSubmit: async ({ value }) => console.log(value) }"
@@ -163,7 +163,7 @@ Render it in Vue:
 ## Store And Restore
 
 ```ts
-import { deserializeForm, serializeForm, toTanStackOptions } from '@easyform/core';
+import { deserializeForm, serializeForm, toTanStackOptions } from '@tgb-form/core';
 import { newsletterForm } from './newsletter-form';
 
 const stored = JSON.stringify(serializeForm(newsletterForm));
@@ -175,10 +175,10 @@ Renderer and validator registries are code, so they are attached at runtime inst
 
 ## Packages
 
-- `@easyform/core` - schema, normalization, validation, serialization, registries, TanStack helpers.
-- `@easyform/react` - React components and renderer types for TanStack React Form.
-- `@easyform/vue` - Vue components and renderer types for TanStack Vue Form.
-- `@easyform/docs` - TanStack Start and Fumadocs documentation app.
+- `@tgb-form/core` - schema, normalization, validation, serialization, registries, TanStack helpers.
+- `@tgb-form/react` - React components and renderer types for TanStack React Form.
+- `@tgb-form/vue` - Vue components and renderer types for TanStack Vue Form.
+- `@tgb-form/docs` - TanStack Start and Fumadocs documentation app.
 
 ## Development
 
@@ -192,7 +192,7 @@ pnpm build
 Run the docs locally:
 
 ```sh
-pnpm --filter @easyform/docs dev
+pnpm --filter @tgb-form/docs dev
 ```
 
 ## Repository

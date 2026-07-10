@@ -1,6 +1,6 @@
 import { type PropType, defineComponent, h, inject, markRaw, toRaw } from 'vue';
-import { resolveRenderer, type FieldDefinition } from '@easyform/core';
-import { EzFormInstanceKey, EzFormRegistriesKey } from './EzFormProvider';
+import { resolveRenderer, type FieldDefinition } from '@tgb-form/core';
+import { TgbFormInstanceKey, TgbFormRegistriesKey } from './TgbFormProvider';
 import type { VueRenderer, VueRendererRegistry } from './types';
 
 type TanStackFieldSlotProps = {
@@ -20,8 +20,8 @@ type TanStackFieldSlotProps = {
   };
 };
 
-export const EzField = defineComponent({
-  name: 'EzField',
+export const TgbFormField = defineComponent({
+  name: 'TgbFormField',
   props: {
     name: {
       type: String,
@@ -38,18 +38,18 @@ export const EzField = defineComponent({
   },
   setup(props) {
     return () => {
-      const registries = inject(EzFormRegistriesKey, null);
+      const registries = inject(TgbFormRegistriesKey, null);
       const renderers = props.renderers ?? registries?.renderers;
 
-      const form = inject(EzFormInstanceKey, null);
+      const form = inject(TgbFormInstanceKey, null);
 
       if (!form) {
-        throw new Error('EzField must be used inside an EzForm component');
+        throw new Error('TgbFormField must be used inside a TgbForm component');
       }
 
       if (!renderers) {
         throw new Error(
-          'No renderer registry found. Pass a renderers prop to EzField or to the parent EzForm.',
+          'No renderer registry found. Pass a renderers prop to TgbFormField or to the parent TgbForm.',
         );
       }
 

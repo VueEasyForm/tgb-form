@@ -13,7 +13,7 @@ export type InferFormValues<TForm extends FormDefinition> = {
 /**
  * Pass-through options accepted by {@link toTanStackOptions}.
  */
-export type EasyFormTanStackOptions = {
+export type TgbFormTanStackOptions = {
   readonly validators?: Record<string, unknown>;
   readonly [key: string]: unknown;
 };
@@ -21,7 +21,7 @@ export type EasyFormTanStackOptions = {
 /**
  * TanStack-compatible options generated from a {@link FormDefinition}.
  */
-export type EasyFormTanStackOutput<TForm extends FormDefinition> = EasyFormTanStackOptions & {
+export type TgbFormTanStackOutput<TForm extends FormDefinition> = TgbFormTanStackOptions & {
   readonly defaultValues: InferFormValues<TForm>;
   readonly validators: Record<string, unknown> & {
     readonly onSubmit: StandardSchemaV1<JsonObject, unknown>;
@@ -44,8 +44,8 @@ export function getDefaultValues<TForm extends FormDefinition>(
  */
 export function toTanStackOptions<TForm extends FormDefinition>(
   form: TForm,
-  options: EasyFormTanStackOptions = {},
-): EasyFormTanStackOutput<TForm> {
+  options: TgbFormTanStackOptions = {},
+): TgbFormTanStackOutput<TForm> {
   const schema = toValibotSchema(form);
 
   return {

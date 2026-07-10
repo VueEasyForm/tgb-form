@@ -1,18 +1,18 @@
 export { createReactRendererRegistry } from './types';
-export { EzForm, type EzFormProps } from './EzForm';
-export { EzField, type EzFieldProps } from './EzField';
+export { TgbForm, type TgbFormProps } from './TgbForm';
+export { TgbFormField, type TgbFormFieldProps } from './TgbFormField';
 export {
-  EzFormContext,
-  useEzFormRegistry,
-  useEzFormInstance,
-  type EzFormContextProps,
-  type EzFormRegistryContextValue,
-} from './EzFormContext';
+  TgbFormContext,
+  useTgbFormRegistry,
+  useTgbFormInstance,
+  type TgbFormContextProps,
+  type TgbFormRegistryContextValue,
+} from './TgbFormContext';
 export type {
   BaseReactRendererProps,
   ReactRenderer,
   ReactRendererField,
   ReactRendererProps,
   ReactRendererRegistry,
-  ReactEasyFormInstance,
+  ReactTgbFormInstance,
 } from './types';

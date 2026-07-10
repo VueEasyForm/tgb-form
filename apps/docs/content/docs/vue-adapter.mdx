@@ -1,27 +1,27 @@
 ---
 title: Vue Adapter
-description: Render EasyForm definitions with EzForm, Vue renderers, and TanStack Vue Form.
+description: Render TGB Form definitions with the TgbForm Vue component, renderers, and TanStack Vue Form.
 icon: Vue
 ---
 
-`@easyform/vue` connects portable definitions to Vue components. The definition stays JSON-safe; renderers stay in application code.
+`@tgb-form/vue` connects portable definitions to Vue components. The definition stays JSON-safe; renderers stay in application code.
 
 [Open the Vue package on GitHub](https://github.com/VueEasyForm/easyform/tree/main/packages/vue).
 
 ## Supported Flows
 
-`EzForm` supports three usage levels:
+`TgbForm` supports three usage levels:
 
-1. Implicit: `EzForm` creates the TanStack form instance and reads renderers from `EzFormProvider`.
-2. Hybrid: you provide either the TanStack form instance or the renderer registry, while `EzForm` supplies the rest.
-3. Fully explicit: you provide both `instance` and `renderers` directly to `EzForm`.
+1. Implicit: `TgbForm` creates the TanStack form instance and reads renderers from `TgbFormProvider`.
+2. Hybrid: you provide either the TanStack form instance or the renderer registry, while `TgbForm` supplies the rest.
+3. Fully explicit: you provide both `instance` and `renderers` directly to `TgbForm`.
 
 ## Quick Start
 
 ```vue
 <script setup lang="ts">
-  import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
-  import { EzForm, EzFormProvider, createVueRendererRegistry } from '@easyform/vue';
+  import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
+  import { TgbForm, TgbFormProvider, createVueRendererRegistry } from '@tgb-form/vue';
   import CheckboxInput from './CheckboxInput.vue';
   import TextInput from './TextInput.vue';
 
@@ -55,20 +55,20 @@ icon: Vue
 </script>
 
 <template>
-  <EzFormProvider :renderers="renderers">
-    <EzForm
+  <TgbFormProvider :renderers="renderers">
+    <TgbForm
       :definition="definition"
       :tanstack-options="{ onSubmit: async ({ value }) => console.log(value) }"
     />
-  </EzFormProvider>
+  </TgbFormProvider>
 </template>
 ```
 
-That is the implicit flow: application code provides a renderer registry once through `EzFormProvider`, and `EzForm` creates the TanStack form instance from `definition` and `tanstackOptions`.
+That is the implicit flow: application code provides a renderer registry once through `TgbFormProvider`, and `TgbForm` creates the TanStack form instance from `definition` and `tanstackOptions`.
 
-## What EzForm Does
+## The TgbForm Component
 
-`EzForm`:
+`TgbForm`:
 
 - Calls `toTanStackOptions(definition, tanstackOptions)` when no `instance` is passed.
 - Creates a TanStack Vue Form instance with `useForm`.
@@ -76,21 +76,21 @@ That is the implicit flow: application code provides a renderer registry once th
 - Renders fields by `order`, then declaration order.
 - Calls `form.handleSubmit()` on submit.
 
-`EzField` is the automatic registry-based resolver. It wraps TanStack's field component, resolves the renderer for one field definition, and passes TanStack field bindings and state into that renderer.
+`TgbFormField` is the automatic registry-based resolver. It wraps TanStack's field component, resolves the renderer for one field definition, and passes TanStack field bindings and state into that renderer.
 
 Pass `fields` to render a named subset:
 
 ```vue
-<EzForm :definition="definition" :fields="['email']" :renderers="renderers" />
+<TgbForm :definition="definition" :fields="['email']" :renderers="renderers" />
 ```
 
 ## Why
 
-Vue apps usually want renderer components to look like normal Vue components. `@easyform/vue` keeps that style intact:
+Vue apps usually want renderer components to look like normal Vue components. `@tgb-form/vue` keeps that style intact:
 
 - renderers can be ordinary `.vue` SFCs
 - app-wide registries can live in provider-based composition
-- `EzForm` handles the TanStack field wiring without forcing render functions into application code
+- `TgbForm` handles the TanStack field wiring without forcing render functions into application code
 
 The adapter still uses `defineComponent` internally where it makes sense, but consumer-facing examples should stay close to how Vue teams already write components.
 
@@ -98,10 +98,10 @@ The adapter still uses `defineComponent` internally where it makes sense, but co
 
 ### Hybrid Flow
 
-Pass local renderers while still letting `EzForm` create the TanStack form instance:
+Pass local renderers while still letting `TgbForm` create the TanStack form instance:
 
 ```vue
-<EzForm
+<TgbForm
   :definition="definition"
   :renderers="renderers"
   :tanstack-options="{ onSubmit: async ({ value }) => console.log(value) }"
@@ -112,7 +112,7 @@ Or pass an existing TanStack form instance while still reading renderers from th
 
 ```vue
 <script setup lang="ts">
-  import { toTanStackOptions } from '@easyform/core';
+  import { toTanStackOptions } from '@tgb-form/core';
   import { useForm } from '@tanstack/vue-form';
 
   const form = useForm(
@@ -125,12 +125,12 @@ Or pass an existing TanStack form instance while still reading renderers from th
 </script>
 
 <template>
-  <EzFormProvider :renderers="renderers">
-    <EzForm
+  <TgbFormProvider :renderers="renderers">
+    <TgbForm
       :definition="definition"
       :instance="form"
     />
-  </EzFormProvider>
+  </TgbFormProvider>
 </template>
 ```
 
@@ -140,7 +140,7 @@ Pass an existing TanStack form instance when you want full control:
 
 ```vue
 <script setup lang="ts">
-  import { toTanStackOptions } from '@easyform/core';
+  import { toTanStackOptions } from '@tgb-form/core';
   import { useForm } from '@tanstack/vue-form';
 
   const form = useForm(
@@ -153,7 +153,7 @@ Pass an existing TanStack form instance when you want full control:
 </script>
 
 <template>
-  <EzForm
+  <TgbForm
     :definition="definition"
     :instance="form"
     :renderers="renderers"
@@ -180,18 +180,18 @@ Renderer components should translate these props into the input components used 
 
 ## Provider And Overrides
 
-Use `EzFormProvider` for app-wide renderers:
+Use `TgbFormProvider` for app-wide renderers:
 
 ```vue
-<EzFormProvider :renderers="renderers">
-  <EzForm :definition="definition" />
-</EzFormProvider>
+<TgbFormProvider :renderers="renderers">
+  <TgbForm :definition="definition" />
+</TgbFormProvider>
 ```
 
 Use the `renderers` prop for a local override:
 
 ```vue
-<EzForm :definition="definition" :renderers="localRenderers" />
+<TgbForm :definition="definition" :renderers="localRenderers" />
 ```
 
 Renderer resolution follows core rules: explicit `component` names resolve through `byName`; fields without `component` fall back to `byType[field.type]`.

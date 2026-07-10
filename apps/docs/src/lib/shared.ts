@@ -1,4 +1,4 @@
-export const appName = 'EasyForm';
+export const appName = 'TGB Form';
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 

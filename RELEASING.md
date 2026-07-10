@@ -1,13 +1,13 @@
-# Releasing EasyForm
+# Releasing TGB Form
 
-This repository publishes `@easyform/core`, `@easyform/react`, and `@easyform/vue` to npm from GitHub Actions.
+This repository publishes `@tgb-form/core`, `@tgb-form/react`, and `@tgb-form/vue` to npm from GitHub Actions.
 
 ## One-time setup
 
 1. Create the npm packages if they do not already exist:
-   - `@easyform/core`
-   - `@easyform/react`
-   - `@easyform/vue`
+   - `@tgb-form/core`
+   - `@tgb-form/react`
+   - `@tgb-form/vue`
 2. Enable 2FA on every npm maintainer account.
 3. Configure npm trusted publishing for each package and point it at this repository's `Release` workflow on `main`.
 4. Protect `main`:
@@ -40,9 +40,9 @@ Run the package-only checks before merging release-sensitive changes:
 
 ```sh
 pnpm release:check
-pnpm --filter @easyform/core pack --dry-run
-pnpm --filter @easyform/react pack --dry-run
-pnpm --filter @easyform/vue pack --dry-run
+pnpm --filter @tgb-form/core pack --dry-run
+pnpm --filter @tgb-form/react pack --dry-run
+pnpm --filter @tgb-form/vue pack --dry-run
 ```
 
 ## Notes

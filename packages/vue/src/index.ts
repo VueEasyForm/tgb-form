@@ -1,12 +1,12 @@
 export { createVueRendererRegistry } from './types';
-export { EzForm } from './EzForm';
-export { EzField } from './EzField';
-export { EzFormProvider, EzFormRegistriesKey, EzFormInstanceKey } from './EzFormProvider';
+export { TgbForm } from './TgbForm';
+export { TgbFormField } from './TgbFormField';
+export { TgbFormProvider, TgbFormRegistriesKey, TgbFormInstanceKey } from './TgbFormProvider';
 export type {
   BaseVueRendererProps,
   VueRenderer,
   VueRendererField,
   VueRendererProps,
   VueRendererRegistry,
-  EasyFormTanStackForm,
+  TgbFormTanStackForm,
 } from './types';

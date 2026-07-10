@@ -1,7 +1,7 @@
 {
-  "name": "@easyform/docs",
+  "name": "@tgb-form/docs",
   "private": true,
-  "description": "Documentations for @easyform/* packages, an easy to use form library, with powerful schema-based form definition capabilities.",
+  "description": "Documentations for @tgb-form/* packages, an easy to use form library, with powerful schema-based form definition capabilities.",
   "type": "module",
   "sideEffects": false,
   "scripts": {

@@ -40,8 +40,8 @@ export {
 export {
   getDefaultValues,
   toTanStackOptions,
-  type EasyFormTanStackOptions,
-  type EasyFormTanStackOutput,
+  type TgbFormTanStackOptions,
+  type TgbFormTanStackOutput,
   type InferFormValues,
 } from './tanstack';
 export { toValibotSchema } from './valibot-compiler';

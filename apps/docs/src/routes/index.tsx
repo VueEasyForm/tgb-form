@@ -15,15 +15,15 @@ export const Route = createFileRoute('/')({
     return {
       links: [{ href: url, rel: 'canonical' }],
       meta: [
-        { title: 'EasyForm' },
+        { title: 'TGB Form' },
         { content: description, name: 'description' },
         { content: 'website', property: 'og:type' },
         { content: url, property: 'og:url' },
-        { content: 'EasyForm', property: 'og:title' },
+        { content: 'TGB Form', property: 'og:title' },
         { content: description, property: 'og:description' },
         { content: image, property: 'og:image' },
         { content: 'summary_large_image', name: 'twitter:card' },
-        { content: 'EasyForm', name: 'twitter:title' },
+        { content: 'TGB Form', name: 'twitter:title' },
         { content: description, name: 'twitter:description' },
         { content: image, name: 'twitter:image' },
       ],
@@ -35,7 +35,7 @@ function Home() {
   return (
     <HomeLayout {...baseOptions()}>
       <div className="flex flex-1 flex-col items-center justify-center gap-5 px-6 text-center">
-        <p className="text-fd-muted-foreground text-sm font-medium">EasyForm</p>
+        <p className="text-fd-muted-foreground text-sm font-medium">TGB Form</p>
         <h1 className="max-w-xl text-3xl font-semibold">Schema-first forms for React and Vue.</h1>
         <p className="text-fd-muted-foreground max-w-lg text-base">
           Define portable forms as data, then render them with your framework and components.

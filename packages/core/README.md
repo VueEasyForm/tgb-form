@@ -1,8 +1,8 @@
-# @easyform/core
+# @tgb-form/core
 
 Portable form definitions for TanStack Form and Valibot.
 
-`@easyform/core` owns the data layer: JSON-safe schemas, validation rules, serialization, renderer keys, custom validator references, and TanStack-compatible options. Framework packages render those definitions. It stays close to TanStack Form and Valibot instead of wrapping them in a second abstraction layer.
+`@tgb-form/core` owns the data layer: JSON-safe schemas, validation rules, serialization, renderer keys, custom validator references, and TanStack-compatible options. Framework packages render those definitions. It stays close to TanStack Form and Valibot instead of wrapping them in a second abstraction layer.
 
 ## Quick Start
 
@@ -15,7 +15,7 @@ import {
   toTanStackOptions,
   toValibotSchema,
   ValidationRuleKind,
-} from '@easyform/core';
+} from '@tgb-form/core';
 
 const form = defineForm({
   fields: {
@@ -63,7 +63,7 @@ const tanstackOptions = toTanStackOptions(restored);
 Core stores renderer keys, not framework components. Passing `renderers` to `defineForm` or `deserializeForm` is optional and mainly useful for component-name type narrowing and for carrying runtime registries alongside a normalized form object.
 
 ```ts
-import { createRendererRegistry, FieldDataType, resolveRenderer } from '@easyform/core';
+import { createRendererRegistry, FieldDataType, resolveRenderer } from '@tgb-form/core';
 
 const renderers = createRendererRegistry({
   byName: {
@@ -86,7 +86,7 @@ Custom validators keep code out of JSON. The definition stores a name; runtime c
 
 ```ts
 import * as v from 'valibot';
-import { createValidatorRegistry, defineForm, FieldDataType } from '@easyform/core';
+import { createValidatorRegistry, defineForm, FieldDataType } from '@tgb-form/core';
 
 const validators = createValidatorRegistry().register('companyEmail', ({ message }) =>
   v.check((value: string) => value.endsWith('@example.com'), message),

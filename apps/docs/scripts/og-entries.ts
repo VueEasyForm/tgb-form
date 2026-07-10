@@ -13,7 +13,7 @@ export type OgImageEntry = Omit<DocsOgEntry, 'slugs'> & {
 const homeEntry: OgImageEntry = {
   description: 'Schema-first forms for React and Vue.',
   outputPath: getHomeOgImagePath().slice(1),
-  title: 'EasyForm',
+  title: 'TGB Form',
 };
 
 export function getOgImageEntries(entries: DocsOgEntry[]): OgImageEntry[] {

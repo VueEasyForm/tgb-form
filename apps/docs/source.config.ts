@@ -128,9 +128,9 @@ export default defineConfig({
               moduleResolution: ts.ModuleResolutionKind.Bundler,
               noImplicitAny: false,
               paths: {
-                '@easyform/core': [fromRoot('packages/core/src/index.ts')],
-                '@easyform/react': [fromRoot('packages/react/src/index.ts')],
-                '@easyform/vue': [fromRoot('packages/vue/src/index.ts')],
+                '@tgb-form/core': [fromRoot('packages/core/src/index.ts')],
+                '@tgb-form/react': [fromRoot('packages/react/src/index.ts')],
+                '@tgb-form/vue': [fromRoot('packages/vue/src/index.ts')],
                 '@tanstack/form-core': [
                   fromRoot('packages/core/node_modules/@tanstack/form-core/dist/esm/index.d.ts'),
                 ],

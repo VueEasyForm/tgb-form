@@ -1,10 +1,10 @@
 ---
 title: TanStack Form Integration
-description: Generate default values and submit validators for TanStack Form from an EasyForm definition.
+description: Generate default values and submit validators for TanStack Form from an TGB Form definition.
 icon: Tanstack
 ---
 
-EasyForm does not replace TanStack Form. It generates the parts TanStack Form can derive from a portable definition: default values and submit validation.
+TGB Form does not replace TanStack Form. It generates the parts TanStack Form can derive from a portable definition: default values and submit validation.
 
 [Open the TanStack bridge on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/tanstack.ts).
 
@@ -17,7 +17,7 @@ EasyForm does not replace TanStack Form. It generates the parts TanStack Form ca
 - any extra options you pass through.
 
 ```ts twoslash
-import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@easyform/core';
+import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@tgb-form/core';
 
 const newsletterForm = defineForm({
   fields: {
@@ -54,7 +54,7 @@ TanStack Form still owns state, subscriptions, submission, and framework hooks.
 Use generated options with a TanStack framework hook:
 
 ```tsx
-import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@easyform/core';
+import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@tgb-form/core';
 import { useForm } from '@tanstack/react-form';
 
 const newsletterForm = defineForm({
@@ -112,8 +112,8 @@ export function NewsletterForm() {
 Or let an adapter create the form instance:
 
 ```tsx
-import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
-import { EzForm, createReactRendererRegistry } from '@easyform/react';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
+import { TgbForm, createReactRendererRegistry } from '@tgb-form/react';
 
 const newsletterForm = defineForm({
   fields: {
@@ -146,7 +146,7 @@ async function subscribe(email: string, subscribed: boolean) {
   console.log({ email, subscribed });
 }
 
-<EzForm
+<TgbForm
   definition={newsletterForm}
   renderers={renderers}
   tanstackOptions={{
@@ -162,7 +162,7 @@ async function subscribe(email: string, subscribed: boolean) {
 Use `getDefaultValues` when you need defaults without a validation schema:
 
 ```ts twoslash
-import { defineForm, FieldDataType, getDefaultValues } from '@easyform/core';
+import { defineForm, FieldDataType, getDefaultValues } from '@tgb-form/core';
 
 const newsletterForm = defineForm({
   fields: {

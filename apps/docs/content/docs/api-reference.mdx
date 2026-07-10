@@ -1,6 +1,6 @@
 ---
 title: API Reference
-description: Public EasyForm exports for definitions, validation, TanStack Form, and adapters.
+description: Public TGB Form exports for definitions, validation, TanStack Form, and adapters.
 icon: Library
 ---
 
@@ -33,16 +33,16 @@ This page lists the public APIs documented by package.
 [Open TanStack helpers on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/tanstack.ts).
 
 ```ts twoslash
-import { defineForm, deserializeForm, serializeForm } from '@easyform/core';
-import { createValidatorRegistry, toValibotSchema } from '@easyform/core';
-import { createRendererRegistry, resolveRenderer } from '@easyform/core';
+import { defineForm, deserializeForm, serializeForm } from '@tgb-form/core';
+import { createValidatorRegistry, toValibotSchema } from '@tgb-form/core';
+import { createRendererRegistry, resolveRenderer } from '@tgb-form/core';
 ```
 
 `createValidatorRegistry()` supports a fluent registration style:
 
 ```ts twoslash
 import * as v from 'valibot';
-import { createValidatorRegistry } from '@easyform/core';
+import { createValidatorRegistry } from '@tgb-form/core';
 
 const validators = createValidatorRegistry()
   .register('startsWithA', ({ message }) =>
@@ -158,18 +158,18 @@ const validators = createValidatorRegistry()
   name="RendererRegistry"
 />
 
-#### EasyFormTanStackOptions
+#### TgbFormTanStackOptions
 
 <auto-type-table
   path="../../../../packages/core/src/tanstack.ts"
-  name="EasyFormTanStackOptions"
+  name="TgbFormTanStackOptions"
 />
 
-#### EasyFormTanStackOutput
+#### TgbFormTanStackOutput
 
 <auto-type-table
   path="../../../../packages/core/src/tanstack.ts"
-  name="EasyFormTanStackOutput"
+  name="TgbFormTanStackOutput"
 />
 
 #### InferFormValues
@@ -194,12 +194,12 @@ const validators = createValidatorRegistry()
 
 | API                                     | Description                                                                   |
 | --------------------------------------- | ----------------------------------------------------------------------------- |
-| `EzFormContext`                         | Provides a React renderer registry to descendant forms and fields.            |
-| `EzForm`                                | Creates or accepts a TanStack React Form instance and renders ordered fields. |
-| `EzField`                               | Binds one field definition to the current TanStack form instance.             |
+| `TgbFormContext`                        | Provides a React renderer registry to descendant forms and fields.            |
+| `TgbForm`                               | Creates or accepts a TanStack React Form instance and renders ordered fields. |
+| `TgbFormField`                          | Binds one field definition to the current TanStack form instance.             |
 | `createReactRendererRegistry(registry)` | Creates a typed React renderer registry.                                      |
-| `useEzFormRegistry()`                   | Reads the nearest renderer registry context.                                  |
-| `useEzFormInstance()`                   | Reads the nearest internal form instance context.                             |
+| `useTgbFormRegistry()`                  | Reads the nearest renderer registry context.                                  |
+| `useTgbFormInstance()`                  | Reads the nearest internal form instance context.                             |
 
 ### Types
 
@@ -238,11 +238,11 @@ const validators = createValidatorRegistry()
   name="ReactRenderer"
 />
 
-#### ReactEasyFormInstance
+#### ReactTgbFormInstance
 
 <auto-type-table
   path="../../../../packages/react/src/types.ts"
-  name="ReactEasyFormInstance"
+  name="ReactTgbFormInstance"
 />
 
 ## Vue
@@ -253,12 +253,12 @@ const validators = createValidatorRegistry()
 
 | API                                   | Description                                                                 |
 | ------------------------------------- | --------------------------------------------------------------------------- |
-| `EzFormProvider`                      | Provides a Vue renderer registry to descendant forms and fields.            |
-| `EzForm`                              | Creates or accepts a TanStack Vue Form instance and renders ordered fields. |
-| `EzField`                             | Binds one field definition to the current TanStack form instance.           |
+| `TgbFormProvider`                     | Provides a Vue renderer registry to descendant forms and fields.            |
+| `TgbForm`                             | Creates or accepts a TanStack Vue Form instance and renders ordered fields. |
+| `TgbFormField`                        | Binds one field definition to the current TanStack form instance.           |
 | `createVueRendererRegistry(registry)` | Creates a typed Vue renderer registry.                                      |
-| `EzFormRegistriesKey`                 | Injection key for provider-level registries.                                |
-| `EzFormInstanceKey`                   | Injection key for the per-form TanStack instance.                           |
+| `TgbFormRegistriesKey`                | Injection key for provider-level registries.                                |
+| `TgbFormInstanceKey`                  | Injection key for the per-form TanStack instance.                           |
 
 ### Types
 
@@ -297,11 +297,11 @@ const validators = createValidatorRegistry()
   name="VueRenderer"
 />
 
-#### EasyFormTanStackForm
+#### TgbFormTanStackForm
 
 <auto-type-table
   path="../../../../packages/vue/src/types.ts"
-  name="EasyFormTanStackForm"
+  name="TgbFormTanStackForm"
 />
 
 ## End-To-End Core Example
@@ -315,7 +315,7 @@ import {
   toTanStackOptions,
   toValibotSchema,
   ValidationRuleKind,
-} from '@easyform/core';
+} from '@tgb-form/core';
 
 const form = defineForm({
   fields: {

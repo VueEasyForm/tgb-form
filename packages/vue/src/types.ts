@@ -1,4 +1,4 @@
-import { createRendererRegistry, type FieldDataType, type RendererRegistry } from '@easyform/core';
+import { createRendererRegistry, type FieldDataType, type RendererRegistry } from '@tgb-form/core';
 import type { AnyFieldApi, AnyFormApi, VueFormApi } from '@tanstack/vue-form';
 import type { Component } from 'vue';
 
@@ -7,7 +7,7 @@ export type VueRendererField = AnyFieldApi;
 export type VueRendererProps = {
   readonly name: string;
   readonly field: VueRendererField;
-  readonly form: EasyFormTanStackForm;
+  readonly form: TgbFormTanStackForm;
   readonly label?: string;
   readonly description?: string;
   readonly props?: Record<string, unknown>;
@@ -26,7 +26,7 @@ export type VueRendererRegistry<
   >,
 > = RendererRegistry<TByName, TByType>;
 
-export type EasyFormTanStackForm = AnyFormApi &
+export type TgbFormTanStackForm = AnyFormApi &
   VueFormApi<any, any, any, any, any, any, any, any, any, any, any, any>;
 
 export function createVueRendererRegistry<

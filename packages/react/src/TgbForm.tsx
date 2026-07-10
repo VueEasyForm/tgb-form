@@ -2,23 +2,23 @@ import type { FormEvent, FormHTMLAttributes, ReactNode } from 'react';
 import { useForm } from '@tanstack/react-form';
 import {
   toTanStackOptions,
-  type EasyFormTanStackOptions,
+  type TgbFormTanStackOptions,
   type RuntimeFormDefinition,
-} from '@easyform/core';
-import { EzFormInstanceContext, useEzFormRegistry } from './EzFormContext';
-import { EzField } from './EzField';
-import type { ReactEasyFormInstance, ReactRendererRegistry } from './types';
+} from '@tgb-form/core';
+import { TgbFormInstanceContext, useTgbFormRegistry } from './TgbFormContext';
+import { TgbFormField } from './TgbFormField';
+import type { ReactTgbFormInstance, ReactRendererRegistry } from './types';
 
 type OrderedField = {
   readonly name: string;
-  readonly field: import('@easyform/core').FieldDefinition;
+  readonly field: import('@tgb-form/core').FieldDefinition;
   readonly declarationIndex: number;
 };
 
-export type EzFormProps = {
+export type TgbFormProps = {
   readonly definition: RuntimeFormDefinition;
-  readonly instance?: ReactEasyFormInstance;
-  readonly tanstackOptions?: EasyFormTanStackOptions;
+  readonly instance?: ReactTgbFormInstance;
+  readonly tanstackOptions?: TgbFormTanStackOptions;
   readonly renderers?: ReactRendererRegistry;
   readonly fields?: readonly string[];
   readonly children?: ReactNode;
@@ -45,7 +45,7 @@ function getOrderedFields(
     });
 }
 
-export function EzForm({
+export function TgbForm({
   definition,
   instance: externalInstance,
   tanstackOptions,
@@ -53,13 +53,13 @@ export function EzForm({
   fields,
   children,
   ...formProps
-}: EzFormProps) {
-  const ctx = useEzFormRegistry();
+}: TgbFormProps) {
+  const ctx = useTgbFormRegistry();
   const renderers = propRenderers ?? ctx?.renderers;
 
   const mergedOptions = toTanStackOptions(definition, tanstackOptions) as Record<string, unknown>;
   const managedForm = useForm(mergedOptions);
-  const form = externalInstance ?? (managedForm as unknown as ReactEasyFormInstance);
+  const form = externalInstance ?? (managedForm as unknown as ReactTgbFormInstance);
 
   const orderedFields = getOrderedFields(definition, fields);
 
@@ -75,7 +75,7 @@ export function EzForm({
       : formProps['aria-label'];
 
   return (
-    <EzFormInstanceContext.Provider value={form}>
+    <TgbFormInstanceContext.Provider value={form}>
       <form
         {...formProps}
         aria-label={accessibleName}
@@ -84,7 +84,7 @@ export function EzForm({
         }}
       >
         {orderedFields.map(({ name, field }) => (
-          <EzField
+          <TgbFormField
             key={name}
             name={name}
             field={field}
@@ -93,6 +93,6 @@ export function EzForm({
         ))}
         {children}
       </form>
-    </EzFormInstanceContext.Provider>
+    </TgbFormInstanceContext.Provider>
   );
 }

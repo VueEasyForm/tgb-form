@@ -1,15 +1,15 @@
 import { type InjectionKey, type PropType, defineComponent, provide } from 'vue';
 import type { VueRendererRegistry } from './types';
 
-export type EzFormRegistries = {
+export type TgbFormRegistries = {
   renderers?: VueRendererRegistry;
 };
 
-export const EzFormRegistriesKey: InjectionKey<EzFormRegistries> = Symbol('ezform-registries');
-export const EzFormInstanceKey: InjectionKey<unknown> = Symbol('ezform-instance');
+export const TgbFormRegistriesKey: InjectionKey<TgbFormRegistries> = Symbol('tgb-form-registries');
+export const TgbFormInstanceKey: InjectionKey<unknown> = Symbol('tgb-form-instance');
 
-export const EzFormProvider = defineComponent({
-  name: 'EzFormProvider',
+export const TgbFormProvider = defineComponent({
+  name: 'TgbFormProvider',
   props: {
     renderers: {
       type: Object as PropType<VueRendererRegistry>,
@@ -17,7 +17,7 @@ export const EzFormProvider = defineComponent({
     },
   },
   setup(props, { slots }) {
-    provide(EzFormRegistriesKey, { renderers: props.renderers });
+    provide(TgbFormRegistriesKey, { renderers: props.renderers });
 
     return () => slots.default?.();
   },

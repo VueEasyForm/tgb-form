@@ -6,14 +6,14 @@ icon: Rocket
 
 Define forms as data. Render them anywhere.
 
-EasyForm is a fast, flexible wrapper around [TanStack Form](https://tanstack.com/form) and [Valibot](https://valibot.dev). It keeps form schemas JSON-safe while leaving runtime code free to choose React, Vue, custom renderers, storage, and validation extensions.
+TGB Form is a fast, flexible wrapper around [TanStack Form](https://tanstack.com/form) and [Valibot](https://valibot.dev). It keeps form schemas JSON-safe while leaving runtime code free to choose React, Vue, custom renderers, storage, and validation extensions.
 
 ## What
 
-EasyForm gives you a portable form definition:
+TGB Form gives you a portable form definition:
 
 ```ts twoslash
-import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
 
 export const newsletterForm = defineForm({
   fields: {
@@ -43,9 +43,9 @@ The same definition can be serialized, restored, compiled to Valibot, converted 
 
 Most form libraries start from components. That works until the form needs to be stored, edited in a builder, generated from configuration, or rendered in more than one framework.
 
-EasyForm starts from data:
+TGB Form starts from data:
 
-| Need                   | EasyForm layer      |
+| Need                   | TGB Form layer      |
 | ---------------------- | ------------------- |
 | Save a form definition | `serializeForm`     |
 | Load builder output    | `deserializeForm`   |
@@ -53,14 +53,14 @@ EasyForm starts from data:
 | Use TanStack Form      | `toTanStackOptions` |
 | Choose UI components   | renderer registries |
 
-TanStack Form still owns form state. Valibot still owns validation. EasyForm connects them with a schema that can move through storage.
+TanStack Form still owns form state. Valibot still owns validation. TGB Form connects them with a schema that can move through storage.
 
 ## How
 
 ### Install the core packages [step]
 
 ```package-install
-@easyform/core valibot @tanstack/form-core
+@tgb-form/core valibot @tanstack/form-core
 ```
 
 ### Install the adapters [step]
@@ -68,17 +68,17 @@ TanStack Form still owns form state. Valibot still owns validation. EasyForm con
 #### React adapter
 
 ```package-install
-@easyform/react @tanstack/react-form
+@tgb-form/react @tanstack/react-form
 ```
 
 #### Vue adapter
 
 ```package-install
-@easyform/vue @tanstack/vue-form
+@tgb-form/vue @tanstack/vue-form
 ```
 
 <Callout type="idea">
-  The design of EasyForm actually allows for integrations for other frameworks too, thanks to the
+  The design of TGB Form actually allows for integrations for other frameworks too, thanks to the
   framework-agnostic core of TanStack Form and Valibot! But we prioritize these 2 frameworks first
   for our internal usages. If you want to contribute an adapter for your loved framework, feel free
   to open a PR or an issue on GitHub!
@@ -87,8 +87,8 @@ TanStack Form still owns form state. Valibot still owns validation. EasyForm con
 ### Render (in React): [step]
 
 ```tsx twoslash
-import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
-import { BaseReactRendererProps, EzForm, createReactRendererRegistry } from '@easyform/react';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
+import { BaseReactRendererProps, TgbForm, createReactRendererRegistry } from '@tgb-form/react';
 
 const newsletterForm = defineForm({
   fields: {
@@ -129,7 +129,7 @@ const renderers = createReactRendererRegistry({
 
 export function NewsletterForm() {
   return (
-    <EzForm
+    <TgbForm
       definition={newsletterForm}
       renderers={renderers}
       tanstackOptions={{
@@ -157,7 +157,7 @@ import {
   FieldDataType,
   serializeForm,
   toTanStackOptions,
-} from '@easyform/core';
+} from '@tgb-form/core';
 
 const newsletterForm = defineForm({
   fields: {

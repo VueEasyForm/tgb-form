@@ -1,11 +1,18 @@
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, relative } from 'node:path';
 import ImageResponse from 'takumi-js/response';
+import { googleFonts } from 'takumi-js/helpers';
 import { OgCard } from '../src/components/og-card';
 import { getOgImageEntries, type DocsOgEntry } from './og-entries';
 
 const docsDirectory = new URL('../content/docs/', import.meta.url);
 const publicDirectory = new URL('../public/', import.meta.url);
+const fonts = await googleFonts({
+  families: [
+    { name: 'Inter', weight: [400, 700] },
+    { name: 'JetBrains Mono', style: 'italic', weight: 400 },
+  ],
+});
 
 async function getMdxFiles(directory: URL): Promise<URL[]> {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -61,6 +68,8 @@ async function generateOgImages() {
         />,
         {
           format: 'webp',
+          lossless: true,
+          fonts,
           height: 630,
           width: 1200,
         },

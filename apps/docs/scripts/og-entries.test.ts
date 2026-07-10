@@ -11,7 +11,7 @@ describe('getOgImageEntries', () => {
           title: 'Getting Started',
         },
         {
-          description: 'Use EasyForm with React.',
+          description: 'Use TGB Form with React.',
           slugs: ['react-adapter'],
           title: 'React Adapter',
         },
@@ -20,7 +20,7 @@ describe('getOgImageEntries', () => {
       {
         description: 'Schema-first forms for React and Vue.',
         outputPath: 'og/home.webp',
-        title: 'EasyForm',
+        title: 'TGB Form',
       },
       {
         description: 'Start here.',
@@ -28,7 +28,7 @@ describe('getOgImageEntries', () => {
         title: 'Getting Started',
       },
       {
-        description: 'Use EasyForm with React.',
+        description: 'Use TGB Form with React.',
         outputPath: 'og/docs/react-adapter.webp',
         title: 'React Adapter',
       },

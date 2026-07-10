@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
-import { FieldDataType, defineForm, toTanStackOptions } from '@easyform/core';
+import { FieldDataType, defineForm, toTanStackOptions } from '@tgb-form/core';
 import { useForm } from '@tanstack/react-form';
 import { afterEach, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import {
-  EzForm,
-  EzField,
-  EzFormContext,
+  TgbForm,
+  TgbFormField,
+  TgbFormContext,
   createReactRendererRegistry,
   type ReactRendererProps,
 } from '../src';
@@ -74,7 +74,7 @@ test('renders fields by order before declaration order and supports field subset
   });
 
   const screen = await render(
-    <EzForm
+    <TgbForm
       definition={definition}
       fields={['alpha', 'gamma', 'delta']}
       instance={createFormHarness({ alpha: 'a', gamma: 'g', delta: 'd' })}
@@ -105,7 +105,7 @@ test('resolves named renderers before type renderers', async () => {
   });
 
   const screen = await render(
-    <EzForm
+    <TgbForm
       definition={definition}
       instance={createFormHarness({ title: 'typed', status: 'named' })}
       renderers={renderers}
@@ -116,7 +116,7 @@ test('resolves named renderers before type renderers', async () => {
   expect(screen.getByTestId('named-status')).toBeInTheDocument();
 });
 
-test('reads renderers from EzFormContext', async () => {
+test('reads renderers from TgbFormContext', async () => {
   const definition = defineForm({
     fields: {
       email: { type: FieldDataType.String, defaultValue: '' },
@@ -127,12 +127,12 @@ test('reads renderers from EzFormContext', async () => {
   });
 
   const screen = await render(
-    <EzFormContext renderers={renderers}>
-      <EzForm
+    <TgbFormContext renderers={renderers}>
+      <TgbForm
         definition={definition}
         instance={createFormHarness({ email: 'a@b.com' })}
       />
-    </EzFormContext>,
+    </TgbFormContext>,
   );
 
   expect(screen.getByTestId('field-email')).toBeInTheDocument();
@@ -158,13 +158,13 @@ test('prop-level renderers override context renderers', async () => {
   });
 
   const screen = await render(
-    <EzFormContext renderers={contextRenderers}>
-      <EzForm
+    <TgbFormContext renderers={contextRenderers}>
+      <TgbForm
         definition={definition}
         instance={createFormHarness({ name: 'test' })}
         renderers={propRenderers}
       />
-    </EzFormContext>,
+    </TgbFormContext>,
   );
 
   expect(screen.getByTestId('prop-name')).toBeInTheDocument();
@@ -195,7 +195,7 @@ test('passes renderer field metadata, value, errors, form, and field binding', a
   });
 
   const screen = await render(
-    <EzForm
+    <TgbForm
       definition={definition}
       instance={form}
       renderers={renderers}
@@ -227,7 +227,7 @@ test('throws when no renderer can be resolved', async () => {
 
   await expect(() =>
     render(
-      <EzForm
+      <TgbForm
         definition={definition}
         instance={createFormHarness({ subscribed: false })}
         renderers={renderers}
@@ -248,7 +248,7 @@ test('submits through the provided TanStack form instance', async () => {
   });
 
   const screen = await render(
-    <EzForm
+    <TgbForm
       definition={definition}
       instance={createFormHarness({ name: 'Grace' }, {}, handleSubmit)}
       renderers={renderers}
@@ -274,7 +274,7 @@ test('renders and submits with a real @tanstack/react-form instance', async () =
     const form = useForm(toTanStackOptions(definition, { onSubmit }) as any);
 
     return (
-      <EzForm
+      <TgbForm
         definition={definition}
         instance={form as any}
         renderers={renderers}
@@ -301,19 +301,19 @@ test('renders children alongside fields', async () => {
   });
 
   const screen = await render(
-    <EzForm
+    <TgbForm
       definition={definition}
       instance={createFormHarness({ name: '' })}
       renderers={renderers}
     >
       <button type="submit">Go</button>
-    </EzForm>,
+    </TgbForm>,
   );
 
   expect(screen.container.querySelector('button')).toHaveTextContent('Go');
 });
 
-test('EzField throws when used outside EzForm', async () => {
+test('TgbFormField throws when used outside TgbForm', async () => {
   const definition = defineForm({
     fields: {
       x: { type: FieldDataType.String, defaultValue: '' },
@@ -325,11 +325,11 @@ test('EzField throws when used outside EzForm', async () => {
 
   await expect(() =>
     render(
-      <EzField
+      <TgbFormField
         name="x"
         field={definition.fields.x}
         renderers={renderers}
       />,
     ),
-  ).rejects.toThrow('EzField must be used inside an EzForm');
+  ).rejects.toThrow('TgbFormField must be used inside a TgbForm component');
 });

@@ -190,7 +190,7 @@ importers:
 
   packages/react:
     devDependencies:
-      '@easyform/core':
+      '@tgb-form/core':
         specifier: workspace:*
         version: link:../core
       '@tanstack/react-form':
@@ -238,7 +238,7 @@ importers:
 
   packages/vue:
     devDependencies:
-      '@easyform/core':
+      '@tgb-form/core':
         specifier: workspace:*
         version: link:../core
       '@tanstack/vue-form':

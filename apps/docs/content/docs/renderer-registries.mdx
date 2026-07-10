@@ -13,7 +13,7 @@ Renderer registries are the boundary between stored data and UI code. A field ca
 A registry maps the renderer components you already defined to stable names and field-type fallbacks:
 
 ```ts twoslash
-import { createRendererRegistry, FieldDataType } from '@easyform/core';
+import { createRendererRegistry, FieldDataType } from '@tgb-form/core';
 
 const TextInput = { kind: 'TextInput' };
 const EmailInput = { kind: 'EmailInput' };
@@ -36,8 +36,8 @@ export const renderers = createRendererRegistry({
 React and Vue adapters expose framework-specific helpers with the same shape:
 
 ```ts twoslash
-import { createReactRendererRegistry } from '@easyform/react';
-import { createVueRendererRegistry } from '@easyform/vue';
+import { createReactRendererRegistry } from '@tgb-form/react';
+import { createVueRendererRegistry } from '@tgb-form/vue';
 ```
 
 ## Why
@@ -49,7 +49,7 @@ Definitions need to stay serializable. Components, hooks, and closures cannot be
 Resolve a field with `resolveRenderer`:
 
 ```ts twoslash
-import { defineForm, FieldDataType, resolveRenderer } from '@easyform/core';
+import { defineForm, FieldDataType, resolveRenderer } from '@tgb-form/core';
 
 const TextInput = { kind: 'TextInput' };
 const renderers = {
@@ -95,7 +95,7 @@ When you pass a registry to `defineForm`, TypeScript checks `component` against 
 Renderer registries are plain lookup tables:
 
 ```ts twoslash
-import { createRendererRegistry, FieldDataType } from '@easyform/core';
+import { createRendererRegistry, FieldDataType } from '@tgb-form/core';
 
 const TextInput = { kind: 'TextInput' };
 const EmailInput = { kind: 'EmailInput' };
@@ -116,8 +116,8 @@ renderers.byType[FieldDataType.String]; // TextInput
 Use the framework helpers when the registry stores React or Vue components:
 
 ```ts twoslash
-import { createReactRendererRegistry } from '@easyform/react';
-import { createVueRendererRegistry } from '@easyform/vue';
+import { createReactRendererRegistry } from '@tgb-form/react';
+import { createVueRendererRegistry } from '@tgb-form/vue';
 ```
 
 These helpers call the core registry factory while preserving framework-specific renderer types.

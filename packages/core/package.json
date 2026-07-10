@@ -1,5 +1,5 @@
 {
-  "name": "@easyform/core",
+  "name": "@tgb-form/core",
   "version": "0.0.1",
   "description": "An easy to use form library, with powerful schema-based form definition capabilities.",
   "homepage": "https://github.com/VueEasyForm/easyform#readme",
@@ -7,7 +7,7 @@
     "url": "https://github.com/VueEasyForm/easyform/issues"
   },
   "license": "MIT",
-  "author": "The @easyform Authors",
+  "author": "The @tgb-form Authors",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VueEasyForm/easyform.git"

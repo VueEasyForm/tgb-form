@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { defineComponent, h, ref } from 'vue';
-  import { defineForm, FieldDataType, toTanStackOptions } from '@easyform/core';
+  import { defineForm, FieldDataType, toTanStackOptions } from '@tgb-form/core';
   import { useForm } from '@tanstack/vue-form';
-  import { EzForm, createVueRendererRegistry } from '../../src';
+  import { TgbForm, createVueRendererRegistry } from '../../src';
 
   const submitted = ref('');
 
@@ -82,8 +82,8 @@
 <template>
   <main>
     <section class="panel">
-      <h1>Vue EasyForm Adapter</h1>
-      <EzForm
+      <h1>Vue TgbForm Adapter</h1>
+      <TgbForm
         :definition="definition"
         :instance="form"
         :renderers="renderers"

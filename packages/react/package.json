@@ -1,13 +1,13 @@
 {
-  "name": "@easyform/react",
+  "name": "@tgb-form/react",
   "version": "0.0.1",
-  "description": "An easy to use form library for React, built on top of @easyform/core.",
+  "description": "An easy to use form library for React, built on top of @tgb-form/core.",
   "homepage": "https://github.com/VueEasyForm/easyform#readme",
   "bugs": {
     "url": "https://github.com/VueEasyForm/easyform/issues"
   },
   "license": "MIT",
-  "author": "The @easyform Authors",
+  "author": "The @tgb-form Authors",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VueEasyForm/easyform.git"
@@ -34,8 +34,8 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
-    "@easyform/core": "workspace:*",
     "@tanstack/react-form": "^1.33.0",
+    "@tgb-form/core": "workspace:*",
     "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",

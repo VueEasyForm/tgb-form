@@ -1,10 +1,10 @@
 ---
 title: Defining Custom Components
-description: Build renderer components that plug into EasyForm registries in React and Vue.
+description: Build renderer components that plug into TGB Form registries in React and Vue.
 icon: Component
 ---
 
-Renderer components are the UI side of EasyForm. A form definition stores JSON-safe data such as `label`, `description`, `props`, and `component`. Your renderer component turns that data plus TanStack field bindings into actual inputs.
+Renderer components are the UI side of TGB Form. A form definition stores JSON-safe data such as `label`, `description`, `props`, and `component`. Your renderer component turns that data plus TanStack field bindings into actual inputs.
 
 ## What
 
@@ -21,11 +21,11 @@ Every renderer gets the same conceptual inputs:
 | `value`       | Current field value.                                         |
 | `errors`      | Current validation errors for the field.                     |
 
-`EzField` is the adapter layer that wires those values together automatically.
+`TgbFormField` is the adapter layer that wires those values together automatically.
 
 ## Why
 
-EasyForm keeps definitions portable, but the actual inputs still belong to your application. Renderer components are where you:
+TGB Form keeps definitions portable, but the actual inputs still belong to your application. Renderer components are where you:
 
 - map JSON-safe `props` to real UI props
 - connect TanStack field handlers to your inputs
@@ -37,7 +37,7 @@ EasyForm keeps definitions portable, but the actual inputs still belong to your 
 ### React renderer
 
 ```tsx twoslash
-import type { BaseReactRendererProps } from '@easyform/react';
+import type { BaseReactRendererProps } from '@tgb-form/react';
 
 export function TextInput({ field, label, name, props, value, errors }: BaseReactRendererProps) {
   return (
@@ -60,7 +60,7 @@ export function TextInput({ field, label, name, props, value, errors }: BaseReac
 
 ```vue
 <script setup lang="ts">
-  import type { BaseVueRendererProps } from '@easyform/vue';
+  import type { BaseVueRendererProps } from '@tgb-form/vue';
 
   defineProps<BaseVueRendererProps>();
 </script>
@@ -85,10 +85,10 @@ export function TextInput({ field, label, name, props, value, errors }: BaseReac
 ### Notes
 
 - Keep renderer props JSON-safe. Anything under `field.props` should be designed for serialization.
-- Use `field` for updates and blur handling. **EasyForm does not replace TanStack Form's field APIs.**
+- Use `field` for updates and blur handling. **TGB Form does not replace TanStack Form's field APIs.**
 - Read current value from `value` and errors from `errors` instead of reaching into form internals. The renderer will automatically bind into it.
 - Treat `component` names as stable public IDs if forms are stored outside the codebase.
-- EasyForm is flexible, but we should implement our custom components the simplest way possible fitting our use cases. That'd balance the best between coding ergonomics and performance.
+- TGB Form is flexible, but we should implement our custom components the simplest way possible fitting our use cases. That'd balance the best between coding ergonomics and performance.
 
 ## Next
 

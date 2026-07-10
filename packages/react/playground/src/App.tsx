@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { FieldDataType, defineForm, toTanStackOptions } from '@easyform/core';
+import { FieldDataType, defineForm, toTanStackOptions } from '@tgb-form/core';
 import { useForm } from '@tanstack/react-form';
-import { EzForm, createReactRendererRegistry, type ReactRendererProps } from '../../src';
+import { TgbForm, createReactRendererRegistry, type ReactRendererProps } from '../../src';
 
 const definition = defineForm({
   fields: {
@@ -50,7 +50,7 @@ export function App() {
 
   return (
     <main className="app-shell">
-      <EzForm
+      <TgbForm
         className="easy-form"
         definition={definition}
         renderers={renderers}

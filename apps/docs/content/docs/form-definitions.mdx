@@ -4,7 +4,7 @@ description: Author portable field definitions with JSON-safe defaults, metadata
 icon: FileCode
 ---
 
-A form definition is the data EasyForm moves through the system. It contains fields, defaults, labels, validation rules, renderer hints, and JSON-safe metadata.
+A form definition is the data TGB Form moves through the system. It contains fields, defaults, labels, validation rules, renderer hints, and JSON-safe metadata.
 
 [Open the definition source on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/schema/definitions.ts).
 
@@ -13,7 +13,7 @@ A form definition is the data EasyForm moves through the system. It contains fie
 Each field has a `type` and a matching `defaultValue`:
 
 ```ts twoslash
-import { defineForm, FieldDataType } from '@easyform/core';
+import { defineForm, FieldDataType } from '@tgb-form/core';
 
 export const profileForm = defineForm({
   fields: {
@@ -53,7 +53,7 @@ Definitions are plain data so they can be stored and moved before they are rende
 `component` and `props` are renderer hints, not framework components:
 
 ```ts twoslash
-import { FieldDataType } from '@easyform/core';
+import { FieldDataType } from '@tgb-form/core';
 
 const field = {
   type: FieldDataType.String,
@@ -87,7 +87,7 @@ Use the built-in data types:
 Objects use `fields`. Arrays use `element`.
 
 ```ts twoslash
-import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
 
 export const profileWithContact = defineForm({
   fields: {

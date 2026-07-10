@@ -4,7 +4,7 @@ description: Use JSON-safe validation rules that compile into Valibot and TanSta
 icon: ShieldCheck
 ---
 
-Built-in validators are validation rules that can be stored with a form definition. EasyForm compiles them into Valibot through `toValibotSchema`; `toTanStackOptions` places the same schema under `validators.onSubmit`.
+Built-in validators are validation rules that can be stored with a form definition. TGB Form compiles them into Valibot through `toValibotSchema`; `toTanStackOptions` places the same schema under `validators.onSubmit`.
 
 [Open validation tests on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/tests/index.test.ts).
 
@@ -12,7 +12,7 @@ Built-in validators are validation rules that can be stored with a form definiti
 
 ```ts twoslash
 import * as v from 'valibot';
-import { defineForm, FieldDataType, toValibotSchema, ValidationRuleKind } from '@easyform/core';
+import { defineForm, FieldDataType, toValibotSchema, ValidationRuleKind } from '@tgb-form/core';
 
 const accountForm = defineForm({
   fields: {
@@ -67,7 +67,7 @@ Use [Custom Validators](/docs/custom-validators) when a rule needs runtime code.
 ## Example
 
 ```ts twoslash
-import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
 
 export const profileForm = defineForm({
   fields: {

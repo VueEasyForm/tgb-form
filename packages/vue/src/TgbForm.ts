@@ -2,31 +2,31 @@ import { type PropType, defineComponent, h, inject, provide } from 'vue';
 import { useForm } from '@tanstack/vue-form';
 import {
   toTanStackOptions,
-  type EasyFormTanStackOptions,
+  type TgbFormTanStackOptions,
   type FormDefinition,
   type RuntimeFormDefinition,
-} from '@easyform/core';
-import { EzField } from './EzField';
-import { EzFormInstanceKey, EzFormRegistriesKey } from './EzFormProvider';
-import type { EasyFormTanStackForm, VueRendererRegistry } from './types';
+} from '@tgb-form/core';
+import { TgbFormField } from './TgbFormField';
+import { TgbFormInstanceKey, TgbFormRegistriesKey } from './TgbFormProvider';
+import type { TgbFormTanStackForm, VueRendererRegistry } from './types';
 
 type SubmitLikeEvent = {
   preventDefault(): void;
 };
 
-export const EzForm = defineComponent({
-  name: 'EzForm',
+export const TgbForm = defineComponent({
+  name: 'TgbForm',
   props: {
     definition: {
       type: Object as PropType<RuntimeFormDefinition>,
       required: true,
     },
     instance: {
-      type: Object as PropType<EasyFormTanStackForm>,
+      type: Object as PropType<TgbFormTanStackForm>,
       default: undefined,
     },
     tanstackOptions: {
-      type: Object as PropType<EasyFormTanStackOptions>,
+      type: Object as PropType<TgbFormTanStackOptions>,
       default: undefined,
     },
     renderers: {
@@ -39,17 +39,17 @@ export const EzForm = defineComponent({
     },
   },
   setup(props, { slots }) {
-    const registries = inject(EzFormRegistriesKey, null);
+    const registries = inject(TgbFormRegistriesKey, null);
     const renderers = props.renderers ?? registries?.renderers;
 
     const form =
       props.instance !== undefined
-        ? (props.instance as unknown as EasyFormTanStackForm)
+        ? (props.instance as unknown as TgbFormTanStackForm)
         : (useForm(
             toTanStackOptions(props.definition, props.tanstackOptions) as Record<string, unknown>,
-          ) as unknown as EasyFormTanStackForm);
+          ) as unknown as TgbFormTanStackForm);
 
-    provide(EzFormInstanceKey, form);
+    provide(TgbFormInstanceKey, form);
 
     return () => {
       const orderedFields = getOrderedFields(props.definition, props.fields);
@@ -64,7 +64,7 @@ export const EzForm = defineComponent({
         },
         [
           ...orderedFields.map(({ name, field }) =>
-            h(EzField, {
+            h(TgbFormField, {
               key: name,
               name,
               field,

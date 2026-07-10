@@ -1,35 +1,35 @@
-# @easyform/vue
+# @tgb-form/vue
 
-Vue 3 adapter for EasyForm definitions and TanStack Vue Form.
+Vue 3 adapter for TGB Form definitions and TanStack Vue Form.
 
-The adapter renders a `RuntimeFormDefinition` with `EzForm`, resolves fields through a Vue renderer registry, and passes TanStack field state to renderer components.
+The adapter renders a `RuntimeFormDefinition` with `TgbForm`, resolves fields through a Vue renderer registry, and passes TanStack field state to renderer components.
 
 ## Supported Flows
 
-- Implicit: `EzForm` creates the TanStack form instance and reads renderers from `EzFormProvider`.
-- Hybrid: pass either `instance` or `renderers`, while `EzForm` supplies the rest.
-- Fully explicit: pass both `instance` and `renderers` directly to `EzForm`.
+- Implicit: `TgbForm` creates the TanStack form instance and reads renderers from `TgbFormProvider`.
+- Hybrid: pass either `instance` or `renderers`, while `TgbForm` supplies the rest.
+- Fully explicit: pass both `instance` and `renderers` directly to `TgbForm`.
 
 ## Public API
 
-- `EzFormProvider`
-- `EzForm`
-- `EzField`
+- `TgbFormProvider`
+- `TgbForm`
+- `TgbFormField`
 - `createVueRendererRegistry`
 - `BaseVueRendererProps`
 - `VueRenderer`
 - `VueRendererField`
 - `VueRendererProps`
 - `VueRendererRegistry`
-- `EasyFormTanStackForm`
+- `TgbFormTanStackForm`
 
 ## Quick Start
 
 ```vue
 <script setup lang="ts">
   import { defineComponent, h } from 'vue';
-  import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
-  import { EzForm, EzFormProvider, createVueRendererRegistry } from '@easyform/vue';
+  import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
+  import { TgbForm, TgbFormProvider, createVueRendererRegistry } from '@tgb-form/vue';
 
   const definition = defineForm({
     fields: {
@@ -74,30 +74,30 @@ The adapter renders a `RuntimeFormDefinition` with `EzForm`, resolves fields thr
 </script>
 
 <template>
-  <EzFormProvider :renderers="renderers">
-    <EzForm
+  <TgbFormProvider :renderers="renderers">
+    <TgbForm
       :definition="definition"
       :tanstack-options="{ onSubmit: async ({ value }) => console.log(value) }"
     />
-  </EzFormProvider>
+  </TgbFormProvider>
 </template>
 ```
 
 ## Component Props
 
-`EzFormProvider` accepts:
+`TgbFormProvider` accepts:
 
 - `renderers`: renderer registry shared by descendant forms and fields.
 
-`EzForm` accepts:
+`TgbForm` accepts:
 
 - `definition`: normalized form definition.
 - `instance`: optional TanStack form instance created by `useForm`.
-- `tanstackOptions`: options merged into `toTanStackOptions` when `EzForm` creates the form.
+- `tanstackOptions`: options merged into `toTanStackOptions` when `TgbForm` creates the form.
 - `renderers`: renderer registry; overrides provider.
 - `fields`: optional list of field names to render.
 
-`EzField` accepts:
+`TgbFormField` accepts:
 
 - `name`: field name.
 - `field`: field definition.

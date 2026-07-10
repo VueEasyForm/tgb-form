@@ -1,5 +1,5 @@
-import { resolveRenderer, type FieldDefinition } from '@easyform/core';
-import { useEzFormInstance, useEzFormRegistry } from './EzFormContext';
+import { resolveRenderer, type FieldDefinition } from '@tgb-form/core';
+import { useTgbFormInstance, useTgbFormRegistry } from './TgbFormContext';
 import type { ReactRenderer } from './types';
 import type { ReactRendererRegistry } from './types';
 
@@ -14,24 +14,24 @@ type BoundField = {
   readonly state?: FieldState;
 };
 
-export type EzFieldProps = {
+export type TgbFormFieldProps = {
   readonly name: string;
   readonly field: FieldDefinition;
   readonly renderers?: ReactRendererRegistry | undefined;
 };
 
-export function EzField({ name, field, renderers: propRenderers }: EzFieldProps) {
-  const form = useEzFormInstance();
-  const ctx = useEzFormRegistry();
+export function TgbFormField({ name, field, renderers: propRenderers }: TgbFormFieldProps) {
+  const form = useTgbFormInstance();
+  const ctx = useTgbFormRegistry();
   const renderers = propRenderers ?? ctx?.renderers;
 
   if (!form) {
-    throw new Error('EzField must be used inside an EzForm component');
+    throw new Error('TgbFormField must be used inside a TgbForm component');
   }
 
   if (!renderers) {
     throw new Error(
-      'No renderer registry found. Pass a renderers prop to EzField or to the parent EzForm.',
+      'No renderer registry found. Pass a renderers prop to TgbFormField or to the parent TgbForm.',
     );
   }
 
