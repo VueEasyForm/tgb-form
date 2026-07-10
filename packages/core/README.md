@@ -2,7 +2,7 @@
 
 Portable form definitions for TanStack Form and Valibot.
 
-`@easyform/core` owns the data layer: JSON-safe schemas, validation rules, serialization, renderer keys, custom validator references, and TanStack-compatible options. Framework packages render those definitions.
+`@easyform/core` owns the data layer: JSON-safe schemas, validation rules, serialization, renderer keys, custom validator references, and TanStack-compatible options. Framework packages render those definitions. It stays close to TanStack Form and Valibot instead of wrapping them in a second abstraction layer.
 
 ## Quick Start
 
@@ -60,7 +60,7 @@ const tanstackOptions = toTanStackOptions(restored);
 
 ## Renderer Keys
 
-Core stores renderer keys, not framework components.
+Core stores renderer keys, not framework components. Passing `renderers` to `defineForm` or `deserializeForm` is optional and mainly useful for component-name type narrowing and for carrying runtime registries alongside a normalized form object.
 
 ```ts
 import { createRendererRegistry, FieldDataType, resolveRenderer } from '@easyform/core';

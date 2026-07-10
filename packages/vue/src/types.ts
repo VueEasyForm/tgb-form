@@ -2,9 +2,11 @@ import { createRendererRegistry, type FieldDataType, type RendererRegistry } fro
 import type { AnyFieldApi, AnyFormApi, VueFormApi } from '@tanstack/vue-form';
 import type { Component } from 'vue';
 
+export type VueRendererField = AnyFieldApi;
+
 export type VueRendererProps = {
   readonly name: string;
-  readonly field: AnyFieldApi;
+  readonly field: VueRendererField;
   readonly form: EasyFormTanStackForm;
   readonly label?: string;
   readonly description?: string;
@@ -12,6 +14,8 @@ export type VueRendererProps = {
   readonly value: unknown;
   readonly errors: readonly unknown[];
 };
+
+export type BaseVueRendererProps = VueRendererProps;
 
 export type VueRenderer = Component;
 

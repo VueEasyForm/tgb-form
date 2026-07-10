@@ -42,9 +42,12 @@ export const EzForm = defineComponent({
     const registries = inject(EzFormRegistriesKey, null);
     const renderers = props.renderers ?? registries?.renderers;
 
-    const form = props.instance !== undefined
-      ? (props.instance as unknown as EasyFormTanStackForm)
-      : (useForm(toTanStackOptions(props.definition, props.tanstackOptions) as Record<string, unknown>) as unknown as EasyFormTanStackForm);
+    const form =
+      props.instance !== undefined
+        ? (props.instance as unknown as EasyFormTanStackForm)
+        : (useForm(
+            toTanStackOptions(props.definition, props.tanstackOptions) as Record<string, unknown>,
+          ) as unknown as EasyFormTanStackForm);
 
     provide(EzFormInstanceKey, form);
 

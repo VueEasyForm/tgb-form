@@ -54,9 +54,7 @@ export const EzField = defineComponent({
       }
 
       const FieldComponent = markRaw(toRaw((form as Record<string, unknown>).Field) as any);
-      const Renderer = markRaw(
-        toRaw(resolveRenderer(props.field, renderers)) as VueRenderer,
-      );
+      const Renderer = markRaw(toRaw(resolveRenderer(props.field, renderers)) as VueRenderer);
 
       return h(
         FieldComponent,

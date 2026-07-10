@@ -8,13 +8,22 @@ icon: Vue
 
 [Open the Vue package on GitHub](https://github.com/VueEasyForm/easyform/tree/main/packages/vue).
 
+## Supported Flows
+
+`EzForm` supports three usage levels:
+
+1. Implicit: `EzForm` creates the TanStack form instance and reads renderers from `EzFormProvider`.
+2. Hybrid: you provide either the TanStack form instance or the renderer registry, while `EzForm` supplies the rest.
+3. Fully explicit: you provide both `instance` and `renderers` directly to `EzForm`.
+
 ## Quick Start
 
 ```vue
 <script setup lang="ts">
-  import { defineComponent, h } from 'vue';
   import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
   import { EzForm, EzFormProvider, createVueRendererRegistry } from '@easyform/vue';
+  import CheckboxInput from './CheckboxInput.vue';
+  import TextInput from './TextInput.vue';
 
   const definition = defineForm({
     fields: {
@@ -31,42 +40,6 @@ icon: Vue
         defaultValue: true,
         label: 'Subscribe',
       },
-    },
-  });
-
-  const TextInput = defineComponent({
-    props: ['field', 'label', 'props', 'value', 'errors'],
-    setup(props) {
-      return () =>
-        h('label', [
-          h('span', props.label),
-          h('input', {
-            value: props.value,
-            placeholder: props.props?.placeholder,
-            onBlur: props.field.handleBlur,
-            onInput: (event: Event) => {
-              props.field.handleChange((event.target as HTMLInputElement).value);
-            },
-          }),
-          props.errors?.length ? h('small', props.errors.join(', ')) : null,
-        ]);
-    },
-  });
-
-  const CheckboxInput = defineComponent({
-    props: ['field', 'label', 'value'],
-    setup(props) {
-      return () =>
-        h('label', [
-          h('input', {
-            type: 'checkbox',
-            checked: Boolean(props.value),
-            onChange: (event: Event) => {
-              props.field.handleChange((event.target as HTMLInputElement).checked);
-            },
-          }),
-          h('span', props.label),
-        ]);
     },
   });
 
@@ -91,6 +64,8 @@ icon: Vue
 </template>
 ```
 
+That is the implicit flow: application code provides a renderer registry once through `EzFormProvider`, and `EzForm` creates the TanStack form instance from `definition` and `tanstackOptions`.
+
 ## What EzForm Does
 
 `EzForm`:
@@ -101,11 +76,65 @@ icon: Vue
 - Renders fields by `order`, then declaration order.
 - Calls `form.handleSubmit()` on submit.
 
+`EzField` is the automatic registry-based resolver. It wraps TanStack's field component, resolves the renderer for one field definition, and passes TanStack field bindings and state into that renderer.
+
 Pass `fields` to render a named subset:
 
 ```vue
 <EzForm :definition="definition" :fields="['email']" :renderers="renderers" />
 ```
+
+## Why
+
+Vue apps usually want renderer components to look like normal Vue components. `@easyform/vue` keeps that style intact:
+
+- renderers can be ordinary `.vue` SFCs
+- app-wide registries can live in provider-based composition
+- `EzForm` handles the TanStack field wiring without forcing render functions into application code
+
+The adapter still uses `defineComponent` internally where it makes sense, but consumer-facing examples should stay close to how Vue teams already write components.
+
+## How
+
+### Hybrid Flow
+
+Pass local renderers while still letting `EzForm` create the TanStack form instance:
+
+```vue
+<EzForm
+  :definition="definition"
+  :renderers="renderers"
+  :tanstack-options="{ onSubmit: async ({ value }) => console.log(value) }"
+/>
+```
+
+Or pass an existing TanStack form instance while still reading renderers from the provider:
+
+```vue
+<script setup lang="ts">
+  import { toTanStackOptions } from '@easyform/core';
+  import { useForm } from '@tanstack/vue-form';
+
+  const form = useForm(
+    toTanStackOptions(definition, {
+      onSubmit: async ({ value }) => {
+        console.log(value);
+      },
+    }),
+  );
+</script>
+
+<template>
+  <EzFormProvider :renderers="renderers">
+    <EzForm
+      :definition="definition"
+      :instance="form"
+    />
+  </EzFormProvider>
+</template>
+```
+
+### Fully Explicit Flow
 
 Pass an existing TanStack form instance when you want full control:
 

@@ -87,23 +87,26 @@ TanStack Form still owns form state. Valibot still owns validation. EasyForm con
 ### Render (in React): [step]
 
 ```tsx twoslash
-import { FieldDataType } from '@easyform/core';
-import { EzForm, createReactRendererRegistry, type ReactRendererProps } from '@easyform/react';
-import { newsletterForm } from './newsletter-form';
+import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+import { BaseReactRendererProps, EzForm, createReactRendererRegistry } from '@easyform/react';
 
-type FieldBinding = {
-  handleBlur: () => void;
-  handleChange: (value: unknown) => void;
-};
+const newsletterForm = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      label: 'Email',
+      component: 'email-input',
+      props: { placeholder: 'you@example.com', autocomplete: 'email' },
+      rules: [
+        { kind: ValidationRuleKind.Required, message: 'Email is required' },
+        { kind: ValidationRuleKind.Email, message: 'Enter a valid email' },
+      ],
+    },
+  },
+});
 
-function TextInput({
-  field,
-  label,
-  name,
-  props,
-  value,
-  errors,
-}: ReactRendererProps<any, FieldBinding>) {
+function TextInput({ field, label, name, props, value, errors }: BaseReactRendererProps) {
   return (
     <label>
       <span>{label}</span>
@@ -141,14 +144,29 @@ export function NewsletterForm() {
 
 <Callout>
   It's actually very similar to do so in Vue, and that's the strength of our library! We don't show
-  the example here because it would look too similar to each other and would make you confusing
+  the example here because it would look too similar to each other and would make you confused
   instead. Just swap around the framework-specific parts and it will work right away!
 </Callout>
 
 ### Store and restore the definition: [step]
 
 ```ts twoslash
-import { deserializeForm, serializeForm, toTanStackOptions } from '@easyform/core';
+import {
+  defineForm,
+  deserializeForm,
+  FieldDataType,
+  serializeForm,
+  toTanStackOptions,
+} from '@easyform/core';
+
+const newsletterForm = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+    },
+  },
+});
 
 const stored = JSON.stringify(serializeForm(newsletterForm));
 const restored = deserializeForm(stored);

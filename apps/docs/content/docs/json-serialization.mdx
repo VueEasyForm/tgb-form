@@ -42,7 +42,7 @@ const restored = deserializeForm(stored);
 
 Form builders need durable output. A saved definition should work in local storage, a database row, a CMS field, an API response, or a file.
 
-Renderer and validator registries are code, so they are not serialized. Attach them when defining or deserializing a form.
+Renderer and validator registries are code, so they are not serialized. Attach them when defining or deserializing a form. Core only uses validator registries when compiling validation; renderer registries stay available for adapter code and for component-name type narrowing during authoring.
 
 ## How
 
@@ -55,6 +55,9 @@ import {
 } from '@easyform/core';
 import * as v from 'valibot';
 
+const TextInput = (props: unknown) => props;
+const CheckboxInput = (props: unknown) => props;
+
 const renderers = createRendererRegistry({
   byType: {
     [FieldDataType.String]: TextInput,
@@ -65,6 +68,16 @@ const renderers = createRendererRegistry({
 const validators = createValidatorRegistry().register('reservedName', ({ message }) =>
   v.check((value: string) => !['admin', 'root'].includes(value), message),
 );
+
+const storedJson = JSON.stringify({
+  fields: {
+    name: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      rules: [],
+    },
+  },
+});
 
 const restored = deserializeForm(storedJson, {
   renderers,

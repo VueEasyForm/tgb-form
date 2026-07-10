@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from 'react';
 import { createRendererRegistry } from '@easyform/core';
 import type { FieldDataType, JsonObject, RendererRegistry } from '@easyform/core';
+import type { AnyFieldApi } from '@tanstack/react-form';
 
 type TanStackFieldRenderer = (field: any) => ReactNode;
 
@@ -25,6 +26,10 @@ export type ReactRendererProps<
   readonly value: unknown;
   readonly errors: readonly unknown[];
 };
+
+export type ReactRendererField = AnyFieldApi;
+
+export type BaseReactRendererProps = ReactRendererProps<ReactEasyFormInstance, ReactRendererField>;
 
 export type ReactRenderer<
   TForm extends ReactEasyFormInstance = ReactEasyFormInstance,

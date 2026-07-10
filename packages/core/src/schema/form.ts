@@ -26,6 +26,8 @@ export type DefineFormOptions = {
 export type RuntimeFormDefinition = FormDefinition & {
   /** Runtime-only validator registry attached by {@link defineForm} when provided. */
   readonly validators?: ValidatorRegistry;
+  /** Runtime-only renderer registry attached by {@link defineForm} when provided. */
+  readonly renderers?: RendererRegistry;
 };
 
 /**
@@ -84,14 +86,26 @@ export function defineForm(
   options: DefineFormOptions = {},
 ): RuntimeFormDefinition {
   const normalized = normalizeFormDefinition(definition);
-  return options.validators ? { ...normalized, validators: options.validators } : normalized;
+  if (!options.validators && !options.renderers) {
+    return normalized;
+  }
+
+  return {
+    ...normalized,
+    ...(options.validators ? { validators: options.validators } : {}),
+    ...(options.renderers ? { renderers: options.renderers } : {}),
+  };
 }
 
 /**
  * Returns a JSON-safe {@link FormDefinition}, omitting runtime-only registries.
  */
 export function serializeForm(form: FormDefinition): FormDefinition {
-  const { validators: _validators, ...serializable } = form as RuntimeFormDefinition;
+  const {
+    validators: _validators,
+    renderers: _renderers,
+    ...serializable
+  } = form as RuntimeFormDefinition;
   return cloneJson(serializable as unknown as JsonValue) as unknown as FormDefinition;
 }
 

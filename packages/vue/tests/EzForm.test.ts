@@ -1,4 +1,9 @@
-import { createRendererRegistry, defineForm, FieldDataType, toTanStackOptions } from '@easyform/core';
+import {
+  createRendererRegistry,
+  defineForm,
+  FieldDataType,
+  toTanStackOptions,
+} from '@easyform/core';
 import { useForm } from '@tanstack/vue-form';
 import { describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-vue';
@@ -318,9 +323,7 @@ describe('EzForm', () => {
     const Host = defineComponent({
       name: 'TanStackHost',
       setup() {
-        const form = useForm(
-          toTanStackOptions(definition, { onSubmit }) as any,
-        );
+        const form = useForm(toTanStackOptions(definition, { onSubmit }) as any);
 
         return () =>
           h(EzForm, {

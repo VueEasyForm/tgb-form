@@ -8,15 +8,23 @@ icon: React
 
 [Open the React package on GitHub](https://github.com/VueEasyForm/easyform/tree/main/packages/react).
 
+## Supported Flows
+
+`EzForm` supports three usage levels:
+
+1. Implicit: `EzForm` creates the TanStack form instance and reads renderers from `EzFormContext`.
+2. Hybrid: you provide either the TanStack form instance or the renderer registry, while `EzForm` supplies the rest.
+3. Fully explicit: you provide both `instance` and `renderers` directly to `EzForm`.
+
 ## Quick Start
 
-```tsx twoslash
+```tsx
 import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
 import {
+  BaseReactRendererProps,
   EzForm,
   EzFormContext,
   createReactRendererRegistry,
-  type ReactRendererProps,
 } from '@easyform/react';
 
 const definition = defineForm({
@@ -37,19 +45,7 @@ const definition = defineForm({
   },
 });
 
-type FieldBinding = {
-  handleBlur: () => void;
-  handleChange: (value: unknown) => void;
-};
-
-function TextInput({
-  field,
-  label,
-  name,
-  props,
-  value,
-  errors,
-}: ReactRendererProps<any, FieldBinding>) {
+function TextInput({ field, label, name, props, value, errors }: BaseReactRendererProps) {
   return (
     <label>
       <span>{label}</span>
@@ -65,7 +61,7 @@ function TextInput({
   );
 }
 
-function CheckboxInput({ field, label, name, value }: ReactRendererProps<any, FieldBinding>) {
+function CheckboxInput({ field, label, name, value }: BaseReactRendererProps) {
   return (
     <label>
       <input
@@ -107,6 +103,8 @@ export function NewsletterForm() {
 }
 ```
 
+That is the implicit flow: application code provides a renderer registry once through context, and `EzForm` creates the TanStack form instance from `definition` and `tanstackOptions`.
+
 ## What EzForm Does
 
 `EzForm`:
@@ -117,21 +115,142 @@ export function NewsletterForm() {
 - Renders fields by `order`, then declaration order.
 - Calls `form.handleSubmit()` on submit.
 
+`EzField` is the automatic registry-based resolver. It wraps TanStack's `Field`, resolves the renderer for one field definition, and passes TanStack field bindings and state into that renderer.
+
 Pass `fields` to render a named subset:
 
-```tsx twoslash
+```tsx
+import { defineForm, FieldDataType } from '@easyform/core';
+import { EzForm, createReactRendererRegistry } from '@easyform/react';
+
+const definition = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+    },
+  },
+});
+
+const TextInput = () => null;
+
+const renderers = createReactRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+  },
+});
+
 <EzForm
   definition={definition}
   fields={['email']}
   renderers={renderers}
-/>
+/>;
 ```
 
-Pass an existing TanStack form instance when you want full control:
+## Hybrid Flow
 
-```tsx twoslash
-import { toTanStackOptions } from '@easyform/core';
+Pass local renderers while still letting `EzForm` create the TanStack form instance:
+
+```tsx
+import { defineForm, FieldDataType } from '@easyform/core';
+import { EzForm, createReactRendererRegistry } from '@easyform/react';
+
+const definition = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+    },
+  },
+});
+
+const TextInput = () => null;
+
+const renderers = createReactRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+  },
+});
+
+<EzForm
+  definition={definition}
+  renderers={renderers}
+  tanstackOptions={{
+    onSubmit: async ({ value }) => {
+      console.log(value);
+    },
+  }}
+/>;
+```
+
+Or pass an existing TanStack form instance while still reading renderers from context:
+
+```tsx
+import { defineForm, FieldDataType, toTanStackOptions } from '@easyform/core';
+import { EzForm, EzFormContext, createReactRendererRegistry } from '@easyform/react';
 import { useForm } from '@tanstack/react-form';
+
+const definition = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+    },
+  },
+});
+
+const TextInput = () => null;
+
+const renderers = createReactRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+  },
+});
+
+function NewsletterForm() {
+  const form = useForm({
+    ...toTanStackOptions(definition),
+    onSubmit: async ({ value }) => {
+      console.log(value);
+    },
+  });
+
+  return (
+    <EzFormContext renderers={renderers}>
+      <EzForm
+        definition={definition}
+        instance={form}
+      />
+    </EzFormContext>
+  );
+}
+```
+
+## Fully Explicit Flow
+
+Pass an existing TanStack form instance and local renderers when you want full control:
+
+```tsx
+import { defineForm, FieldDataType, toTanStackOptions } from '@easyform/core';
+import { EzForm, createReactRendererRegistry } from '@easyform/react';
+import { useForm } from '@tanstack/react-form';
+
+const definition = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+    },
+  },
+});
+
+const TextInput = () => null;
+
+const renderers = createReactRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+  },
+});
 
 function NewsletterForm() {
   const form = useForm({
@@ -173,18 +292,58 @@ Renderer components should translate these props into the input components used 
 Use `EzFormContext` for app-wide renderers:
 
 ```tsx twoslash
+import { defineForm, FieldDataType } from '@easyform/core';
+import { EzForm, EzFormContext, createReactRendererRegistry } from '@easyform/react';
+
+const definition = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+    },
+  },
+});
+
+const TextInput = () => null;
+
+const renderers = createReactRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+  },
+});
+
 <EzFormContext renderers={renderers}>
   <EzForm definition={definition} />
-</EzFormContext>
+</EzFormContext>;
 ```
 
 Use the `renderers` prop for a local override:
 
 ```tsx twoslash
+import { defineForm, FieldDataType } from '@easyform/core';
+import { EzForm, createReactRendererRegistry } from '@easyform/react';
+
+const definition = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+    },
+  },
+});
+
+const TextInput = () => null;
+
+const localRenderers = createReactRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+  },
+});
+
 <EzForm
   definition={definition}
   renderers={localRenderers}
-/>
+/>;
 ```
 
 Renderer resolution follows core rules: explicit `component` names resolve through `byName`; fields without `component` fall back to `byType[field.type]`.

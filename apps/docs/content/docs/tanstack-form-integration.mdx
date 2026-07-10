@@ -53,10 +53,30 @@ TanStack Form still owns state, subscriptions, submission, and framework hooks.
 
 Use generated options with a TanStack framework hook:
 
-```tsx twoslash
+```tsx
+import { defineForm, FieldDataType, toTanStackOptions, ValidationRuleKind } from '@easyform/core';
 import { useForm } from '@tanstack/react-form';
-import { toTanStackOptions } from '@easyform/core';
-import { newsletterForm } from './newsletter-form';
+
+const newsletterForm = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      rules: [
+        { kind: ValidationRuleKind.Required, message: 'Email is required' },
+        { kind: ValidationRuleKind.Email, message: 'Enter a valid email' },
+      ],
+    },
+    subscribed: {
+      type: FieldDataType.Boolean,
+      defaultValue: false,
+    },
+  },
+});
+
+async function subscribe(email: string, subscribed: boolean) {
+  console.log({ email, subscribed });
+}
 
 export function NewsletterForm() {
   const form = useForm({
@@ -91,7 +111,41 @@ export function NewsletterForm() {
 
 Or let an adapter create the form instance:
 
-```tsx twoslash
+```tsx
+import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
+import { EzForm, createReactRendererRegistry } from '@easyform/react';
+
+const newsletterForm = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+      rules: [
+        { kind: ValidationRuleKind.Required, message: 'Email is required' },
+        { kind: ValidationRuleKind.Email, message: 'Enter a valid email' },
+      ],
+    },
+    subscribed: {
+      type: FieldDataType.Boolean,
+      defaultValue: false,
+    },
+  },
+});
+
+const TextInput = () => null;
+const CheckboxInput = () => null;
+
+const renderers = createReactRendererRegistry({
+  byType: {
+    [FieldDataType.String]: TextInput,
+    [FieldDataType.Boolean]: CheckboxInput,
+  },
+});
+
+async function subscribe(email: string, subscribed: boolean) {
+  console.log({ email, subscribed });
+}
+
 <EzForm
   definition={newsletterForm}
   renderers={renderers}
@@ -100,7 +154,7 @@ Or let an adapter create the form instance:
       await subscribe(value.email, value.subscribed);
     },
   }}
-/>
+/>;
 ```
 
 ## Defaults Only
@@ -108,7 +162,20 @@ Or let an adapter create the form instance:
 Use `getDefaultValues` when you need defaults without a validation schema:
 
 ```ts twoslash
-import { getDefaultValues } from '@easyform/core';
+import { defineForm, FieldDataType, getDefaultValues } from '@easyform/core';
+
+const newsletterForm = defineForm({
+  fields: {
+    email: {
+      type: FieldDataType.String,
+      defaultValue: '',
+    },
+    subscribed: {
+      type: FieldDataType.Boolean,
+      defaultValue: false,
+    },
+  },
+});
 
 const defaultValues = getDefaultValues(newsletterForm);
 ```

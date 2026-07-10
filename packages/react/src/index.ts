@@ -9,7 +9,9 @@ export {
   type EzFormRegistryContextValue,
 } from './EzFormContext';
 export type {
+  BaseReactRendererProps,
   ReactRenderer,
+  ReactRendererField,
   ReactRendererProps,
   ReactRendererRegistry,
   ReactEasyFormInstance,

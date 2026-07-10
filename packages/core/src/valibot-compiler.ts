@@ -26,7 +26,7 @@ function toFieldSchema(
   field: FieldDefinition,
   registry: RuntimeFormDefinition['validators'],
 ): AnySchema {
-  const baseSchema = toBaseSchema(field);
+  const baseSchema = toBaseSchema(field, registry);
   const pipeItems = [
     ...compileCommonRules(field),
     ...compileCustomValidators(field.validators, registry),
@@ -39,7 +39,10 @@ function toFieldSchema(
   return v.pipe(baseSchema, ...(pipeItems as [ValibotValidationItem, ...ValibotValidationItem[]]));
 }
 
-function toBaseSchema(field: FieldDefinition): AnySchema {
+function toBaseSchema(
+  field: FieldDefinition,
+  registry: RuntimeFormDefinition['validators'],
+): AnySchema {
   switch (field.type) {
     case FieldDataType.String:
       return v.string();
@@ -53,13 +56,13 @@ function toBaseSchema(field: FieldDefinition): AnySchema {
             Object.fromEntries(
               Object.entries(field.fields).map(([name, nestedField]) => [
                 name,
-                toFieldSchema(nestedField, undefined),
+                toFieldSchema(nestedField, registry),
               ]),
             ),
           )
         : v.object({});
     case FieldDataType.Array:
-      return v.array(field.element ? toFieldSchema(field.element, undefined) : v.unknown());
+      return v.array(field.element ? toFieldSchema(field.element, registry) : v.unknown());
   }
 }
 

@@ -3,7 +3,13 @@ import { FieldDataType, defineForm, toTanStackOptions } from '@easyform/core';
 import { useForm } from '@tanstack/react-form';
 import { afterEach, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { EzForm, EzField, EzFormContext, createReactRendererRegistry, type ReactRendererProps } from '../src';
+import {
+  EzForm,
+  EzField,
+  EzFormContext,
+  createReactRendererRegistry,
+  type ReactRendererProps,
+} from '../src';
 
 type FieldHarness = {
   state: {
@@ -265,9 +271,7 @@ test('renders and submits with a real @tanstack/react-form instance', async () =
   });
 
   function Host() {
-    const form = useForm(
-      toTanStackOptions(definition, { onSubmit }) as any,
-    );
+    const form = useForm(toTanStackOptions(definition, { onSubmit }) as any);
 
     return (
       <EzForm

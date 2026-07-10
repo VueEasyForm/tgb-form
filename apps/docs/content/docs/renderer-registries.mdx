@@ -10,11 +10,15 @@ Renderer registries are the boundary between stored data and UI code. A field ca
 
 ## What
 
-A registry has named renderers and type fallbacks:
+A registry maps the renderer components you already defined to stable names and field-type fallbacks:
 
 ```ts twoslash
 import { createRendererRegistry, FieldDataType } from '@easyform/core';
-import { CheckboxInput, EmailInput, NumberInput, TextInput } from './fields';
+
+const TextInput = { kind: 'TextInput' };
+const EmailInput = { kind: 'EmailInput' };
+const NumberInput = { kind: 'NumberInput' };
+const CheckboxInput = { kind: 'CheckboxInput' };
 
 export const renderers = createRendererRegistry({
   byName: {
@@ -46,7 +50,16 @@ Resolve a field with `resolveRenderer`:
 
 ```ts twoslash
 import { defineForm, FieldDataType, resolveRenderer } from '@easyform/core';
-import { renderers } from './renderers';
+
+const TextInput = { kind: 'TextInput' };
+const renderers = {
+  byName: {
+    'email-input': TextInput,
+  },
+  byType: {
+    [FieldDataType.String]: TextInput,
+  },
+};
 
 const form = defineForm(
   {
@@ -82,6 +95,11 @@ When you pass a registry to `defineForm`, TypeScript checks `component` against 
 Renderer registries are plain lookup tables:
 
 ```ts twoslash
+import { createRendererRegistry, FieldDataType } from '@easyform/core';
+
+const TextInput = { kind: 'TextInput' };
+const EmailInput = { kind: 'EmailInput' };
+
 const renderers = createRendererRegistry({
   byName: {
     'email-input': EmailInput,

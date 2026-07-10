@@ -13,6 +13,7 @@ EasyForm gives you:
 - TanStack Form options generated from the same definition.
 - Renderer registries that map stored field hints to React or Vue components.
 - Serialization and deserialization APIs for storing definitions in files, databases, CMS records, or builder output.
+- Thin adapters that stay out of TanStack Form state management and Valibot schema design.
 
 ## Why
 
@@ -63,22 +64,10 @@ Render it in React:
 ```tsx
 import { FieldDataType } from '@easyform/core';
 import { useForm } from '@tanstack/react-form';
-import { EzForm, createReactRendererRegistry, type ReactRendererProps } from '@easyform/react';
+import { BaseReactRendererProps, EzForm, createReactRendererRegistry } from '@easyform/react';
 import { newsletterForm } from './newsletter-form';
 
-type FieldBinding = {
-  handleBlur: () => void;
-  handleChange: (value: unknown) => void;
-};
-
-function TextInput({
-  field,
-  label,
-  name,
-  props,
-  value,
-  errors,
-}: ReactRendererProps<any, FieldBinding>) {
+function TextInput({ field, label, name, props, value, errors }: BaseReactRendererProps) {
   return (
     <label>
       <span>{label}</span>
@@ -182,7 +171,7 @@ const restored = deserializeForm(stored);
 const options = toTanStackOptions(restored);
 ```
 
-Renderer and validator registries are code, so they are attached at runtime instead of stored in JSON.
+Renderer and validator registries are code, so they are attached at runtime instead of stored in JSON. Core keeps TanStack Form and Valibot explicit: `toTanStackOptions` returns plain TanStack options, `toValibotSchema` returns a plain Valibot schema, and the framework adapters only handle renderer lookup and field wiring.
 
 ## Packages
 
@@ -210,4 +199,5 @@ pnpm --filter @easyform/docs dev
 
 - GitHub: https://github.com/VueEasyForm/easyform
 - Issues: https://github.com/VueEasyForm/easyform/issues
+- Releasing: ./RELEASING.md
 - License: MIT

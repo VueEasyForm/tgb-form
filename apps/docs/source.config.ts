@@ -1,15 +1,14 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
-import { rehypeCodeDefaultOptions, remarkSteps } from 'fumadocs-core/mdx-plugins';
+import { rehypeCodeDefaultOptions, remarkSteps, remarkNpm } from 'fumadocs-core/mdx-plugins';
 import { transformerTwoslash } from 'fumadocs-twoslash';
 import {
   createFileSystemGeneratorCache,
   createGenerator,
   remarkAutoTypeTable,
 } from 'fumadocs-typescript';
-import { remarkInstall } from 'fumadocs-docgen';
-import * as ts from 'typescript';
+import ts from 'typescript';
 
 const docsDir = dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = resolve(docsDir, '../..');
@@ -31,7 +30,7 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    remarkPlugins: [[remarkAutoTypeTable, { generator }], remarkInstall, remarkSteps],
+    remarkPlugins: [[remarkAutoTypeTable, { generator }], remarkNpm, remarkSteps],
     rehypeCodeOptions: {
       themes: {
         light: 'github-light',
@@ -57,7 +56,9 @@ export default defineConfig({
                 '@tanstack/form-core': [
                   fromRoot('packages/core/node_modules/@tanstack/form-core/dist/esm/index.d.ts'),
                 ],
-                '@tanstack/react-form': ['twoslash-stubs/tanstack-react-form.d.ts'],
+                '@tanstack/react-form': [
+                  fromRoot('apps/docs/node_modules/@tanstack/react-form/dist/esm/index.d.ts'),
+                ],
                 '@tanstack/vue-form': [
                   fromRoot('packages/vue/node_modules/@tanstack/vue-form/dist/esm/index.d.ts'),
                 ],
@@ -67,85 +68,6 @@ export default defineConfig({
               skipLibCheck: true,
               strict: true,
               target: ts.ScriptTarget.ES2022,
-            },
-            extraFiles: {
-              'fields.ts': `
-export const CheckboxInput = () => null;
-export const EmailInput = () => null;
-export const NumberInput = () => null;
-export const TextInput = () => null;
-`,
-              'globals.d.ts': `
-import type { ReactNode } from 'react';
-import type {
-  RuntimeFormDefinition,
-  ValidatorRegistry,
-  createRendererRegistry as createCoreRendererRegistry,
-  FieldDataType as CoreFieldDataType,
-} from '@easyform/core';
-import type { ReactRendererRegistry } from '@easyform/react';
-
-declare global {
-  const CheckboxInput: unknown;
-  const EmailInput: unknown;
-  const NumberInput: unknown;
-  const TextInput: unknown;
-  const EzForm: (props: Record<string, unknown>) => ReactNode;
-  const EzFormContext: (props: Record<string, unknown>) => ReactNode;
-  const FieldDataType: typeof CoreFieldDataType;
-  const createRendererRegistry: typeof createCoreRendererRegistry;
-  const definition: RuntimeFormDefinition;
-  const localRenderers: ReactRendererRegistry;
-  const newsletterForm: RuntimeFormDefinition;
-  const renderers: ReactRendererRegistry;
-  const storedJson: string;
-  const validators: ValidatorRegistry;
-  function subscribe(email: unknown, subscribed: unknown): Promise<void>;
-}
-
-export {};
-`,
-              'newsletter-form.ts': `
-import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
-
-export const newsletterForm = defineForm({
-  fields: {
-    email: {
-      type: FieldDataType.String,
-      defaultValue: '',
-      label: 'Email',
-      component: 'email-input',
-      props: { placeholder: 'you@example.com', autocomplete: 'email' },
-      rules: [
-        { kind: ValidationRuleKind.Required, message: 'Email is required' },
-        { kind: ValidationRuleKind.Email, message: 'Enter a valid email' },
-      ],
-    },
-    subscribed: {
-      type: FieldDataType.Boolean,
-      defaultValue: true,
-      label: 'Subscribe',
-    },
-  },
-});
-`,
-              'renderers.ts': `
-import { createRendererRegistry, FieldDataType } from '@easyform/core';
-import { CheckboxInput, EmailInput, TextInput } from './fields';
-
-export const renderers = createRendererRegistry({
-  byName: {
-    'email-input': EmailInput,
-  },
-  byType: {
-    [FieldDataType.String]: TextInput,
-    [FieldDataType.Boolean]: CheckboxInput,
-  },
-});
-`,
-              'twoslash-stubs/tanstack-react-form.d.ts': `
-export function useForm(options: Record<string, unknown>): any;
-`,
             },
           },
         }),

@@ -28,6 +28,8 @@ This page lists the public APIs documented by package.
 | `getDefaultValues(form)`            | Extracts cloned default values from top-level fields.                           |
 | `toTanStackOptions(form, options?)` | Returns `defaultValues` and `validators.onSubmit`.                              |
 
+`defineForm` and `deserializeForm` accept optional runtime registries. `validators` are consumed by `toValibotSchema` and `toTanStackOptions`. `renderers` are carried for adapter/bootstrap code and for component-name type narrowing; core validation helpers do not depend on them.
+
 [Open TanStack helpers on GitHub](https://github.com/VueEasyForm/easyform/blob/main/packages/core/src/tanstack.ts).
 
 ```ts twoslash
@@ -208,6 +210,20 @@ const validators = createValidatorRegistry()
   name="ReactRendererProps"
 />
 
+#### ReactRendererField
+
+<auto-type-table
+  path="../../../../packages/react/src/types.ts"
+  name="ReactRendererField"
+/>
+
+#### BaseReactRendererProps
+
+<auto-type-table
+  path="../../../../packages/react/src/types.ts"
+  name="BaseReactRendererProps"
+/>
+
 #### ReactRendererRegistry
 
 <auto-type-table
@@ -251,6 +267,20 @@ const validators = createValidatorRegistry()
 <auto-type-table
   path="../../../../packages/vue/src/types.ts"
   name="VueRendererProps"
+/>
+
+#### VueRendererField
+
+<auto-type-table
+  path="../../../../packages/vue/src/types.ts"
+  name="VueRendererField"
+/>
+
+#### BaseVueRendererProps
+
+<auto-type-table
+  path="../../../../packages/vue/src/types.ts"
+  name="BaseVueRendererProps"
 />
 
 #### VueRendererRegistry

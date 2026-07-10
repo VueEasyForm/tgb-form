@@ -1,0 +1,95 @@
+---
+title: Defining Custom Components
+description: Build renderer components that plug into EasyForm registries in React and Vue.
+icon: Component
+---
+
+Renderer components are the UI side of EasyForm. A form definition stores JSON-safe data such as `label`, `description`, `props`, and `component`. Your renderer component turns that data plus TanStack field bindings into actual inputs.
+
+## What
+
+Every renderer gets the same conceptual inputs:
+
+| Prop          | Purpose                                                      |
+| ------------- | ------------------------------------------------------------ |
+| `name`        | Stable field name from the form definition.                  |
+| `field`       | TanStack field binding for reading and updating this field.  |
+| `form`        | Current TanStack form instance.                              |
+| `label`       | Optional display label from the field definition.            |
+| `description` | Optional help text from the field definition.                |
+| `props`       | JSON-safe renderer-specific props from the field definition. |
+| `value`       | Current field value.                                         |
+| `errors`      | Current validation errors for the field.                     |
+
+`EzField` is the adapter layer that wires those values together automatically.
+
+## Why
+
+EasyForm keeps definitions portable, but the actual inputs still belong to your application. Renderer components are where you:
+
+- map JSON-safe `props` to real UI props
+- connect TanStack field handlers to your inputs
+- keep React or Vue authoring styles intact
+- reuse the same component set across many stored form definitions
+
+## How
+
+### React renderer
+
+```tsx twoslash
+import type { BaseReactRendererProps } from '@easyform/react';
+
+export function TextInput({ field, label, name, props, value, errors }: BaseReactRendererProps) {
+  return (
+    <label>
+      <span>{label}</span>
+      <input
+        name={name}
+        value={String(value ?? '')}
+        placeholder={String(props?.placeholder ?? '')}
+        onBlur={() => field.handleBlur()}
+        onChange={(event) => field.handleChange(event.currentTarget.value)}
+      />
+      {errors.length > 0 ? <small>{errors.map(String).join(', ')}</small> : null}
+    </label>
+  );
+}
+```
+
+### Vue renderer
+
+```vue
+<script setup lang="ts">
+  import type { BaseVueRendererProps } from '@easyform/vue';
+
+  defineProps<BaseVueRendererProps>();
+</script>
+
+<template>
+  <label>
+    <span>{{ label }}</span>
+    <input
+      :name="name"
+      :value="String(value ?? '')"
+      :placeholder="props?.placeholder ?? ''"
+      @blur="field.handleBlur()"
+      @input="field.handleChange(($event.target as HTMLInputElement).value)"
+    />
+    <small v-if="errors.length > 0">
+      {{ errors.map(String).join(', ') }}
+    </small>
+  </label>
+</template>
+```
+
+### Notes
+
+- Keep renderer props JSON-safe. Anything under `field.props` should be designed for serialization.
+- Use `field` for updates and blur handling. **EasyForm does not replace TanStack Form's field APIs.**
+- Read current value from `value` and errors from `errors` instead of reaching into form internals. The renderer will automatically bind into it.
+- Treat `component` names as stable public IDs if forms are stored outside the codebase.
+- EasyForm is flexible, but we should implement our custom components the simplest way possible fitting our use cases. That'd balance the best between coding ergonomics and performance.
+
+## Next
+
+After you have renderer components, register them by name or field type in [Renderer Registries](/docs/renderer-registries).

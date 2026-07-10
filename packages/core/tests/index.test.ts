@@ -153,6 +153,57 @@ describe('validation compilation', () => {
 
     expect(() => toValibotSchema(form)).toThrow(/uniqueEmail/);
   });
+
+  test('applies custom validators in nested object and array fields', () => {
+    const validators = createValidatorRegistry()
+      .register('startsWithA', ({ message }) =>
+        v.check((value: string) => value.startsWith('A'), message),
+      )
+      .register('nonEmptyTags', ({ message }) =>
+        v.check((value: string) => value.trim().length > 0, message),
+      );
+
+    const form = defineForm(
+      {
+        fields: {
+          profile: {
+            type: FieldDataType.Object,
+            defaultValue: { nickname: '' },
+            fields: {
+              nickname: {
+                type: FieldDataType.String,
+                defaultValue: '',
+                validators: [{ name: 'startsWithA', message: 'Nickname must start with A' }],
+              },
+            },
+          },
+          tags: {
+            type: FieldDataType.Array,
+            defaultValue: [],
+            element: {
+              type: FieldDataType.String,
+              defaultValue: '',
+              validators: [{ name: 'nonEmptyTags', message: 'Tags cannot be empty' }],
+            },
+          },
+        },
+      },
+      { validators },
+    );
+
+    const result = v.safeParse(toValibotSchema(form), {
+      profile: { nickname: 'beta' },
+      tags: ['ok', '   '],
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.issues.map((issue) => issue.message)).toEqual([
+        'Nickname must start with A',
+        'Tags cannot be empty',
+      ]);
+    }
+  });
 });
 
 describe('TanStack options', () => {
@@ -238,6 +289,41 @@ describe('renderer registry', () => {
     });
 
     expect(() => resolveRenderer(form.fields.name, registry)).toThrow(/missing/);
+  });
+
+  test('keeps runtime registries off serialized output', () => {
+    const renderers = createRendererRegistry({
+      byName: { known: Symbol('known renderer') },
+    });
+    const validators = createValidatorRegistry().register('startsWithA', ({ message }) =>
+      v.check((value: string) => value.startsWith('A'), message),
+    );
+    const form = defineForm(
+      {
+        fields: {
+          name: {
+            type: FieldDataType.String,
+            defaultValue: '',
+            component: 'known',
+            validators: [{ name: 'startsWithA' }],
+          },
+        },
+      },
+      { renderers, validators },
+    );
+
+    expect(form.renderers).toBe(renderers);
+    expect(form.validators).toBe(validators);
+    expect(serializeForm(form)).toEqual({
+      fields: {
+        name: {
+          type: FieldDataType.String,
+          defaultValue: '',
+          component: 'known',
+          validators: [{ name: 'startsWithA' }],
+        },
+      },
+    });
   });
 });
 

@@ -4,13 +4,21 @@ React adapter for EasyForm definitions and TanStack React Form.
 
 The adapter renders a `RuntimeFormDefinition` with `EzForm`, resolves fields through a React renderer registry, and passes TanStack field state to renderer components.
 
+## Supported Flows
+
+- Implicit: `EzForm` creates the TanStack form instance and reads renderers from `EzFormContext`.
+- Hybrid: pass either `instance` or `renderers`, while `EzForm` supplies the rest.
+- Fully explicit: pass both `instance` and `renderers` directly to `EzForm`.
+
 ## Public API
 
 - `EzFormContext`
 - `EzForm`
 - `EzField`
 - `createReactRendererRegistry`
+- `BaseReactRendererProps`
 - `ReactRenderer`
+- `ReactRendererField`
 - `ReactRendererProps`
 - `ReactRendererRegistry`
 - `ReactEasyFormInstance`
@@ -20,10 +28,10 @@ The adapter renders a `RuntimeFormDefinition` with `EzForm`, resolves fields thr
 ```tsx
 import { defineForm, FieldDataType, ValidationRuleKind } from '@easyform/core';
 import {
+  BaseReactRendererProps,
   EzForm,
   EzFormContext,
   createReactRendererRegistry,
-  type ReactRendererProps,
 } from '@easyform/react';
 
 const definition = defineForm({
@@ -39,19 +47,7 @@ const definition = defineForm({
   },
 });
 
-type FieldBinding = {
-  handleBlur: () => void;
-  handleChange: (value: unknown) => void;
-};
-
-function TextField({
-  field,
-  label,
-  name,
-  props,
-  value,
-  errors,
-}: ReactRendererProps<any, FieldBinding>) {
+function TextField({ field, label, name, props, value, errors }: BaseReactRendererProps) {
   return (
     <label>
       <span>{label}</span>

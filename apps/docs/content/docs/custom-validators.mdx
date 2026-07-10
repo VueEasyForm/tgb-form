@@ -101,6 +101,14 @@ const validators = createValidatorRegistry({
 The registry exposes lookup helpers for builder UIs and diagnostics:
 
 ```ts twoslash
+import * as v from 'valibot';
+import { createValidatorRegistry } from '@easyform/core';
+
+const validators = createValidatorRegistry({
+  startsWithA: ({ message }) => v.check((value: string) => value.startsWith('A'), message),
+  endsWithZ: ({ message }) => v.check((value: string) => value.endsWith('z'), message),
+});
+
 validators.has('startsWithA'); // true
 validators.get('startsWithA'); // ValidatorCompiler | undefined
 validators.names(); // ['startsWithA', 'endsWithZ']

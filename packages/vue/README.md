@@ -4,13 +4,21 @@ Vue 3 adapter for EasyForm definitions and TanStack Vue Form.
 
 The adapter renders a `RuntimeFormDefinition` with `EzForm`, resolves fields through a Vue renderer registry, and passes TanStack field state to renderer components.
 
+## Supported Flows
+
+- Implicit: `EzForm` creates the TanStack form instance and reads renderers from `EzFormProvider`.
+- Hybrid: pass either `instance` or `renderers`, while `EzForm` supplies the rest.
+- Fully explicit: pass both `instance` and `renderers` directly to `EzForm`.
+
 ## Public API
 
 - `EzFormProvider`
 - `EzForm`
 - `EzField`
 - `createVueRendererRegistry`
+- `BaseVueRendererProps`
 - `VueRenderer`
+- `VueRendererField`
 - `VueRendererProps`
 - `VueRendererRegistry`
 - `EasyFormTanStackForm`
