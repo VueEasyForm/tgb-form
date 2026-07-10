@@ -40,8 +40,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright browser
-        run: pnpm exec playwright install
+      - name: Install Playwright Chromium
+        run: pnpm --filter @tgb-form/react exec playwright install --with-deps chromium
 
       - name: Verify releasable packages
         run: pnpm release:check

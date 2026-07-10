@@ -190,12 +190,12 @@ importers:
 
   packages/react:
     devDependencies:
-      '@tgb-form/core':
-        specifier: workspace:*
-        version: link:../core
       '@tanstack/react-form':
         specifier: ^1.33.0
         version: 1.33.0(@tanstack/react-start@1.168.27(crossws@0.4.6(srvx@0.11.21))(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(rolldown@1.1.5)(vite@8.1.4(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.0)(yaml@2.9.0)))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@tgb-form/core':
+        specifier: workspace:*
+        version: link:../core
       '@tsconfig/strictest':
         specifier: ^2.0.8
         version: 2.0.8
@@ -214,6 +214,9 @@ importers:
       '@vitest/browser-playwright':
         specifier: ^4.1.10
         version: 4.1.10(playwright@1.61.1)(vite@8.1.4(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.0)(yaml@2.9.0))(vitest@4.1.10)
+      playwright:
+        specifier: ^1.61.1
+        version: 1.61.1
       react:
         specifier: ^19.2.7
         version: 19.2.7
@@ -238,12 +241,12 @@ importers:
 
   packages/vue:
     devDependencies:
-      '@tgb-form/core':
-        specifier: workspace:*
-        version: link:../core
       '@tanstack/vue-form':
         specifier: ^1.33.0
         version: 1.33.0(vue@3.5.39(typescript@6.0.3))
+      '@tgb-form/core':
+        specifier: workspace:*
+        version: link:../core
       '@tsdown/css':
         specifier: ^0.22.4
         version: 0.22.4(jiti@2.7.0)(postcss@8.5.16)(tsdown@0.22.4)(tsx@4.23.0)(yaml@2.9.0)

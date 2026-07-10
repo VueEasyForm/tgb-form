@@ -10,7 +10,11 @@ export default defineConfig({
     root: '.',
     browser: {
       enabled: true,
-      provider: playwright(),
+      provider: playwright({
+        launchOptions: {
+          channel: 'chromium',
+        },
+      }),
       instances: [{ browser: 'chromium' }],
       headless: true,
     },
