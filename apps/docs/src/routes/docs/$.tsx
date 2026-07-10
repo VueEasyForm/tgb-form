@@ -17,6 +17,8 @@ import { staticFunctionMiddleware } from '@tanstack/start-static-server-function
 import { useFumadocsLoader } from 'fumadocs-core/source/client';
 import { Suspense } from 'react';
 import { useMDXComponents } from '@/components/mdx';
+import { getDocsOgImagePath } from '@/lib/og';
+import { getSiteConfig, getSocialImageUrl } from '@/lib/site';
 
 export const Route = createFileRoute('/docs/$')({
   component: Page,
@@ -25,6 +27,31 @@ export const Route = createFileRoute('/docs/$')({
     const data = await loader({ data: slugs });
     await clientLoader.preload(data.path);
     return data;
+  },
+  head: ({ loaderData, params }) => {
+    if (!loaderData) return {};
+
+    const site = getSiteConfig();
+    const slugs = params._splat?.split('/') ?? [];
+    const url = site.url(`/docs/${slugs.join('/')}`);
+    const image = getSocialImageUrl(getDocsOgImagePath(slugs));
+
+    return {
+      links: [{ href: url, rel: 'canonical' }],
+      meta: [
+        { title: loaderData.title },
+        { content: loaderData.description, name: 'description' },
+        { content: 'article', property: 'og:type' },
+        { content: url, property: 'og:url' },
+        { content: loaderData.title, property: 'og:title' },
+        { content: loaderData.description, property: 'og:description' },
+        { content: image, property: 'og:image' },
+        { content: 'summary_large_image', name: 'twitter:card' },
+        { content: loaderData.title, name: 'twitter:title' },
+        { content: loaderData.description, name: 'twitter:description' },
+        { content: image, name: 'twitter:image' },
+      ],
+    };
   },
 });
 
@@ -39,6 +66,8 @@ const loader = createServerFn({
 
     return {
       path: page.path,
+      title: page.data.title,
+      description: page.data.description,
       markdownUrl: slugsToMarkdownPath(page.slugs).url,
       pageTree: await source.serializePageTree(source.getPageTree()),
     };

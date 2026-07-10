@@ -3,6 +3,7 @@ import { icons as lucideIcons } from 'lucide-react';
 import { createElement } from 'react';
 import { docs } from 'collections/server';
 import { docsRoute } from './shared';
+import { withBasePath } from './site';
 
 import {
   SiReact,
@@ -63,7 +64,7 @@ export function slugsToMarkdownPath(slugs: string[]) {
 export async function getLLMText(page: (typeof source)['$inferPage']) {
   const processed = await page.data.getText('processed');
 
-  return `# ${page.data.title} (${page.url})
+  return `# ${page.data.title} (${withBasePath(page.url)})
 
 ${processed}`;
 }

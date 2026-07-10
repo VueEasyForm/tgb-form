@@ -15,7 +15,11 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'EasyForm Documentations',
+        title: 'EasyForm Documentation',
+      },
+      {
+        content: 'Schema-first forms for React and Vue.',
+        name: 'description',
       },
     ],
     links: [{ rel: 'stylesheet', href: appCss }],
