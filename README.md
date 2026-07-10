@@ -178,7 +178,7 @@ Renderer and validator registries are code, so they are attached at runtime inst
 - `@tgb-form/core` - schema, normalization, validation, serialization, registries, TanStack helpers.
 - `@tgb-form/react` - React components and renderer types for TanStack React Form.
 - `@tgb-form/vue` - Vue components and renderer types for TanStack Vue Form.
-- `@tgb-form/docs` - TanStack Start and Fumadocs documentation app.
+- `@tgb-form/docs` - Astro Starlight documentation app
 
 ## Development
 

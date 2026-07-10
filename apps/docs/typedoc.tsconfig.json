@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "strict": true,
+    "paths": {
+      "@tgb-form/core": ["../../packages/core/src/index.ts"]
+    }
+  },
+  "include": ["../../packages/core/src", "../../packages/react/src", "../../packages/vue/src"]
+}

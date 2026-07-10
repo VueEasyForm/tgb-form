@@ -7,6 +7,8 @@ export default defineConfig({
 
   ignorePatterns: ['**/dist/*', '**/.astro/*'],
 
+  jsPlugins: ['eslint-plugin-astro'],
+
   plugins: [
     'typescript',
     'import',

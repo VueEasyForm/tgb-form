@@ -1,0 +1,31 @@
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* Fonts */
+@import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/lora';
+
+@theme {
+  /* Strategy: extending the default TailwindCSS v4, not replacing it */
+  --font-sans:
+    'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: 'Lora Variable', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono:
+    'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+}
+
+html {
+  @apply scrollbar-gutter-stable antialiased;
+}
+
+code,
+pre {
+  /* This works best for monospaced fonts per visual testing on macOS */
+  @apply subpixel-antialiased!;
+}
