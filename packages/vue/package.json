@@ -34,7 +34,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
-    "@tanstack/vue-form": "^1.33.0",
+    "@tanstack/vue-form": "^1.33.1",
     "@tgb-form/core": "workspace:*",
     "@tsdown/css": "^0.22.4",
     "@types/node": "^26.1.1",

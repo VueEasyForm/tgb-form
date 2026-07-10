@@ -7,7 +7,7 @@ title: "DefineFormOptions"
 
 > **DefineFormOptions** = `object`
 
-Defined in: [core/src/schema/form.ts:16](https://github.com/VueEasyForm/tgb-form/blob/116ebfe00d30a36ed6447b9ac893611229bfde62/packages/core/src/schema/form.ts#L16)
+Defined in: [core/src/schema/form.ts:16](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/core/src/schema/form.ts#L16)
 
 Optional registries used by [defineForm](/api/core/src/functions/defineform/) and [deserializeForm](/api/core/src/functions/deserializeform/).
 
@@ -17,7 +17,7 @@ Optional registries used by [defineForm](/api/core/src/functions/defineform/) an
 
 > `readonly` `optional` **renderers?**: [`RendererRegistry`](/api/core/src/type-aliases/rendererregistry/)
 
-Defined in: [core/src/schema/form.ts:20](https://github.com/VueEasyForm/tgb-form/blob/116ebfe00d30a36ed6447b9ac893611229bfde62/packages/core/src/schema/form.ts#L20)
+Defined in: [core/src/schema/form.ts:20](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/core/src/schema/form.ts#L20)
 
 Runtime registry used to resolve renderer component names and field-type defaults.
 
@@ -27,6 +27,6 @@ Runtime registry used to resolve renderer component names and field-type default
 
 > `readonly` `optional` **validators?**: [`ValidatorRegistry`](/api/core/src/type-aliases/validatorregistry/)
 
-Defined in: [core/src/schema/form.ts:18](https://github.com/VueEasyForm/tgb-form/blob/116ebfe00d30a36ed6447b9ac893611229bfde62/packages/core/src/schema/form.ts#L18)
+Defined in: [core/src/schema/form.ts:18](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/core/src/schema/form.ts#L18)
 
 Runtime registry used to resolve field custom validators by name.

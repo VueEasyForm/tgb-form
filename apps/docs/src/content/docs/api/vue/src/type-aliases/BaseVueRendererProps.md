@@ -7,4 +7,4 @@ title: "BaseVueRendererProps"
 
 > **BaseVueRendererProps** = [`VueRendererProps`](/api/vue/src/type-aliases/vuerendererprops/)
 
-Defined in: [vue/src/types.ts:18](https://github.com/VueEasyForm/tgb-form/blob/116ebfe00d30a36ed6447b9ac893611229bfde62/packages/vue/src/types.ts#L18)
+Defined in: [vue/src/types.ts:18](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/vue/src/types.ts#L18)

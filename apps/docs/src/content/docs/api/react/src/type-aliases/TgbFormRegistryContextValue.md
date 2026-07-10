@@ -7,7 +7,7 @@ title: "TgbFormRegistryContextValue"
 
 > **TgbFormRegistryContextValue** = `object`
 
-Defined in: [react/src/TgbFormContext.tsx:6](https://github.com/VueEasyForm/tgb-form/blob/116ebfe00d30a36ed6447b9ac893611229bfde62/packages/react/src/TgbFormContext.tsx#L6)
+Defined in: [react/src/TgbFormContext.tsx:6](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/react/src/TgbFormContext.tsx#L6)
 
 ## Properties
 
@@ -15,4 +15,4 @@ Defined in: [react/src/TgbFormContext.tsx:6](https://github.com/VueEasyForm/tgb-
 
 > `readonly` `optional` **renderers?**: [`ReactRendererRegistry`](/api/react/src/type-aliases/reactrendererregistry/)
 
-Defined in: [react/src/TgbFormContext.tsx:7](https://github.com/VueEasyForm/tgb-form/blob/116ebfe00d30a36ed6447b9ac893611229bfde62/packages/react/src/TgbFormContext.tsx#L7)
+Defined in: [react/src/TgbFormContext.tsx:7](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/react/src/TgbFormContext.tsx#L7)

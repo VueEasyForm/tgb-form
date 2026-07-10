@@ -7,7 +7,7 @@ title: "TgbFormField"
 
 > **TgbFormField**(`__namedParameters`): `Element`
 
-Defined in: [react/src/TgbFormField.tsx:23](https://github.com/VueEasyForm/tgb-form/blob/116ebfe00d30a36ed6447b9ac893611229bfde62/packages/react/src/TgbFormField.tsx#L23)
+Defined in: [react/src/TgbFormField.tsx:23](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/react/src/TgbFormField.tsx#L23)
 
 ## Parameters
 

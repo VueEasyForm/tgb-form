@@ -7,7 +7,7 @@ title: "resolveRenderer"
 
 > **resolveRenderer**\<`TRegistry`\>(`field`, `registry`): `ResolvedRenderer`\<`TRegistry`\>
 
-Defined in: [core/src/renderer-registry.ts:43](https://github.com/VueEasyForm/tgb-form/blob/116ebfe00d30a36ed6447b9ac893611229bfde62/packages/core/src/renderer-registry.ts#L43)
+Defined in: [core/src/renderer-registry.ts:43](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/core/src/renderer-registry.ts#L43)
 
 Resolves a [FieldDefinition](/api/core/src/type-aliases/fielddefinition/) renderer by explicit component name first, then by [FieldDataType](/api/core/src/enumerations/fielddatatype/).
 

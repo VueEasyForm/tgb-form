@@ -34,7 +34,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
-    "@tanstack/react-form": "^1.33.0",
+    "@tanstack/react-form": "^1.33.1",
     "@tgb-form/core": "workspace:*",
     "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^26.1.1",
