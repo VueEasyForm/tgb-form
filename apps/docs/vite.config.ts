@@ -21,12 +21,19 @@ export default defineConfig(({ mode }) => {
         spa: {
           enabled: true,
           prerender: {
-            enabled: true,
             crawlLinks: true,
+            retryCount: 3,
           },
+        },
+        prerender: {
+          enabled: true,
+          crawlLinks: true,
         },
 
         pages: [
+          {
+            path: '/',
+          },
           {
             path: '/docs',
           },
