@@ -7,7 +7,7 @@ title: "ValidationRule"
 
 > **ValidationRule** = \{ `kind`: [`Required`](/api/core/src/enumerations/validationrulekind/#required); `message?`: `string`; \} \| \{ `kind`: [`MinLength`](/api/core/src/enumerations/validationrulekind/#minlength) \| [`MaxLength`](/api/core/src/enumerations/validationrulekind/#maxlength) \| [`Min`](/api/core/src/enumerations/validationrulekind/#min) \| [`Max`](/api/core/src/enumerations/validationrulekind/#max); `message?`: `string`; `value`: `number`; \} \| \{ `kind`: [`Pattern`](/api/core/src/enumerations/validationrulekind/#pattern); `message?`: `string`; `value`: `string`; \} \| \{ `kind`: [`Email`](/api/core/src/enumerations/validationrulekind/#email) \| [`Url`](/api/core/src/enumerations/validationrulekind/#url); `message?`: `string`; \}
 
-Defined in: [core/src/schema/rules.ts:8](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/core/src/schema/rules.ts#L8)
+Defined in: [core/src/schema/rules.ts:8](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/core/src/schema/rules.ts#L8)
 
 A built-in validation rule that can round-trip through JSON and compile via [toValibotSchema](/api/core/src/functions/tovalibotschema/).
 

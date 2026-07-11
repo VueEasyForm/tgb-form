@@ -7,9 +7,12 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check-types": "astro check",
     "start": "astro preview",
     "preview": "astro preview",
-    "typecheck": "astro check"
+    "typecheck": "pnpm run check-types",
+    "lint": "oxlint --fix",
+    "fmt": "oxfmt"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.41.3",

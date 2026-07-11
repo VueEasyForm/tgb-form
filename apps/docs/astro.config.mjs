@@ -7,6 +7,7 @@ import astroTakumi from 'astro-takumi';
 import starlightLlmsTxt from 'starlight-llms-txt';
 import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc';
 import { OgCard } from './src/components/OgCard.tsx';
+import { prefixOgImageBasePath } from './src/integrations/prefix-og-image-base-path.mts';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -104,5 +105,6 @@ export default defineConfig({
         });
       },
     }),
+    prefixOgImageBasePath(process.env.DOCS_BASE_PATH ?? '/'),
   ],
 });

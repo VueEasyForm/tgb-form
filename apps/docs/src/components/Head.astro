@@ -9,16 +9,14 @@ if (!site) {
   throw new Error("Astro `site` must be configured.");
 }
 
-const isNotFound =
-  url.pathname === `${base}404` ||
-  url.pathname === `${base}404/` ||
-  url.pathname.endsWith("/not-found") ||
-  url.pathname.endsWith("/not-found/");
-
-const image = isNotFound
-  ? // workaround for Takumi image to work on base path being set
-    new URL(`${base.replace(/\/?$/, "/")}404.webp`, site.origin).href
-  : getImagePath({ url, site, format: "webp" });
+const pathname = url.pathname.startsWith(base)
+  ? url.pathname.slice(base.length) || "/"
+  : url.pathname;
+const image = getImagePath({
+  url: new URL(pathname, site),
+  site: new URL("/", site),
+  format: "webp",
+});
 ---
 
 <DefaultHead />

@@ -7,7 +7,7 @@ title: "VueRendererRegistry"
 
 > **VueRendererRegistry**\<`TByName`, `TByType`\> = [`RendererRegistry`](/api/core/src/type-aliases/rendererregistry/)\<`TByName`, `TByType`\>
 
-Defined in: [vue/src/types.ts:22](https://github.com/VueEasyForm/tgb-form/blob/4e15a707001bbfb670d3e50c73bdd285a920798e/packages/vue/src/types.ts#L22)
+Defined in: [vue/src/types.ts:22](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/vue/src/types.ts#L22)
 
 ## Type Parameters
 
