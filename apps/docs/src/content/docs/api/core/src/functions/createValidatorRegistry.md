@@ -7,7 +7,7 @@ title: "createValidatorRegistry"
 
 > **createValidatorRegistry**(`entries?`): [`ValidatorRegistry`](/api/core/src/type-aliases/validatorregistry/)
 
-Defined in: [core/src/validator-registry.ts:38](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/core/src/validator-registry.ts#L38)
+Defined in: [core/src/validator-registry.ts:38](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/validator-registry.ts#L38)
 
 Creates a mutable [ValidatorRegistry](/api/core/src/type-aliases/validatorregistry/) for code-defined custom validators.
 

@@ -7,7 +7,7 @@ title: "ValidatorCompilerContext"
 
 > **ValidatorCompilerContext** = `object`
 
-Defined in: [core/src/validator-registry.ts:12](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/core/src/validator-registry.ts#L12)
+Defined in: [core/src/validator-registry.ts:12](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/validator-registry.ts#L12)
 
 Data passed to a named [ValidatorCompiler](/api/core/src/type-aliases/validatorcompiler/).
 
@@ -17,7 +17,7 @@ Data passed to a named [ValidatorCompiler](/api/core/src/type-aliases/validatorc
 
 > `readonly` `optional` **message?**: `string`
 
-Defined in: [core/src/validator-registry.ts:14](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/core/src/validator-registry.ts#L14)
+Defined in: [core/src/validator-registry.ts:14](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/validator-registry.ts#L14)
 
 ***
 
@@ -25,7 +25,7 @@ Defined in: [core/src/validator-registry.ts:14](https://github.com/VueEasyForm/t
 
 > `readonly` **name**: `string`
 
-Defined in: [core/src/validator-registry.ts:13](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/core/src/validator-registry.ts#L13)
+Defined in: [core/src/validator-registry.ts:13](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/validator-registry.ts#L13)
 
 ***
 
@@ -33,4 +33,4 @@ Defined in: [core/src/validator-registry.ts:13](https://github.com/VueEasyForm/t
 
 > `readonly` `optional` **options?**: `Record`\<`string`, `unknown`\>
 
-Defined in: [core/src/validator-registry.ts:15](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/core/src/validator-registry.ts#L15)
+Defined in: [core/src/validator-registry.ts:15](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/validator-registry.ts#L15)

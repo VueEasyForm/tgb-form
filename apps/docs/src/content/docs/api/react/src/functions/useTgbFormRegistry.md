@@ -7,7 +7,7 @@ title: "useTgbFormRegistry"
 
 > **useTgbFormRegistry**(): [`TgbFormRegistryContextValue`](/api/react/src/type-aliases/tgbformregistrycontextvalue/) \| `null`
 
-Defined in: [react/src/TgbFormContext.tsx:29](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/react/src/TgbFormContext.tsx#L29)
+Defined in: [react/src/TgbFormContext.tsx:29](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/react/src/TgbFormContext.tsx#L29)
 
 ## Returns
 

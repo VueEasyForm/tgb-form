@@ -7,7 +7,7 @@ title: "FieldDefinitionInput"
 
 > **FieldDefinitionInput**\<`TComponentName`\> = `Omit`\<[`FieldDefinition`](/api/core/src/type-aliases/fielddefinition/), `"component"` \| `"element"` \| `"fields"`\> & `object`
 
-Defined in: [core/src/schema/form.ts:36](https://github.com/VueEasyForm/tgb-form/blob/397eda42c5611a90c55569ab63ad273a22ef9b8c/packages/core/src/schema/form.ts#L36)
+Defined in: [core/src/schema/form.ts:36](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/form.ts#L36)
 
 Authoring shape for [FieldDefinition](/api/core/src/type-aliases/fielddefinition/), narrowed by [RendererRegistry](/api/core/src/type-aliases/rendererregistry/) names when provided.
 
