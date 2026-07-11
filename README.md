@@ -107,29 +107,10 @@ Render it in Vue:
 
 ```vue
 <script setup lang="ts">
-  import { defineComponent, h } from 'vue';
   import { FieldDataType } from '@tgb-form/core';
   import { TgbForm, createVueRendererRegistry } from '@tgb-form/vue';
   import { newsletterForm } from './newsletter-form';
-
-  const TextInput = defineComponent({
-    props: ['field', 'label', 'props', 'value', 'errors'],
-    setup(props) {
-      return () =>
-        h('label', [
-          h('span', props.label),
-          h('input', {
-            value: props.value,
-            placeholder: props.props?.placeholder,
-            onBlur: props.field.handleBlur,
-            onInput: (event: Event) => {
-              props.field.handleChange((event.target as HTMLInputElement).value);
-            },
-          }),
-          props.errors?.length ? h('small', props.errors.join(', ')) : null,
-        ]);
-    },
-  });
+  import TextInput from './TextInput.vue';
 
   const renderers = createVueRendererRegistry({
     byName: { 'email-input': TextInput },

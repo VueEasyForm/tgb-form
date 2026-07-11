@@ -7,7 +7,7 @@ title: "getDefaultValues"
 
 > **getDefaultValues**\<`TForm`\>(`form`): [`InferFormValues`](/api/core/src/type-aliases/inferformvalues/)\<`TForm`\>
 
-Defined in: [core/src/tanstack.ts:34](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/tanstack.ts#L34)
+Defined in: [core/src/tanstack.ts:34](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/tanstack.ts#L34)
 
 Extracts default values from a [FormDefinition](/api/core/src/type-aliases/formdefinition/).
 

@@ -27,9 +27,9 @@ The adapter renders a `RuntimeFormDefinition` with `TgbForm`, resolves fields th
 
 ```vue
 <script setup lang="ts">
-  import { defineComponent, h } from 'vue';
   import { defineForm, FieldDataType, ValidationRuleKind } from '@tgb-form/core';
   import { TgbForm, TgbFormProvider, createVueRendererRegistry } from '@tgb-form/vue';
+  import TextField from './TextField.vue';
 
   const definition = defineForm({
     fields: {
@@ -41,25 +41,6 @@ The adapter renders a `RuntimeFormDefinition` with `TgbForm`, resolves fields th
         props: { placeholder: 'you@example.com' },
         rules: [{ kind: ValidationRuleKind.Email, message: 'Enter a valid email' }],
       },
-    },
-  });
-
-  const TextField = defineComponent({
-    props: ['field', 'label', 'props', 'value', 'errors'],
-    setup(props) {
-      return () =>
-        h('label', [
-          h('span', props.label),
-          h('input', {
-            value: props.value,
-            placeholder: props.props?.placeholder,
-            onBlur: props.field.handleBlur,
-            onInput: (event: Event) => {
-              props.field.handleChange((event.target as HTMLInputElement).value);
-            },
-          }),
-          props.errors?.length ? h('small', props.errors.join(', ')) : null,
-        ]);
     },
   });
 
@@ -104,3 +85,5 @@ The adapter renders a `RuntimeFormDefinition` with `TgbForm`, resolves fields th
 - `renderers`: optional renderer registry; overrides provider.
 
 Renderer props include `name`, `field`, `form`, `label`, `description`, `props`, `value`, and `errors`.
+
+Write renderers as Vue SFCs and import them into the component that creates the registry. See `TextField.vue` in the quick-start example.

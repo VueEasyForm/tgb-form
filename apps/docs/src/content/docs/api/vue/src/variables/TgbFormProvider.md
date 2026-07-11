@@ -5,6 +5,6 @@ prev: false
 title: "TgbFormProvider"
 ---
 
-> `const` **TgbFormProvider**: `DefineComponent`\<`ExtractPropTypes`\<\{ `renderers`: \{ `default`: `undefined`; `type`: `PropType`\<[`VueRendererRegistry`](/api/vue/src/type-aliases/vuerendererregistry/)\>; \}; \}\>, () => `VNode`\<`RendererNode`, `RendererElement`, \{\[`key`: `string`\]: `any`; \}\>[] \| `undefined`, \{ \}, \{ \}, \{ \}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ \}, `string`, `PublicProps`, `ToResolvedProps`\<`ExtractPropTypes`\<\{ `renderers`: \{ `default`: `undefined`; `type`: `PropType`\<[`VueRendererRegistry`](/api/vue/src/type-aliases/vuerendererregistry/)\>; \}; \}\>, \{ \}\>, \{ `renderers`: [`VueRendererRegistry`](/api/vue/src/type-aliases/vuerendererregistry/); \}, \{ \}, \{ \}, \{ \}, `string`, `ComponentProvideOptions`, `true`, \{ \}, `any`\>
+> `const` **TgbFormProvider**: `DefineComponent` = `TgbFormProviderComponent`
 
-Defined in: [vue/src/TgbFormProvider.ts:11](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/vue/src/TgbFormProvider.ts#L11)
+Defined in: [vue/src/index.ts:7](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/vue/src/index.ts#L7)

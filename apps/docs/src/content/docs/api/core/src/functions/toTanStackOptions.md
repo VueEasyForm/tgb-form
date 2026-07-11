@@ -7,7 +7,7 @@ title: "toTanStackOptions"
 
 > **toTanStackOptions**\<`TForm`\>(`form`, `options?`): [`TgbFormTanStackOutput`](/api/core/src/type-aliases/tgbformtanstackoutput/)\<`TForm`\>
 
-Defined in: [core/src/tanstack.ts:45](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/tanstack.ts#L45)
+Defined in: [core/src/tanstack.ts:45](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/tanstack.ts#L45)
 
 Builds TanStack Form Core options with [getDefaultValues](/api/core/src/functions/getdefaultvalues/) and [toValibotSchema](/api/core/src/functions/tovalibotschema/).
 

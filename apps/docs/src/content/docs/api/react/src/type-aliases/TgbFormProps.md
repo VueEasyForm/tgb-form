@@ -7,7 +7,7 @@ title: "TgbFormProps"
 
 > **TgbFormProps** = `object` & `Omit`\<`FormHTMLAttributes`\<`HTMLFormElement`\>, `"children"` \| `"onSubmit"`\>
 
-Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/react/src/TgbForm.tsx#L18)
+Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/react/src/TgbForm.tsx#L18)
 
 ## Type Declaration
 

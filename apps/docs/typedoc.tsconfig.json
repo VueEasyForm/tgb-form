@@ -10,5 +10,10 @@
       "@tgb-form/core": ["../../packages/core/src/index.ts"]
     }
   },
-  "include": ["../../packages/core/src", "../../packages/react/src", "../../packages/vue/src"]
+  "include": [
+    "./vue-sfc.d.ts",
+    "../../packages/core/src",
+    "../../packages/react/src",
+    "../../packages/vue/src"
+  ]
 }

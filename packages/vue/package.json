@@ -1,6 +1,6 @@
 {
   "name": "@tgb-form/vue",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An easy to use form library for Vue, built on top of @tgb-form/core.",
   "homepage": "https://github.com/VueEasyForm/tgb-form#readme",
   "bugs": {

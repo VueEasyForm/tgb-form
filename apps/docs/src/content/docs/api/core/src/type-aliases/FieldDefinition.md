@@ -7,7 +7,7 @@ title: "FieldDefinition"
 
 > **FieldDefinition** = `object`
 
-Defined in: [core/src/schema/definitions.ts:17](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L17)
+Defined in: [core/src/schema/definitions.ts:17](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L17)
 
 A single JSON-serializable field definition.
 
@@ -20,7 +20,7 @@ them into real components with [RendererRegistry](/api/core/src/type-aliases/ren
 
 > `readonly` `optional` **component?**: `string`
 
-Defined in: [core/src/schema/definitions.ts:31](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L31)
+Defined in: [core/src/schema/definitions.ts:31](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L31)
 
 Renderer registry name to use instead of the default type renderer.
 
@@ -30,7 +30,7 @@ Renderer registry name to use instead of the default type renderer.
 
 > `readonly` **defaultValue**: [`JsonValue`](/api/core/src/type-aliases/jsonvalue/)
 
-Defined in: [core/src/schema/definitions.ts:21](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L21)
+Defined in: [core/src/schema/definitions.ts:21](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L21)
 
 Initial field value; must match the field [type](/api/core/src/type-aliases/fielddefinition/#type).
 
@@ -40,7 +40,7 @@ Initial field value; must match the field [type](/api/core/src/type-aliases/fiel
 
 > `readonly` `optional` **description?**: `string`
 
-Defined in: [core/src/schema/definitions.ts:25](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L25)
+Defined in: [core/src/schema/definitions.ts:25](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L25)
 
 Longer help text or explanation for renderers.
 
@@ -50,7 +50,7 @@ Longer help text or explanation for renderers.
 
 > `readonly` `optional` **element?**: `FieldDefinition`
 
-Defined in: [core/src/schema/definitions.ts:41](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L41)
+Defined in: [core/src/schema/definitions.ts:41](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L41)
 
 Element definition for array-valued fields.
 
@@ -60,7 +60,7 @@ Element definition for array-valued fields.
 
 > `readonly` `optional` **fields?**: [`FormFieldsDefinition`](/api/core/src/type-aliases/formfieldsdefinition/)
 
-Defined in: [core/src/schema/definitions.ts:39](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L39)
+Defined in: [core/src/schema/definitions.ts:39](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L39)
 
 Child fields for object-valued fields.
 
@@ -70,7 +70,7 @@ Child fields for object-valued fields.
 
 > `readonly` `optional` **label?**: `string`
 
-Defined in: [core/src/schema/definitions.ts:23](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L23)
+Defined in: [core/src/schema/definitions.ts:23](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L23)
 
 Human-readable field label for renderers.
 
@@ -80,7 +80,7 @@ Human-readable field label for renderers.
 
 > `readonly` `optional` **meta?**: [`JsonObject`](/api/core/src/type-aliases/jsonobject/)
 
-Defined in: [core/src/schema/definitions.ts:29](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L29)
+Defined in: [core/src/schema/definitions.ts:29](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L29)
 
 JSON-safe application metadata carried with the field definition.
 
@@ -90,7 +90,7 @@ JSON-safe application metadata carried with the field definition.
 
 > `readonly` `optional` **order?**: `number`
 
-Defined in: [core/src/schema/definitions.ts:27](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L27)
+Defined in: [core/src/schema/definitions.ts:27](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L27)
 
 Optional display ordering hint for renderers.
 
@@ -100,7 +100,7 @@ Optional display ordering hint for renderers.
 
 > `readonly` `optional` **props?**: [`JsonObject`](/api/core/src/type-aliases/jsonobject/)
 
-Defined in: [core/src/schema/definitions.ts:33](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L33)
+Defined in: [core/src/schema/definitions.ts:33](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L33)
 
 JSON-safe renderer props passed to the selected component.
 
@@ -110,7 +110,7 @@ JSON-safe renderer props passed to the selected component.
 
 > `readonly` `optional` **rules?**: readonly [`ValidationRule`](/api/core/src/type-aliases/validationrule/)[]
 
-Defined in: [core/src/schema/definitions.ts:35](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L35)
+Defined in: [core/src/schema/definitions.ts:35](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L35)
 
 Built-in validation rules applied when compiling the field.
 
@@ -120,7 +120,7 @@ Built-in validation rules applied when compiling the field.
 
 > `readonly` **type**: [`FieldDataType`](/api/core/src/enumerations/fielddatatype/)
 
-Defined in: [core/src/schema/definitions.ts:19](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L19)
+Defined in: [core/src/schema/definitions.ts:19](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L19)
 
 JSON-safe data type used to choose validation and default-value checks.
 
@@ -130,6 +130,6 @@ JSON-safe data type used to choose validation and default-value checks.
 
 > `readonly` `optional` **validators?**: readonly [`CustomValidatorReference`](/api/core/src/type-aliases/customvalidatorreference/)[]
 
-Defined in: [core/src/schema/definitions.ts:37](https://github.com/VueEasyForm/tgb-form/blob/d3e8e4a8ab0c1ee39d9256e2e460c9593b8ce0cc/packages/core/src/schema/definitions.ts#L37)
+Defined in: [core/src/schema/definitions.ts:37](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/schema/definitions.ts#L37)
 
 Named custom validators resolved from a runtime validator registry.

@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
+    "@faker-js/faker": "^10.5.0",
     "eslint-plugin-astro": "^2.1.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.8",

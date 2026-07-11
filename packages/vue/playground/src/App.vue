@@ -1,49 +1,12 @@
 <script setup lang="ts">
-  import { defineComponent, h, ref } from 'vue';
+  import { ref } from 'vue';
   import { defineForm, FieldDataType, toTanStackOptions } from '@tgb-form/core';
   import { useForm } from '@tanstack/vue-form';
   import { TgbForm, createVueRendererRegistry } from '../../src';
+  import CheckboxRenderer from './CheckboxRenderer.vue';
+  import TextRenderer from './TextRenderer.vue';
 
   const submitted = ref('');
-
-  const TextRenderer = defineComponent({
-    name: 'TextRenderer',
-    props: ['label', 'description', 'props', 'value', 'field'],
-    setup(props) {
-      return () =>
-        h('label', { class: 'field' }, [
-          h('span', { class: 'field-label' }, props.label),
-          h('input', {
-            value: props.value,
-            placeholder: props.props?.placeholder,
-            onInput: (event: Event) => {
-              props.field.handleChange((event.target as HTMLInputElement).value);
-            },
-            onBlur: props.field.handleBlur,
-          }),
-          props.description ? h('small', props.description) : null,
-        ]);
-    },
-  });
-
-  const CheckboxRenderer = defineComponent({
-    name: 'CheckboxRenderer',
-    props: ['label', 'value', 'field'],
-    setup(props) {
-      return () =>
-        h('label', { class: 'field field-checkbox' }, [
-          h('input', {
-            type: 'checkbox',
-            checked: props.value,
-            onChange: (event: Event) => {
-              props.field.handleChange((event.target as HTMLInputElement).checked);
-            },
-            onBlur: props.field.handleBlur,
-          }),
-          h('span', props.label),
-        ]);
-    },
-  });
 
   const definition = defineForm({
     fields: {

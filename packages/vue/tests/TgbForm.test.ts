@@ -8,13 +8,7 @@ import { useForm } from '@tanstack/vue-form';
 import { describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-vue';
 import { defineComponent, h } from 'vue';
-import {
-  TgbFormField,
-  TgbForm,
-  TgbFormProvider,
-  createVueRendererRegistry,
-  type VueRendererProps,
-} from '../src';
+import { TgbFormField, TgbForm, TgbFormProvider, createVueRendererRegistry } from '../src';
 
 function createFormStub(
   values: Record<string, unknown> = {},
