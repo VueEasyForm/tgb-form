@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 import { FieldDataType, ValidationRuleKind } from './schema/enums';
-import type { FieldDefinition, FormDefinition, ValidationRule } from './schema';
+import type { FieldDefinition, ValidationRule } from './schema';
 import type { RuntimeFormDefinition } from './schema/form';
 import { compileCustomValidators, type ValibotValidationItem } from './validator-registry';
 
@@ -9,14 +9,12 @@ type AnySchema = v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>;
 /**
  * Compiles a normalized {@link FormDefinition} into a Valibot object schema.
  */
-export function toValibotSchema(form: FormDefinition): AnySchema {
-  const runtimeForm = form as RuntimeFormDefinition;
-
+export function toValibotSchema(form: RuntimeFormDefinition): AnySchema {
   return v.object(
     Object.fromEntries(
       Object.entries(form.fields).map(([name, field]) => [
         name,
-        toFieldSchema(field, runtimeForm.validators),
+        toFieldSchema(field, form.validators),
       ]),
     ),
   );
@@ -36,7 +34,7 @@ function toFieldSchema(
     return baseSchema;
   }
 
-  return v.pipe(baseSchema, ...(pipeItems as [ValibotValidationItem, ...ValibotValidationItem[]]));
+  return v.pipe(baseSchema, ...pipeItems);
 }
 
 function toBaseSchema(

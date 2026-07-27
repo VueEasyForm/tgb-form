@@ -7,7 +7,7 @@ title: "ValidatorCompiler"
 
 > **ValidatorCompiler** = (`context`) => `ValibotValidationItem` \| readonly `ValibotValidationItem`[]
 
-Defined in: [core/src/validator-registry.ts:21](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/validator-registry.ts#L21)
+Defined in: [core/src/validator-registry.ts:21](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/validator-registry.ts#L21)
 
 Converts a [CustomValidatorReference](/api/core/src/type-aliases/customvalidatorreference/) into one or more ValibotValidationItem values.
 

@@ -8,7 +8,7 @@ import {
   type FormDefinition,
   type FormFieldsDefinition,
 } from './definitions';
-import { cloneJson, isJsonObject, type JsonValue } from './json';
+import { isJsonObject } from './json';
 
 /**
  * Optional registries used by {@link defineForm} and {@link deserializeForm}.
@@ -101,12 +101,8 @@ export function defineForm(
  * Returns a JSON-safe {@link FormDefinition}, omitting runtime-only registries.
  */
 export function serializeForm(form: FormDefinition): FormDefinition {
-  const {
-    validators: _validators,
-    renderers: _renderers,
-    ...serializable
-  } = form as RuntimeFormDefinition;
-  return cloneJson(serializable as unknown as JsonValue) as unknown as FormDefinition;
+  const { validators: _v, renderers: _r, ...serializable } = form as RuntimeFormDefinition;
+  return structuredClone(serializable) as FormDefinition;
 }
 
 /**
@@ -123,7 +119,7 @@ export function deserializeForm(
 function normalizeFormDefinition(definition: unknown): FormDefinition {
   const parsed = v.parse(VFormDefinition, definition);
   validateDefaultValues(parsed.fields, 'fields');
-  return cloneJson(parsed as unknown as JsonValue) as unknown as FormDefinition;
+  return structuredClone(parsed);
 }
 
 function validateDefaultValues(fields: FormFieldsDefinition, path: string) {

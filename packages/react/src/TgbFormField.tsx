@@ -1,18 +1,7 @@
 import { resolveRenderer, type FieldDefinition } from '@tgb-form/core';
 import { useTgbFormInstance, useTgbFormRegistry } from './TgbFormContext';
-import type { ReactRenderer } from './types';
+import type { ReactRendererField } from './types';
 import type { ReactRendererRegistry } from './types';
-
-type FieldState = {
-  readonly value?: unknown;
-  readonly meta?: {
-    readonly errors?: readonly unknown[];
-  };
-};
-
-type BoundField = {
-  readonly state?: FieldState;
-};
 
 export type TgbFormFieldProps = {
   readonly name: string;
@@ -36,23 +25,24 @@ export function TgbFormField({ name, field, renderers: propRenderers }: TgbFormF
   }
 
   const Field = form.Field;
-  const Renderer = resolveRenderer(field, renderers) as ReactRenderer;
+  const Renderer = resolveRenderer(field, renderers);
 
   return (
     <Field name={name}>
-      {(boundField: unknown) => {
-        const fieldState = (boundField as BoundField).state;
+      {(boundField) => {
+        // @ts-expect-error: FieldApi generics ~ ReactRendererField structurally
+        const fieldApi: ReactRendererField = boundField;
 
         return (
           <Renderer
             description={field.description}
-            errors={fieldState?.meta?.errors ?? []}
-            field={boundField}
+            errors={fieldApi.state.meta.errors ?? []}
+            field={fieldApi}
             form={form}
             label={field.label}
             name={name}
             props={field.props}
-            value={fieldState?.value}
+            value={fieldApi.state.value}
           />
         );
       }}

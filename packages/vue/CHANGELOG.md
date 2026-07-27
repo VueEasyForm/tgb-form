@@ -1,5 +1,14 @@
 # @tgb-form/vue
 
+## 0.0.3
+
+### Patch Changes
+
+- Type-safety enforcement and dependencies upgrade.
+
+  - Previously depend too much on any/unknown/never castings, now correctly handling strict type-safety based on the input schemas.
+  - Dependencies are upgraded.
+
 ## 0.0.2
 
 ### Patch Changes

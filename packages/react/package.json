@@ -1,6 +1,6 @@
 {
   "name": "@tgb-form/react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An easy to use form library for React, built on top of @tgb-form/core.",
   "homepage": "https://github.com/VueEasyForm/tgb-form#readme",
   "bugs": {
@@ -34,20 +34,20 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
-    "@tanstack/react-form": "^1.33.1",
+    "@tanstack/react-form": "^1.33.2",
     "@tgb-form/core": "workspace:*",
     "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.3",
+    "@vitejs/plugin-react": "^6.0.4",
     "@vitest/browser-playwright": "^4.1.10",
-    "playwright": "^1.61.1",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "tsdown": "^0.22.4",
+    "playwright": "^1.62.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tsdown": "^0.22.14",
     "typescript": "^7.0.2",
-    "vite": "^8.1.4",
+    "vite": "^8.1.5",
     "vitest": "^4.1.10",
     "vitest-browser-react": "^2.2.0"
   },

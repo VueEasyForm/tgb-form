@@ -317,11 +317,11 @@ describe('TgbForm', () => {
     const Host = defineComponent({
       name: 'TanStackHost',
       setup() {
-        const form = useForm(toTanStackOptions(definition, { onSubmit }) as any);
+        const form = useForm(toTanStackOptions(definition, { onSubmit }));
 
         return () =>
           h(TgbForm, {
-            instance: form as any,
+            instance: form,
             definition,
             renderers: registry,
           });

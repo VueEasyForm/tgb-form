@@ -7,7 +7,7 @@ title: "TgbFormRegistries"
 
 > **TgbFormRegistries** = `object`
 
-Defined in: [vue/src/context.ts:4](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/vue/src/context.ts#L4)
+Defined in: [vue/src/context.ts:4](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/context.ts#L4)
 
 ## Properties
 
@@ -15,4 +15,4 @@ Defined in: [vue/src/context.ts:4](https://github.com/VueEasyForm/tgb-form/blob/
 
 > `optional` **renderers?**: [`VueRendererRegistry`](/api/vue/src/type-aliases/vuerendererregistry/)
 
-Defined in: [vue/src/context.ts:5](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/vue/src/context.ts#L5)
+Defined in: [vue/src/context.ts:5](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/context.ts#L5)

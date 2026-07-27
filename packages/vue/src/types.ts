@@ -1,5 +1,5 @@
 import { createRendererRegistry, type FieldDataType, type RendererRegistry } from '@tgb-form/core';
-import type { AnyFieldApi, AnyFormApi, VueFormApi } from '@tanstack/vue-form';
+import type { AnyFieldApi } from '@tanstack/vue-form';
 import type { Component } from 'vue';
 
 export type VueRendererField = AnyFieldApi;
@@ -26,8 +26,11 @@ export type VueRendererRegistry<
   >,
 > = RendererRegistry<TByName, TByType>;
 
-export type TgbFormTanStackForm = AnyFormApi &
-  VueFormApi<any, any, any, any, any, any, any, any, any, any, any, any>;
+export type TgbFormTanStackForm = {
+  readonly Field: unknown;
+  readonly handleSubmit: () => void | Promise<void>;
+  readonly [key: string]: unknown;
+};
 
 export function createVueRendererRegistry<
   const TByName extends Readonly<Record<string, VueRenderer>> = {},

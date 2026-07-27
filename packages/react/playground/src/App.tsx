@@ -43,10 +43,10 @@ export function App() {
 
   const form = useForm({
     ...toTanStackOptions(definition),
-    onSubmit({ value }: { value: Record<string, unknown> }) {
+    onSubmit({ value }) {
       setSubmitted(value);
     },
-  } as any);
+  });
 
   return (
     <main className="app-shell">
@@ -54,7 +54,7 @@ export function App() {
         className="easy-form"
         definition={definition}
         renderers={renderers}
-        instance={form as any}
+        instance={form}
       />
       <pre>{JSON.stringify(submitted ?? null, null, 2)}</pre>
     </main>
@@ -62,15 +62,13 @@ export function App() {
 }
 
 function TextRenderer({ description, field, label, name, props, value }: ReactRendererProps) {
-  const textField = field as PlaygroundField;
-
   return (
     <label className="field">
       <span>{label}</span>
       <small>{description}</small>
       <input
         name={name}
-        onChange={(event) => textField.handleChange(event.currentTarget.value)}
+        onChange={(event) => field.handleChange(event.currentTarget.value)}
         placeholder={String(props?.placeholder ?? '')}
         value={String(value ?? '')}
       />
@@ -79,14 +77,12 @@ function TextRenderer({ description, field, label, name, props, value }: ReactRe
 }
 
 function BooleanRenderer({ description, field, label, name, value }: ReactRendererProps) {
-  const booleanField = field as PlaygroundField;
-
   return (
     <label className="field field-inline">
       <input
         checked={Boolean(value)}
         name={name}
-        onChange={(event) => booleanField.handleChange(event.currentTarget.checked)}
+        onChange={(event) => field.handleChange(event.currentTarget.checked)}
         type="checkbox"
       />
       <span>

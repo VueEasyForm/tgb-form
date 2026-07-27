@@ -1,28 +1,26 @@
 import type { ComponentType, ReactNode } from 'react';
 import { createRendererRegistry } from '@tgb-form/core';
-import type { FieldDataType, JsonObject, RendererRegistry } from '@tgb-form/core';
+import type { FieldDataType, RendererRegistry } from '@tgb-form/core';
 import type { AnyFieldApi } from '@tanstack/react-form';
-
-type TanStackFieldRenderer = (field: any) => ReactNode;
 
 export type ReactTgbFormInstance = {
   readonly Field: ComponentType<{
     readonly name: string;
-    readonly children: TanStackFieldRenderer;
+    readonly children: (field: Record<string, unknown>) => ReactNode;
   }>;
   readonly handleSubmit: () => void | Promise<void>;
 };
 
 export type ReactRendererProps<
   TForm extends ReactTgbFormInstance = ReactTgbFormInstance,
-  TField = unknown,
+  TField = ReactRendererField,
 > = {
   readonly name: string;
   readonly field: TField;
   readonly form: TForm;
   readonly label: string | undefined;
   readonly description: string | undefined;
-  readonly props: JsonObject | undefined;
+  readonly props: Record<string, unknown> | undefined;
   readonly value: unknown;
   readonly errors: readonly unknown[];
 };
@@ -33,10 +31,10 @@ export type BaseReactRendererProps = ReactRendererProps<ReactTgbFormInstance, Re
 
 export type ReactRenderer<
   TForm extends ReactTgbFormInstance = ReactTgbFormInstance,
-  TField = unknown,
+  TField = ReactRendererField,
 > = ComponentType<ReactRendererProps<TForm, TField>>;
 
-type AnyReactRenderer = ReactRenderer<any, any>;
+type AnyReactRenderer = ReactRenderer;
 
 export type ReactRendererRegistry<
   TByName extends Readonly<Record<string, AnyReactRenderer>> = Readonly<

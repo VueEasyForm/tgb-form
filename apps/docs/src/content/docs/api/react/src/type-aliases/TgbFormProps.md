@@ -7,7 +7,7 @@ title: "TgbFormProps"
 
 > **TgbFormProps** = `object` & `Omit`\<`FormHTMLAttributes`\<`HTMLFormElement`\>, `"children"` \| `"onSubmit"`\>
 
-Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/react/src/TgbForm.tsx#L18)
+Defined in: [react/src/TgbForm.tsx:14](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/react/src/TgbForm.tsx#L14)
 
 ## Type Declaration
 
@@ -25,7 +25,7 @@ Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/b
 
 ### instance?
 
-> `readonly` `optional` **instance?**: [`ReactTgbFormInstance`](/api/react/src/type-aliases/reacttgbforminstance/)
+> `readonly` `optional` **instance?**: `Record`\<`string`, `unknown`\>
 
 ### renderers?
 
@@ -33,4 +33,4 @@ Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/b
 
 ### tanstackOptions?
 
-> `readonly` `optional` **tanstackOptions?**: [`TgbFormTanStackOptions`](/api/core/src/type-aliases/tgbformtanstackoptions/)
+> `readonly` `optional` **tanstackOptions?**: `Record`\<`string`, `unknown`\>

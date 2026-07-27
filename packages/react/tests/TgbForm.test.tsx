@@ -271,12 +271,12 @@ test('renders and submits with a real @tanstack/react-form instance', async () =
   });
 
   function Host() {
-    const form = useForm(toTanStackOptions(definition, { onSubmit }) as any);
+    const form = useForm(toTanStackOptions(definition, { onSubmit }));
 
     return (
       <TgbForm
         definition={definition}
-        instance={form as any}
+        instance={form}
         renderers={renderers}
       />
     );

@@ -7,7 +7,7 @@ title: "ReactRendererRegistry"
 
 > **ReactRendererRegistry**\<`TByName`, `TByType`\> = [`RendererRegistry`](/api/core/src/type-aliases/rendererregistry/)\<`TByName`, `TByType`\>
 
-Defined in: [react/src/types.ts:41](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/react/src/types.ts#L41)
+Defined in: [react/src/types.ts:39](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/react/src/types.ts#L39)
 
 ## Type Parameters
 

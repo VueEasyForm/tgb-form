@@ -1,10 +1,6 @@
 import type { FormEvent, FormHTMLAttributes, ReactNode } from 'react';
 import { useForm } from '@tanstack/react-form';
-import {
-  toTanStackOptions,
-  type TgbFormTanStackOptions,
-  type RuntimeFormDefinition,
-} from '@tgb-form/core';
+import { toTanStackOptions, type RuntimeFormDefinition } from '@tgb-form/core';
 import { TgbFormInstanceContext, useTgbFormRegistry } from './TgbFormContext';
 import { TgbFormField } from './TgbFormField';
 import type { ReactTgbFormInstance, ReactRendererRegistry } from './types';
@@ -17,8 +13,8 @@ type OrderedField = {
 
 export type TgbFormProps = {
   readonly definition: RuntimeFormDefinition;
-  readonly instance?: ReactTgbFormInstance;
-  readonly tanstackOptions?: TgbFormTanStackOptions;
+  readonly instance?: Record<string, unknown>;
+  readonly tanstackOptions?: Record<string, unknown>;
   readonly renderers?: ReactRendererRegistry;
   readonly fields?: readonly string[];
   readonly children?: ReactNode;
@@ -57,9 +53,9 @@ export function TgbForm({
   const ctx = useTgbFormRegistry();
   const renderers = propRenderers ?? ctx?.renderers;
 
-  const mergedOptions = toTanStackOptions(definition, tanstackOptions) as Record<string, unknown>;
-  const managedForm = useForm(mergedOptions);
-  const form = externalInstance ?? (managedForm as unknown as ReactTgbFormInstance);
+  const managedForm = useForm(toTanStackOptions(definition, tanstackOptions));
+  // @ts-expect-error: useForm return ~ ReactTgbFormInstance structurally
+  const form: ReactTgbFormInstance = externalInstance ?? managedForm;
 
   const orderedFields = getOrderedFields(definition, fields);
 

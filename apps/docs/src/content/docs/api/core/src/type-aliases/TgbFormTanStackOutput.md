@@ -5,11 +5,14 @@ prev: false
 title: "TgbFormTanStackOutput"
 ---
 
-> **TgbFormTanStackOutput**\<`TForm`\> = [`TgbFormTanStackOptions`](/api/core/src/type-aliases/tgbformtanstackoptions/) & `object`
+> **TgbFormTanStackOutput**\<`TForm`\> = `Omit`\<[`TgbFormTanStackOptions`](/api/core/src/type-aliases/tgbformtanstackoptions/)\<`TForm`\>, `"validators"`\> & `object`
 
-Defined in: [core/src/tanstack.ts:24](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/tanstack.ts#L24)
+Defined in: [core/src/tanstack.ts:30](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/tanstack.ts#L30)
 
 TanStack-compatible options generated from a [FormDefinition](/api/core/src/type-aliases/formdefinition/).
+
+Omits `validators` from [TgbFormTanStackOptions](/api/core/src/type-aliases/tgbformtanstackoptions/) to avoid intersecting
+user-provided function validators with the Standard Schema override for `onSubmit`.
 
 ## Type Declaration
 
@@ -19,13 +22,11 @@ TanStack-compatible options generated from a [FormDefinition](/api/core/src/type
 
 ### validators
 
-> `readonly` **validators**: `Record`\<`string`, `unknown`\> & `object`
+> `readonly` **validators**: `object`
 
-#### Type Declaration
+#### validators.onSubmit
 
-##### onSubmit
-
-> `readonly` **onSubmit**: `StandardSchemaV1`\<[`JsonObject`](/api/core/src/type-aliases/jsonobject/), `unknown`\>
+> `readonly` **onSubmit**: `StandardSchemaV1`\<[`InferFormValues`](/api/core/src/type-aliases/inferformvalues/)\<`TForm`\>, `unknown`\>
 
 ## Type Parameters
 

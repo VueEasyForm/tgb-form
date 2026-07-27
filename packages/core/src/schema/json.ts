@@ -34,7 +34,7 @@ export const VJsonObject = v.custom<JsonObject>(isJsonObject, 'Value must be a J
  * Deep-clones a {@link JsonValue} so normalized definitions do not share caller-owned references.
  */
 export function cloneJson<T extends JsonValue>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T;
+  return structuredClone(value);
 }
 
 /**

@@ -1,5 +1,5 @@
 import type { StandardSchemaV1 } from '@tanstack/form-core';
-import type { FormDefinition, JsonObject } from './schema';
+import type { FormDefinition } from './schema';
 import { cloneJson } from './schema';
 import { toValibotSchema } from './valibot-compiler';
 
@@ -11,20 +11,29 @@ export type InferFormValues<TForm extends FormDefinition> = {
 };
 
 /**
- * Pass-through options accepted by {@link toTanStackOptions}.
+ * Additional options forwarded to `useForm` by {@link toTanStackOptions}.
  */
-export type TgbFormTanStackOptions = {
+export type TgbFormTanStackOptions<TForm extends FormDefinition> = {
+  readonly onSubmit?: (props: {
+    readonly value: InferFormValues<TForm>;
+  }) => unknown | Promise<unknown>;
   readonly validators?: Record<string, unknown>;
   readonly [key: string]: unknown;
 };
 
 /**
  * TanStack-compatible options generated from a {@link FormDefinition}.
+ *
+ * Omits `validators` from {@link TgbFormTanStackOptions} to avoid intersecting
+ * user-provided function validators with the Standard Schema override for `onSubmit`.
  */
-export type TgbFormTanStackOutput<TForm extends FormDefinition> = TgbFormTanStackOptions & {
+export type TgbFormTanStackOutput<TForm extends FormDefinition> = Omit<
+  TgbFormTanStackOptions<TForm>,
+  'validators'
+> & {
   readonly defaultValues: InferFormValues<TForm>;
-  readonly validators: Record<string, unknown> & {
-    readonly onSubmit: StandardSchemaV1<JsonObject, unknown>;
+  readonly validators: {
+    readonly onSubmit: StandardSchemaV1<InferFormValues<TForm>, unknown>;
   };
 };
 
@@ -34,9 +43,10 @@ export type TgbFormTanStackOutput<TForm extends FormDefinition> = TgbFormTanStac
 export function getDefaultValues<TForm extends FormDefinition>(
   form: TForm,
 ): InferFormValues<TForm> {
+  // @ts-expect-error: Object.fromEntries returns {[key: string]: V} — mapped type is lost
   return Object.fromEntries(
     Object.entries(form.fields).map(([name, field]) => [name, cloneJson(field.defaultValue)]),
-  ) as InferFormValues<TForm>;
+  );
 }
 
 /**
@@ -44,7 +54,7 @@ export function getDefaultValues<TForm extends FormDefinition>(
  */
 export function toTanStackOptions<TForm extends FormDefinition>(
   form: TForm,
-  options: TgbFormTanStackOptions = {},
+  options?: TgbFormTanStackOptions<TForm>,
 ): TgbFormTanStackOutput<TForm> {
   const schema = toValibotSchema(form);
 
@@ -52,8 +62,8 @@ export function toTanStackOptions<TForm extends FormDefinition>(
     ...options,
     defaultValues: getDefaultValues(form),
     validators: {
-      ...options.validators,
-      onSubmit: schema as StandardSchemaV1<JsonObject, unknown>,
+      ...options?.validators,
+      onSubmit: schema as StandardSchemaV1<InferFormValues<TForm>, unknown>,
     },
-  };
+  } as TgbFormTanStackOutput<TForm>;
 }

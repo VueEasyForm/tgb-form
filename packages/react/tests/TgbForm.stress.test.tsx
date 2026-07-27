@@ -43,12 +43,12 @@ test('updates only the changed renderer in a seeded multi-form builder workload'
   });
 
   function FormBuilder() {
-    const form = useForm(toTanStackOptions(definition) as any);
+    const form = useForm(toTanStackOptions(definition));
 
     return (
       <TgbForm
         definition={definition}
-        instance={form as any}
+        instance={form}
         renderers={renderers}
       />
     );

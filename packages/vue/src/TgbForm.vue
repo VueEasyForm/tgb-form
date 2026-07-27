@@ -5,7 +5,6 @@
     toTanStackOptions,
     type FormDefinition,
     type RuntimeFormDefinition,
-    type TgbFormTanStackOptions,
   } from '@tgb-form/core';
   import TgbFormField from './TgbFormField.vue';
   import { TgbFormInstanceKey, TgbFormRegistriesKey } from './context';
@@ -15,19 +14,17 @@
 
   const props = defineProps<{
     definition: RuntimeFormDefinition;
-    instance?: TgbFormTanStackForm;
-    tanstackOptions?: TgbFormTanStackOptions;
+    instance?: Record<string, unknown>;
+    tanstackOptions?: Record<string, unknown>;
     renderers?: VueRendererRegistry;
     fields?: readonly string[];
   }>();
 
   const registries = inject(TgbFormRegistriesKey, null);
   const resolveRenderers = () => props.renderers ?? registries?.renderers;
-  const form =
-    props.instance ??
-    (useForm(
-      toTanStackOptions(props.definition, props.tanstackOptions) as Record<string, unknown>,
-    ) as unknown as TgbFormTanStackForm);
+  const rawForm = useForm(toTanStackOptions(props.definition, props.tanstackOptions));
+  // @ts-expect-error: useForm return ~ TgbFormTanStackForm structurally
+  const form: TgbFormTanStackForm = props.instance ?? rawForm;
 
   provide(TgbFormInstanceKey, form);
 

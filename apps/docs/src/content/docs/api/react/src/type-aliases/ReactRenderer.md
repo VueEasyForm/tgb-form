@@ -7,7 +7,7 @@ title: "ReactRenderer"
 
 > **ReactRenderer**\<`TForm`, `TField`\> = `ComponentType`\<[`ReactRendererProps`](/api/react/src/type-aliases/reactrendererprops/)\<`TForm`, `TField`\>\>
 
-Defined in: [react/src/types.ts:34](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/react/src/types.ts#L34)
+Defined in: [react/src/types.ts:32](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/react/src/types.ts#L32)
 
 ## Type Parameters
 
@@ -17,4 +17,4 @@ Defined in: [react/src/types.ts:34](https://github.com/VueEasyForm/tgb-form/blob
 
 ### TField
 
-`TField` = `unknown`
+`TField` = [`ReactRendererField`](/api/react/src/type-aliases/reactrendererfield/)

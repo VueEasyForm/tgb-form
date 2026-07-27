@@ -5,11 +5,17 @@ prev: false
 title: "TgbFormTanStackOptions"
 ---
 
-> **TgbFormTanStackOptions** = `object`
+> **TgbFormTanStackOptions**\<`TForm`\> = `object`
 
-Defined in: [core/src/tanstack.ts:16](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/tanstack.ts#L16)
+Defined in: [core/src/tanstack.ts:16](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/tanstack.ts#L16)
 
-Pass-through options accepted by [toTanStackOptions](/api/core/src/functions/totanstackoptions/).
+Additional options forwarded to `useForm` by [toTanStackOptions](/api/core/src/functions/totanstackoptions/).
+
+## Type Parameters
+
+### TForm
+
+`TForm` *extends* [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
 
 ## Indexable
 
@@ -17,8 +23,28 @@ Pass-through options accepted by [toTanStackOptions](/api/core/src/functions/tot
 
 ## Properties
 
+### onSubmit?
+
+> `readonly` `optional` **onSubmit?**: (`props`) => `unknown` \| `Promise`\<`unknown`\>
+
+Defined in: [core/src/tanstack.ts:17](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/tanstack.ts#L17)
+
+#### Parameters
+
+##### props
+
+###### value
+
+[`InferFormValues`](/api/core/src/type-aliases/inferformvalues/)\<`TForm`\>
+
+#### Returns
+
+`unknown` \| `Promise`\<`unknown`\>
+
+***
+
 ### validators?
 
 > `readonly` `optional` **validators?**: `Record`\<`string`, `unknown`\>
 
-Defined in: [core/src/tanstack.ts:17](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/core/src/tanstack.ts#L17)
+Defined in: [core/src/tanstack.ts:20](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/tanstack.ts#L20)

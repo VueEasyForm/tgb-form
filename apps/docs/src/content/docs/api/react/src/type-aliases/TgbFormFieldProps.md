@@ -7,7 +7,7 @@ title: "TgbFormFieldProps"
 
 > **TgbFormFieldProps** = `object`
 
-Defined in: [react/src/TgbFormField.tsx:17](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/react/src/TgbFormField.tsx#L17)
+Defined in: [react/src/TgbFormField.tsx:6](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/react/src/TgbFormField.tsx#L6)
 
 ## Properties
 
@@ -15,7 +15,7 @@ Defined in: [react/src/TgbFormField.tsx:17](https://github.com/VueEasyForm/tgb-f
 
 > `readonly` **field**: [`FieldDefinition`](/api/core/src/type-aliases/fielddefinition/)
 
-Defined in: [react/src/TgbFormField.tsx:19](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/react/src/TgbFormField.tsx#L19)
+Defined in: [react/src/TgbFormField.tsx:8](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/react/src/TgbFormField.tsx#L8)
 
 ***
 
@@ -23,7 +23,7 @@ Defined in: [react/src/TgbFormField.tsx:19](https://github.com/VueEasyForm/tgb-f
 
 > `readonly` **name**: `string`
 
-Defined in: [react/src/TgbFormField.tsx:18](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/react/src/TgbFormField.tsx#L18)
+Defined in: [react/src/TgbFormField.tsx:7](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/react/src/TgbFormField.tsx#L7)
 
 ***
 
@@ -31,4 +31,4 @@ Defined in: [react/src/TgbFormField.tsx:18](https://github.com/VueEasyForm/tgb-f
 
 > `readonly` `optional` **renderers?**: [`ReactRendererRegistry`](/api/react/src/type-aliases/reactrendererregistry/)
 
-Defined in: [react/src/TgbFormField.tsx:20](https://github.com/VueEasyForm/tgb-form/blob/f18a2074ed91609dbede1c09a33dcf325f5c78db/packages/react/src/TgbFormField.tsx#L20)
+Defined in: [react/src/TgbFormField.tsx:9](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/react/src/TgbFormField.tsx#L9)

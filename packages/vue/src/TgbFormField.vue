@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { h, inject, markRaw, toRaw } from 'vue';
+  import { h, inject, markRaw, toRaw, type Component } from 'vue';
   import { resolveRenderer, type FieldDefinition } from '@tgb-form/core';
   import { TgbFormInstanceKey, TgbFormRegistriesKey } from './context';
-  import type { VueRenderer, VueRendererRegistry } from './types';
+  import type { VueRendererRegistry } from './types';
 
   defineOptions({ name: 'TgbFormField' });
 
@@ -48,10 +48,9 @@
       throw new Error('TgbFormField must be used inside a TgbForm component');
     }
 
-    const FieldComponent = markRaw(toRaw((form as Record<string, unknown>).Field) as any);
-    const Renderer = markRaw(
-      toRaw(resolveRenderer(props.field, resolveRenderers())) as VueRenderer,
-    );
+    // @ts-expect-error: form.Field is unknown from TgbFormTanStackForm
+    const FieldComponent: Component = markRaw(toRaw(form.Field));
+    const Renderer: Component = markRaw(toRaw(resolveRenderer(props.field, resolveRenderers())));
 
     return h(
       FieldComponent,
