@@ -7,4 +7,4 @@ title: "TgbFormProvider"
 
 > `const` **TgbFormProvider**: `DefineComponent` = `TgbFormProviderComponent`
 
-Defined in: [vue/src/index.ts:7](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/index.ts#L7)
+Defined in: [vue/src/index.ts:7](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/index.ts#L7)

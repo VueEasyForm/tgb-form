@@ -1,6 +1,10 @@
 import type { FormEvent, FormHTMLAttributes, ReactNode } from 'react';
 import { useForm } from '@tanstack/react-form';
-import { toTanStackOptions, type RuntimeFormDefinition } from '@tgb-form/core';
+import {
+  toTanStackOptions,
+  type RuntimeFormDefinition,
+  type TgbFormTanStackOptions,
+} from '@tgb-form/core';
 import { TgbFormInstanceContext, useTgbFormRegistry } from './TgbFormContext';
 import { TgbFormField } from './TgbFormField';
 import type { ReactTgbFormInstance, ReactRendererRegistry } from './types';
@@ -11,10 +15,10 @@ type OrderedField = {
   readonly declarationIndex: number;
 };
 
-export type TgbFormProps = {
-  readonly definition: RuntimeFormDefinition;
+export type TgbFormProps<TForm extends RuntimeFormDefinition = RuntimeFormDefinition> = {
+  readonly definition: TForm;
   readonly instance?: Record<string, unknown>;
-  readonly tanstackOptions?: Record<string, unknown>;
+  readonly tanstackOptions?: TgbFormTanStackOptions<TForm>;
   readonly renderers?: ReactRendererRegistry;
   readonly fields?: readonly string[];
   readonly children?: ReactNode;
@@ -41,7 +45,7 @@ function getOrderedFields(
     });
 }
 
-export function TgbForm({
+export function TgbForm<TForm extends RuntimeFormDefinition = RuntimeFormDefinition>({
   definition,
   instance: externalInstance,
   tanstackOptions,
@@ -49,7 +53,7 @@ export function TgbForm({
   fields,
   children,
   ...formProps
-}: TgbFormProps) {
+}: TgbFormProps<TForm>) {
   const ctx = useTgbFormRegistry();
   const renderers = propRenderers ?? ctx?.renderers;
 

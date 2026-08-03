@@ -58,7 +58,7 @@ describe('form definitions', () => {
 
   test('rejects default values that do not match field data types', () => {
     expect(() =>
-      defineForm({
+      deserializeForm({
         fields: {
           age: {
             type: FieldDataType.Number,
@@ -67,6 +67,66 @@ describe('form definitions', () => {
         },
       }),
     ).toThrow(/defaultValue.*number/);
+  });
+
+  test('reports the offending default value in the mismatch error', () => {
+    expect(() =>
+      deserializeForm({
+        fields: {
+          age: {
+            type: FieldDataType.Number,
+            defaultValue: '',
+          },
+        },
+      }),
+    ).toThrow('fields.age.defaultValue must be a number, got ""');
+
+    expect(() =>
+      deserializeForm({
+        fields: {
+          enabled: {
+            type: FieldDataType.Boolean,
+            defaultValue: 'yes',
+          },
+        },
+      }),
+    ).toThrow('fields.enabled.defaultValue must be a boolean, got "yes"');
+  });
+
+  test('rejects mismatched defaults in nested array element definitions', () => {
+    expect(() =>
+      deserializeForm({
+        fields: {
+          rows: {
+            type: FieldDataType.Array,
+            defaultValue: [],
+            element: {
+              type: FieldDataType.Object,
+              defaultValue: {},
+              fields: {
+                quantity: { type: FieldDataType.Number, defaultValue: '' },
+              },
+            },
+          },
+        },
+      }),
+    ).toThrow('fields.rows.element.fields.quantity.defaultValue must be a number, got ""');
+
+    expect(() =>
+      deserializeForm({
+        fields: {
+          matrix: {
+            type: FieldDataType.Array,
+            defaultValue: [],
+            element: {
+              type: FieldDataType.Array,
+              defaultValue: [],
+              element: { type: FieldDataType.Boolean, defaultValue: 'false' },
+            },
+          },
+        },
+      }),
+    ).toThrow('fields.matrix.element.element.defaultValue must be a boolean, got "false"');
   });
 });
 

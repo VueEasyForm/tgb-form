@@ -8,7 +8,8 @@ import {
   type FormDefinition,
   type FormFieldsDefinition,
 } from './definitions';
-import { isJsonObject } from './json';
+import { isJsonObject, type JsonObject, type JsonValue } from './json';
+import type { CustomValidatorReference, ValidationRule } from './rules';
 
 /**
  * Optional registries used by {@link defineForm} and {@link deserializeForm}.
@@ -21,29 +22,56 @@ export type DefineFormOptions = {
 };
 
 /**
- * Normalized {@link FormDefinition} with optional runtime-only {@link ValidatorRegistry}.
+ * Properties shared by every {@link FieldDefinitionInput} variant.
  */
-export type RuntimeFormDefinition = FormDefinition & {
-  /** Runtime-only validator registry attached by {@link defineForm} when provided. */
-  readonly validators?: ValidatorRegistry;
-  /** Runtime-only renderer registry attached by {@link defineForm} when provided. */
-  readonly renderers?: RendererRegistry;
+type FieldInputOptions<TComponentName extends string = string> = {
+  /** Human-readable field label for renderers. */
+  readonly label?: string;
+  /** Longer help text or explanation for renderers. */
+  readonly description?: string;
+  /** Optional display ordering hint for renderers. */
+  readonly order?: number;
+  /** JSON-safe application metadata carried with the field definition. */
+  readonly meta?: JsonObject;
+  /** Renderer registry name, narrowed to known names when renderers are provided. */
+  readonly component?: TComponentName;
+  /** JSON-safe renderer props passed to the selected component. */
+  readonly props?: JsonObject;
+  /** Built-in validation rules applied when compiling the field. */
+  readonly rules?: readonly ValidationRule[];
+  /** Named custom validators resolved from a runtime validator registry. */
+  readonly validators?: readonly CustomValidatorReference[];
 };
 
 /**
- * Authoring shape for {@link FieldDefinition}, narrowed by {@link RendererRegistry} names when provided.
+ * Authoring shape for a single {@link FieldDefinition}, discriminated by {@link type}
+ * so the {@link defaultValue} always matches the declared data type.
  */
-export type FieldDefinitionInput<TComponentName extends string = string> = Omit<
-  FieldDefinition,
-  'component' | 'element' | 'fields'
-> & {
-  /** Renderer registry name, narrowed to known names when renderers are provided. */
-  readonly component?: TComponentName;
-  /** Child authoring definitions for object-valued fields. */
-  readonly fields?: FormFieldsDefinitionInput<TComponentName>;
-  /** Element authoring definition for array-valued fields. */
-  readonly element?: FieldDefinitionInput<TComponentName>;
-};
+export type FieldDefinitionInput<TComponentName extends string = string> =
+  | ({
+      readonly type: FieldDataType.String;
+      readonly defaultValue: string;
+    } & FieldInputOptions<TComponentName>)
+  | ({
+      readonly type: FieldDataType.Number;
+      readonly defaultValue: number;
+    } & FieldInputOptions<TComponentName>)
+  | ({
+      readonly type: FieldDataType.Boolean;
+      readonly defaultValue: boolean;
+    } & FieldInputOptions<TComponentName>)
+  | ({
+      readonly type: FieldDataType.Object;
+      readonly defaultValue: JsonObject;
+      /** Child authoring definitions for the object value. */
+      readonly fields?: FormFieldsDefinitionInput<TComponentName>;
+    } & FieldInputOptions<TComponentName>)
+  | ({
+      readonly type: FieldDataType.Array;
+      readonly defaultValue: JsonValue[];
+      /** Authoring definition used for each array element. */
+      readonly element?: FieldDefinitionInput<TComponentName>;
+    } & FieldInputOptions<TComponentName>);
 
 export type FormFieldsDefinitionInput<TComponentName extends string = string> = {
   /**
@@ -64,6 +92,17 @@ export type FormDefinitionInput<TComponentName extends string = string> = Omit<
   readonly fields: FormFieldsDefinitionInput<TComponentName>;
 };
 
+/**
+ * Normalized {@link FormDefinition} that preserves the literal shape of the
+ * authoring {@link FormDefinitionInput} it was built from.
+ */
+export type RuntimeFormDefinition<TForm extends FormDefinition = FormDefinition> = TForm & {
+  /** Runtime-only validator registry attached by {@link defineForm} when provided. */
+  readonly validators?: ValidatorRegistry;
+  /** Runtime-only renderer registry attached by {@link defineForm} when provided. */
+  readonly renderers?: RendererRegistry;
+};
+
 type ComponentNameFromOptions<TOptions extends DefineFormOptions> = TOptions extends {
   readonly renderers: RendererRegistry;
 }
@@ -71,21 +110,27 @@ type ComponentNameFromOptions<TOptions extends DefineFormOptions> = TOptions ext
   : string;
 
 /**
- * Validates and normalizes a {@link FormDefinitionInput}.
+ * Validates and normalizes a {@link FormDefinitionInput} while preserving the literal field shape.
  */
-export function defineForm(
-  definition: FormDefinitionInput,
+export function defineForm<const TForm extends FormDefinitionInput>(
+  definition: TForm,
   options?: undefined,
-): RuntimeFormDefinition;
-export function defineForm<const TOptions extends DefineFormOptions>(
-  definition: FormDefinitionInput<ComponentNameFromOptions<TOptions>>,
-  options: TOptions,
-): RuntimeFormDefinition;
+): RuntimeFormDefinition<TForm>;
+export function defineForm<
+  const TOptions extends DefineFormOptions,
+  const TForm extends FormDefinitionInput<ComponentNameFromOptions<TOptions>>,
+>(definition: TForm, options: TOptions): RuntimeFormDefinition<TForm>;
 export function defineForm(
   definition: FormDefinitionInput,
   options: DefineFormOptions = {},
 ): RuntimeFormDefinition {
-  const normalized = normalizeFormDefinition(definition);
+  return attachRuntimeOptions(normalizeFormDefinition(definition), options);
+}
+
+function attachRuntimeOptions(
+  normalized: FormDefinition,
+  options: DefineFormOptions,
+): RuntimeFormDefinition {
   if (!options.validators && !options.renderers) {
     return normalized;
   }
@@ -107,13 +152,18 @@ export function serializeForm(form: FormDefinition): FormDefinition {
 
 /**
  * Parses a JSON string or unknown value into a normalized {@link RuntimeFormDefinition}.
+ *
+ * Pass a {@link FormDefinition} type parameter (for example the inferred type of a
+ * code-defined form) to preserve the underlying schema for {@link InferFormValues}.
  */
-export function deserializeForm(
+export function deserializeForm<const TForm extends FormDefinition = FormDefinition>(
   input: string | unknown,
   options: DefineFormOptions = {},
-): RuntimeFormDefinition {
+): RuntimeFormDefinition<TForm> {
   const parsed = typeof input === 'string' ? JSON.parse(input) : input;
-  return defineForm(parsed as FormDefinitionInput, options);
+  const normalized = attachRuntimeOptions(normalizeFormDefinition(parsed), options);
+  // JSON input cannot safely infer TForm; callers may supply it explicitly.
+  return normalized as RuntimeFormDefinition<TForm>;
 }
 
 function normalizeFormDefinition(definition: unknown): FormDefinition {
@@ -124,34 +174,48 @@ function normalizeFormDefinition(definition: unknown): FormDefinition {
 
 function validateDefaultValues(fields: FormFieldsDefinition, path: string) {
   for (const [name, field] of Object.entries(fields)) {
-    validateDefaultValue(field, `${path}.${name}.defaultValue`);
+    validateFieldDefinition(field, `${path}.${name}`);
+  }
+}
 
-    if (field.fields) {
-      validateDefaultValues(field.fields, `${path}.${name}.fields`);
-    }
+/** Validates a field default and every nested object or array definition. */
+function validateFieldDefinition(field: FieldDefinition, path: string) {
+  validateDefaultValue(field, `${path}.defaultValue`);
 
-    if (field.element) {
-      validateDefaultValue(field.element, `${path}.${name}.element.defaultValue`);
-    }
+  if (field.fields) {
+    validateDefaultValues(field.fields, `${path}.fields`);
+  }
+
+  if (field.element) {
+    validateFieldDefinition(field.element, `${path}.element`);
   }
 }
 
 function validateDefaultValue(field: FieldDefinition, path: string) {
   if (field.type === FieldDataType.Array) {
     if (!Array.isArray(field.defaultValue)) {
-      throw new TypeError(`${path} must be an array`);
+      throw new TypeError(`${path} must be an array, got ${describeValue(field.defaultValue)}`);
     }
     return;
   }
 
   if (field.type === FieldDataType.Object) {
     if (!isJsonObject(field.defaultValue)) {
-      throw new TypeError(`${path} must be an object`);
+      throw new TypeError(`${path} must be an object, got ${describeValue(field.defaultValue)}`);
     }
     return;
   }
 
   if (typeof field.defaultValue !== field.type) {
-    throw new TypeError(`${path} must be a ${field.type}`);
+    throw new TypeError(
+      `${path} must be a ${field.type}, got ${describeValue(field.defaultValue)}`,
+    );
   }
+}
+
+function describeValue(value: unknown): string {
+  if (typeof value === 'string') return JSON.stringify(value);
+  if (value === null) return 'null';
+  if (value === undefined) return 'undefined';
+  return String(value);
 }

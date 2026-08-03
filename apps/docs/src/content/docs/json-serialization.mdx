@@ -38,6 +38,39 @@ const restored = deserializeForm(stored);
 
 `serializeForm` returns JSON-safe form data. `deserializeForm` parses stored data and normalizes it with `defineForm`.
 
+## Typed Restoration
+
+An unknown JSON string carries no static TypeScript information, so
+`deserializeForm(json)` cannot infer the stored field shape. If JSON is expected to
+match a particular code-authored definition, restore it with that type explicitly:
+
+```ts twoslash
+import {
+  defineForm,
+  deserializeForm,
+  FieldDataType,
+  type InferFormValues,
+  serializeForm,
+} from '@tgb-form/core';
+
+const knownDefinition = defineForm({
+  fields: {
+    quantity: { type: FieldDataType.Number, defaultValue: 1 },
+  },
+});
+
+const json = JSON.stringify(serializeForm(knownDefinition));
+const restored = deserializeForm<typeof knownDefinition>(json);
+
+type FormValues = InferFormValues<typeof restored>;
+//   ^? { quantity: number }
+```
+
+Only use an explicit definition type when the JSON is known to follow that schema.
+`deserializeForm` always validates loaded data; a malformed numeric default such as
+`"1"` throws a field-path error like
+`fields.quantity.defaultValue must be a number, got "1"`.
+
 ## Why
 
 Form builders need durable output. A saved definition should work in local storage, a database row, a CMS field, an API response, or a file.

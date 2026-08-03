@@ -7,7 +7,7 @@ title: "VueRendererProps"
 
 > **VueRendererProps** = `object`
 
-Defined in: [vue/src/types.ts:7](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L7)
+Defined in: [vue/src/types.ts:7](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L7)
 
 ## Properties
 
@@ -15,7 +15,7 @@ Defined in: [vue/src/types.ts:7](https://github.com/VueEasyForm/tgb-form/blob/95
 
 > `readonly` `optional` **description?**: `string`
 
-Defined in: [vue/src/types.ts:12](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L12)
+Defined in: [vue/src/types.ts:12](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L12)
 
 ***
 
@@ -23,7 +23,7 @@ Defined in: [vue/src/types.ts:12](https://github.com/VueEasyForm/tgb-form/blob/9
 
 > `readonly` **errors**: readonly `unknown`[]
 
-Defined in: [vue/src/types.ts:15](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L15)
+Defined in: [vue/src/types.ts:15](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L15)
 
 ***
 
@@ -31,7 +31,7 @@ Defined in: [vue/src/types.ts:15](https://github.com/VueEasyForm/tgb-form/blob/9
 
 > `readonly` **field**: [`VueRendererField`](/api/vue/src/type-aliases/vuerendererfield/)
 
-Defined in: [vue/src/types.ts:9](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L9)
+Defined in: [vue/src/types.ts:9](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L9)
 
 ***
 
@@ -39,7 +39,7 @@ Defined in: [vue/src/types.ts:9](https://github.com/VueEasyForm/tgb-form/blob/95
 
 > `readonly` **form**: [`TgbFormTanStackForm`](/api/vue/src/type-aliases/tgbformtanstackform/)
 
-Defined in: [vue/src/types.ts:10](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L10)
+Defined in: [vue/src/types.ts:10](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L10)
 
 ***
 
@@ -47,7 +47,7 @@ Defined in: [vue/src/types.ts:10](https://github.com/VueEasyForm/tgb-form/blob/9
 
 > `readonly` `optional` **label?**: `string`
 
-Defined in: [vue/src/types.ts:11](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L11)
+Defined in: [vue/src/types.ts:11](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L11)
 
 ***
 
@@ -55,7 +55,7 @@ Defined in: [vue/src/types.ts:11](https://github.com/VueEasyForm/tgb-form/blob/9
 
 > `readonly` **name**: `string`
 
-Defined in: [vue/src/types.ts:8](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L8)
+Defined in: [vue/src/types.ts:8](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L8)
 
 ***
 
@@ -63,7 +63,7 @@ Defined in: [vue/src/types.ts:8](https://github.com/VueEasyForm/tgb-form/blob/95
 
 > `readonly` `optional` **props?**: `Record`\<`string`, `unknown`\>
 
-Defined in: [vue/src/types.ts:13](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L13)
+Defined in: [vue/src/types.ts:13](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L13)
 
 ***
 
@@ -71,4 +71,4 @@ Defined in: [vue/src/types.ts:13](https://github.com/VueEasyForm/tgb-form/blob/9
 
 > `readonly` **value**: `unknown`
 
-Defined in: [vue/src/types.ts:14](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/vue/src/types.ts#L14)
+Defined in: [vue/src/types.ts:14](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/vue/src/types.ts#L14)

@@ -5,11 +5,12 @@ prev: false
 title: "InferFormValues"
 ---
 
-> **InferFormValues**\<`TForm`\> = `{ readonly [TKey in keyof TForm["fields"]]: TForm["fields"][TKey]["defaultValue"] }`
+> **InferFormValues**\<`TForm`\> = `{ -readonly [TKey in keyof TForm["fields"]]: InferFieldValue<TForm["fields"][TKey]> }`
 
-Defined in: [core/src/tanstack.ts:9](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/tanstack.ts#L9)
+Defined in: [core/src/tanstack.ts:47](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/tanstack.ts#L47)
 
-Infers form values from each [FieldDefinition.defaultValue](/api/core/src/type-aliases/fielddefinition/#defaultvalue).
+Infers the runtime form values shape from each field's [FieldDataType](/api/core/src/enumerations/fielddatatype/),
+preserving literal keys on code-defined forms.
 
 ## Type Parameters
 

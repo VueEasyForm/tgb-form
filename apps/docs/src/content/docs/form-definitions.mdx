@@ -82,6 +82,47 @@ Use the built-in data types:
 
 `defineForm` validates defaults while normalizing the definition. A number field with a string default throws before the form reaches a renderer.
 
+For TypeScript-authored definitions, the same rule is checked before runtime: a
+`FieldDataType.Number` field requires a numeric `defaultValue`.
+
+```ts twoslash
+import { defineForm, FieldDataType } from '@tgb-form/core';
+
+defineForm({
+  fields: {
+    quantity: {
+      type: FieldDataType.Number,
+      // @ts-expect-error Number fields require numeric defaults.
+      defaultValue: '1',
+    },
+  },
+});
+```
+
+Malformed data loaded from JSON is checked at runtime instead. Errors identify the
+field path, for example `fields.quantity.defaultValue must be a number, got "1"`.
+
+## Inferred Values
+
+Derive your value type from the definition with `InferFormValues`. The field type,
+not the literal default, determines the resulting value type.
+
+```ts twoslash
+import { defineForm, FieldDataType, type InferFormValues } from '@tgb-form/core';
+
+const definition = defineForm({
+  fields: {
+    quantity: {
+      type: FieldDataType.Number,
+      defaultValue: 1,
+    },
+  },
+});
+
+type FormValues = InferFormValues<typeof definition>;
+//   ^? { quantity: number }
+```
+
 ## Nested Fields
 
 Objects use `fields`. Arrays use `element`.

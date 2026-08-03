@@ -7,17 +7,23 @@ title: "defineForm"
 
 ## Call Signature
 
-> **defineForm**(`definition`, `options?`): [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)
+> **defineForm**\<`TForm`\>(`definition`, `options?`): [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)\<`TForm`\>
 
-Defined in: [core/src/schema/form.ts:76](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/schema/form.ts#L76)
+Defined in: [core/src/schema/form.ts:115](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/schema/form.ts#L115)
 
-Validates and normalizes a [FormDefinitionInput](/api/core/src/type-aliases/formdefinitioninput/).
+Validates and normalizes a [FormDefinitionInput](/api/core/src/type-aliases/formdefinitioninput/) while preserving the literal field shape.
+
+### Type Parameters
+
+#### TForm
+
+`TForm` *extends* [`FormDefinitionInput`](/api/core/src/type-aliases/formdefinitioninput/)\<`string`\>
 
 ### Parameters
 
 #### definition
 
-[`FormDefinitionInput`](/api/core/src/type-aliases/formdefinitioninput/)
+`TForm`
 
 #### options?
 
@@ -25,15 +31,15 @@ Validates and normalizes a [FormDefinitionInput](/api/core/src/type-aliases/form
 
 ### Returns
 
-[`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)
+[`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)\<`TForm`\>
 
 ## Call Signature
 
-> **defineForm**\<`TOptions`\>(`definition`, `options`): [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)
+> **defineForm**\<`TOptions`, `TForm`\>(`definition`, `options`): [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)\<`TForm`\>
 
-Defined in: [core/src/schema/form.ts:80](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/schema/form.ts#L80)
+Defined in: [core/src/schema/form.ts:119](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/schema/form.ts#L119)
 
-Validates and normalizes a [FormDefinitionInput](/api/core/src/type-aliases/formdefinitioninput/).
+Validates and normalizes a [FormDefinitionInput](/api/core/src/type-aliases/formdefinitioninput/) while preserving the literal field shape.
 
 ### Type Parameters
 
@@ -41,11 +47,15 @@ Validates and normalizes a [FormDefinitionInput](/api/core/src/type-aliases/form
 
 `TOptions` *extends* [`DefineFormOptions`](/api/core/src/type-aliases/defineformoptions/)
 
+#### TForm
+
+`TForm` *extends* [`FormDefinitionInput`](/api/core/src/type-aliases/formdefinitioninput/)\<`ComponentNameFromOptions`\<`TOptions`\>\>
+
 ### Parameters
 
 #### definition
 
-[`FormDefinitionInput`](/api/core/src/type-aliases/formdefinitioninput/)\<`ComponentNameFromOptions`\<`TOptions`\>\>
+`TForm`
 
 #### options
 
@@ -53,4 +63,4 @@ Validates and normalizes a [FormDefinitionInput](/api/core/src/type-aliases/form
 
 ### Returns
 
-[`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)
+[`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)\<`TForm`\>

@@ -42,6 +42,7 @@ export {
   toTanStackOptions,
   type TgbFormTanStackOptions,
   type TgbFormTanStackOutput,
+  type InferFieldValue,
   type InferFormValues,
 } from './tanstack';
 export { toValibotSchema } from './valibot-compiler';

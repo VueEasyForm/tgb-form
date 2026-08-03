@@ -5,11 +5,12 @@ prev: false
 title: "RuntimeFormDefinition"
 ---
 
-> **RuntimeFormDefinition** = [`FormDefinition`](/api/core/src/type-aliases/formdefinition/) & `object`
+> **RuntimeFormDefinition**\<`TForm`\> = `TForm` & `object`
 
-Defined in: [core/src/schema/form.ts:26](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/schema/form.ts#L26)
+Defined in: [core/src/schema/form.ts:99](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/schema/form.ts#L99)
 
-Normalized [FormDefinition](/api/core/src/type-aliases/formdefinition/) with optional runtime-only [ValidatorRegistry](/api/core/src/type-aliases/validatorregistry/).
+Normalized [FormDefinition](/api/core/src/type-aliases/formdefinition/) that preserves the literal shape of the
+authoring [FormDefinitionInput](/api/core/src/type-aliases/formdefinitioninput/) it was built from.
 
 ## Type Declaration
 
@@ -24,3 +25,9 @@ Runtime-only renderer registry attached by [defineForm](/api/core/src/functions/
 > `readonly` `optional` **validators?**: [`ValidatorRegistry`](/api/core/src/type-aliases/validatorregistry/)
 
 Runtime-only validator registry attached by [defineForm](/api/core/src/functions/defineform/) when provided.
+
+## Type Parameters
+
+### TForm
+
+`TForm` *extends* [`FormDefinition`](/api/core/src/type-aliases/formdefinition/) = [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)

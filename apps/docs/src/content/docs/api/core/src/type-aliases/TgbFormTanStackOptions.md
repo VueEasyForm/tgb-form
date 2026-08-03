@@ -7,7 +7,7 @@ title: "TgbFormTanStackOptions"
 
 > **TgbFormTanStackOptions**\<`TForm`\> = `object`
 
-Defined in: [core/src/tanstack.ts:16](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/tanstack.ts#L16)
+Defined in: [core/src/tanstack.ts:54](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/tanstack.ts#L54)
 
 Additional options forwarded to `useForm` by [toTanStackOptions](/api/core/src/functions/totanstackoptions/).
 
@@ -27,7 +27,7 @@ Additional options forwarded to `useForm` by [toTanStackOptions](/api/core/src/f
 
 > `readonly` `optional` **onSubmit?**: (`props`) => `unknown` \| `Promise`\<`unknown`\>
 
-Defined in: [core/src/tanstack.ts:17](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/tanstack.ts#L17)
+Defined in: [core/src/tanstack.ts:55](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/tanstack.ts#L55)
 
 #### Parameters
 
@@ -47,4 +47,4 @@ Defined in: [core/src/tanstack.ts:17](https://github.com/VueEasyForm/tgb-form/bl
 
 > `readonly` `optional` **validators?**: `Record`\<`string`, `unknown`\>
 
-Defined in: [core/src/tanstack.ts:20](https://github.com/VueEasyForm/tgb-form/blob/95df69fa6a1ea04dca9545f750466416c757786b/packages/core/src/tanstack.ts#L20)
+Defined in: [core/src/tanstack.ts:56](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/tanstack.ts#L56)

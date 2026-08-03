@@ -17,8 +17,10 @@ import {
   type FieldDefinition,
   type FormDefinition,
   type FormDefinitionInput,
+  type JsonObject,
   type JsonValue,
   type RuntimeFormDefinition,
+  type TgbFormTanStackOptions,
 } from '../src';
 
 // ---------------------------------------------------------------------------
@@ -35,10 +37,95 @@ describe('InferFormValues', () => {
     }>;
 
     expectTypeOf<T>().toEqualTypeOf<{
-      readonly name: string;
-      readonly age: number;
-      readonly active: boolean;
+      name: string;
+      age: number;
+      active: boolean;
     }>();
+  });
+
+  test('preserves literal field keys and widens defaults by field type', () => {
+    const formDefinition = defineForm({
+      fields: {
+        email: { type: FieldDataType.String, defaultValue: 'a@b.com' },
+        age: { type: FieldDataType.Number, defaultValue: 30 },
+        active: { type: FieldDataType.Boolean, defaultValue: true },
+        profile: {
+          type: FieldDataType.Object,
+          defaultValue: { nickname: '' },
+          fields: {
+            nickname: { type: FieldDataType.String, defaultValue: '' },
+            score: { type: FieldDataType.Number, defaultValue: 0 },
+          },
+        },
+        tags: {
+          type: FieldDataType.Array,
+          defaultValue: [],
+          element: { type: FieldDataType.String, defaultValue: '' },
+        },
+      },
+    });
+
+    type FormSchema = InferFormValues<typeof formDefinition>;
+
+    expectTypeOf<FormSchema>().toEqualTypeOf<{
+      email: string;
+      age: number;
+      active: boolean;
+      profile: { nickname: string; score: number };
+      tags: string[];
+    }>();
+
+    const updateValues = (values: FormSchema) => {
+      values.email = 'updated@example.com';
+      values.profile.nickname = 'updated';
+      values.tags.push('new tag');
+    };
+
+    expectTypeOf(updateValues).toBeFunction();
+  });
+
+  test('falls back to JsonValue for unconstrained object and array fields', () => {
+    const formDefinition = defineForm({
+      fields: {
+        meta: { type: FieldDataType.Object, defaultValue: {} },
+        extra: { type: FieldDataType.Array, defaultValue: [] },
+      },
+    });
+
+    type FormSchema = InferFormValues<typeof formDefinition>;
+
+    expectTypeOf<FormSchema>().toEqualTypeOf<{
+      meta: JsonObject;
+      extra: JsonValue[];
+    }>();
+  });
+
+  test('uses the JsonValue index signature for non-literal definitions', () => {
+    function wrap(form: FormDefinition): FormDefinition {
+      return form;
+    }
+
+    const indexed = wrap({
+      fields: {
+        x: { type: FieldDataType.String, defaultValue: '' },
+      },
+    });
+
+    type T = InferFormValues<typeof indexed>;
+    expectTypeOf<T>().toEqualTypeOf<Record<string, JsonValue>>();
+  });
+
+  test('types onSubmit through TgbFormTanStackOptions', () => {
+    const form = defineForm({
+      fields: {
+        email: { type: FieldDataType.String, defaultValue: '' },
+        age: { type: FieldDataType.Number, defaultValue: 0 },
+      },
+    });
+
+    type SubmitProps = Parameters<NonNullable<TgbFormTanStackOptions<typeof form>['onSubmit']>>[0];
+
+    expectTypeOf<SubmitProps>().toEqualTypeOf<{ value: { email: string; age: number } }>();
   });
 });
 
@@ -101,6 +188,24 @@ describe('deserializeForm', () => {
   test('returns RuntimeFormDefinition from unknown input', () => {
     const form = deserializeForm({ fields: {} });
     expectTypeOf(form).toExtend<RuntimeFormDefinition>();
+    expectTypeOf<InferFormValues<typeof form>>().toExtend<Record<string, JsonValue>>();
+  });
+
+  test('preserves the schema when given a definition type parameter', () => {
+    const original = defineForm({
+      fields: {
+        email: { type: FieldDataType.String, defaultValue: 'a@b.com' },
+        age: { type: FieldDataType.Number, defaultValue: 30 },
+      },
+    });
+
+    const restored = deserializeForm<typeof original>(JSON.stringify(serializeForm(original)));
+
+    type RestoredSchema = InferFormValues<typeof restored>;
+    expectTypeOf<RestoredSchema>().toEqualTypeOf<{
+      email: string;
+      age: number;
+    }>();
   });
 });
 
@@ -285,20 +390,20 @@ describe('getDefaultValues mapped type', () => {
     });
 
     const values = getDefaultValues(form);
-    expectTypeOf(values).toHaveProperty('a').toEqualTypeOf<JsonValue>();
-    expectTypeOf(values).toHaveProperty('b').toEqualTypeOf<JsonValue>();
+    expectTypeOf(values).toHaveProperty('a').toEqualTypeOf<string>();
+    expectTypeOf(values).toHaveProperty('b').toEqualTypeOf<number>();
   });
 });
 
 // ---------------------------------------------------------------------------
-// FormDefinitionInput is structurally broader than FormDefinition
+// FormDefinitionInput is a strict subset of FormDefinition
 // ---------------------------------------------------------------------------
 describe('FormDefinitionInput / FormDefinition relationship', () => {
-  test('FormDefinition is assignable to FormDefinitionInput<string>', () => {
-    // This relationship must hold for deserializeForm to work without casts.
-    // FormDefinitionInput<string> has optional component/element/fields
-    // which are compatible with FormDefinition's properties.
-    const form: FormDefinition = {
+  test('FormDefinitionInput is assignable to FormDefinition', () => {
+    // Authoring inputs narrow defaultValue by type; normalized definitions only
+    // grow those literals into their JSON-safe base types, so the reverse
+    // relationship must hold.
+    const input: FormDefinitionInput<string> = {
       fields: {
         name: {
           type: FieldDataType.String,
@@ -307,8 +412,59 @@ describe('FormDefinitionInput / FormDefinition relationship', () => {
       },
     };
 
-    // This assignment should compile:
-    const _input: FormDefinitionInput<string> = form;
-    void _input;
+    const _definition: FormDefinition = input;
+    void _definition;
+  });
+});
+
+// ---------------------------------------------------------------------------
+// FieldDefinitionInput — defaultValue must match the declared field type
+// ---------------------------------------------------------------------------
+describe('defaultValue is narrowed by field type', () => {
+  test('rejects string defaults on number fields', () => {
+    // Runtime validation also rejects these, so keep the call unexecuted and
+    // rely on the compiler to enforce the narrowing via the @ts-expect-error.
+    const build = () =>
+      defineForm({
+        fields: {
+          // @ts-expect-error: number fields require a numeric defaultValue
+          age: { type: FieldDataType.Number, defaultValue: '' },
+        },
+      });
+
+    expectTypeOf(build).toBeFunction();
+  });
+
+  test('rejects mismatched defaults on other field types', () => {
+    const build = () =>
+      defineForm({
+        fields: {
+          // @ts-expect-error: string fields require a string defaultValue
+          name: { type: FieldDataType.String, defaultValue: 42 },
+          // @ts-expect-error: boolean fields require a boolean defaultValue
+          active: { type: FieldDataType.Boolean, defaultValue: 'true' },
+          // @ts-expect-error: object fields require a JSON object defaultValue
+          meta: { type: FieldDataType.Object, defaultValue: [] },
+          // @ts-expect-error: array fields require an array defaultValue
+          tags: { type: FieldDataType.Array, defaultValue: 'x' },
+        },
+      });
+
+    expectTypeOf(build).toBeFunction();
+  });
+
+  test('accepts valid defaults including empty string, zero, and empty arrays', () => {
+    const build = () =>
+      defineForm({
+        fields: {
+          empty: { type: FieldDataType.String, defaultValue: '' },
+          zero: { type: FieldDataType.Number, defaultValue: 0 },
+          on: { type: FieldDataType.Boolean, defaultValue: true },
+          obj: { type: FieldDataType.Object, defaultValue: {} },
+          arr: { type: FieldDataType.Array, defaultValue: [] },
+        },
+      });
+
+    expectTypeOf(build).toBeFunction();
   });
 });

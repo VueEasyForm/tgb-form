@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TForm extends RuntimeFormDefinition">
   import { inject, provide } from 'vue';
   import { useForm } from '@tanstack/vue-form';
   import {
     toTanStackOptions,
-    type FormDefinition,
     type RuntimeFormDefinition,
+    type TgbFormTanStackOptions,
   } from '@tgb-form/core';
   import TgbFormField from './TgbFormField.vue';
   import { TgbFormInstanceKey, TgbFormRegistriesKey } from './context';
@@ -13,9 +13,9 @@
   defineOptions({ name: 'TgbForm' });
 
   const props = defineProps<{
-    definition: RuntimeFormDefinition;
+    definition: TForm;
     instance?: Record<string, unknown>;
-    tanstackOptions?: Record<string, unknown>;
+    tanstackOptions?: TgbFormTanStackOptions<TForm>;
     renderers?: VueRendererRegistry;
     fields?: readonly string[];
   }>();
@@ -28,7 +28,7 @@
 
   provide(TgbFormInstanceKey, form);
 
-  function getOrderedFields(definition: FormDefinition, fields?: readonly string[]) {
+  function getOrderedFields(definition: RuntimeFormDefinition, fields?: readonly string[]) {
     const fieldSet = fields ? new Set(fields) : undefined;
 
     return Object.entries(definition.fields)

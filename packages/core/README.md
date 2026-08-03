@@ -11,6 +11,7 @@ import {
   defineForm,
   deserializeForm,
   FieldDataType,
+  type InferFormValues,
   serializeForm,
   toTanStackOptions,
   toValibotSchema,
@@ -42,6 +43,23 @@ const stored = JSON.stringify(serializeForm(form));
 const restored = deserializeForm(stored);
 const schema = toValibotSchema(restored);
 const tanstackOptions = toTanStackOptions(restored);
+
+type FormValues = InferFormValues<typeof form>;
+// { email: string; subscribed: boolean }
+```
+
+`InferFormValues` is the canonical way to derive the value shape of a code-authored
+definition. It follows each field's `type`, including `number` fields.
+
+```ts
+const checkoutDefinition = defineForm({
+  fields: {
+    quantity: { type: FieldDataType.Number, defaultValue: 1 },
+  },
+});
+
+type FormValues = InferFormValues<typeof checkoutDefinition>;
+// { quantity: number }
 ```
 
 ## APIs
@@ -57,6 +75,29 @@ const tanstackOptions = toTanStackOptions(restored);
 | `createRendererRegistry(registry)`  | Create named and type-based renderer lookup tables.                  |
 | `resolveRenderer(field, registry)`  | Resolve a field renderer by `component`, then by field type.         |
 | `createValidatorRegistry()`         | Register named custom validators used by JSON definitions.           |
+
+## Typed JSON Restoration
+
+JSON has no TypeScript type information, so `deserializeForm(json)` cannot infer a
+specific value shape from an unknown string or value. When the stored data is known
+to match a code-authored definition, supply that definition type explicitly:
+
+```ts
+const knownDefinition = defineForm({
+  fields: {
+    quantity: { type: FieldDataType.Number, defaultValue: 1 },
+  },
+});
+
+const json = JSON.stringify(serializeForm(knownDefinition));
+const restored = deserializeForm<typeof knownDefinition>(json);
+
+type FormValues = InferFormValues<typeof restored>;
+// { quantity: number }
+```
+
+Use this assertion only when the source of the JSON is trusted to follow the known
+definition. `deserializeForm` still validates every loaded value at runtime.
 
 ## Renderer Keys
 
