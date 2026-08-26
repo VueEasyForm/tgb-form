@@ -5,9 +5,9 @@ prev: false
 title: "createRendererRegistry"
 ---
 
-> **createRendererRegistry**\<`TByName`, `TByType`\>(`registry`): [`RendererRegistry`](/api/core/src/type-aliases/rendererregistry/)\<`TByName`, `TByType`\>
+> **createRendererRegistry**\<`TByName`, `TByType`\>(`registry?`): [`RendererRegistry`](/api/core/src/type-aliases/rendererregistry/)\<`TByName`, `TByType`\>
 
-Defined in: [core/src/renderer-registry.ts:25](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/renderer-registry.ts#L25)
+Defined in: [core/src/renderer-registry.ts:25](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/renderer-registry.ts#L25)
 
 Creates a [RendererRegistry](/api/core/src/type-aliases/rendererregistry/) while preserving literal renderer names for type checking.
 
@@ -23,7 +23,7 @@ Creates a [RendererRegistry](/api/core/src/type-aliases/rendererregistry/) while
 
 ## Parameters
 
-### registry
+### registry?
 
 #### byName?
 

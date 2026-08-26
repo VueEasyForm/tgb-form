@@ -7,7 +7,7 @@ title: "createReactRendererRegistry"
 
 > **createReactRendererRegistry**\<`TByName`, `TByType`\>(`registry`): [`ReactRendererRegistry`](/api/react/src/type-aliases/reactrendererregistry/)\<`TByName`, `TByType`\>
 
-Defined in: [react/src/types.ts:48](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/react/src/types.ts#L48)
+Defined in: [react/src/types.ts:48](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/react/src/types.ts#L48)
 
 ## Type Parameters
 

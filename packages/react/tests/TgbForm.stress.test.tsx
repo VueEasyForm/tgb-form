@@ -30,7 +30,7 @@ test('updates only the changed renderer in a seeded multi-form builder workload'
   const nextValue = faker.lorem.words(4);
   const bindings = new Map<string, FieldBinding>();
   const renderCounts = new Map<string, number>();
-  const commits = vi.fn();
+  const commits = vi.fn<() => void>();
 
   const StressRenderer = ({ name, field, value }: ReactRendererProps) => {
     bindings.set(name, field as FieldBinding);

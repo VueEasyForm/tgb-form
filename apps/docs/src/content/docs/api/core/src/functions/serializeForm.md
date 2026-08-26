@@ -7,7 +7,7 @@ title: "serializeForm"
 
 > **serializeForm**(`form`): [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
 
-Defined in: [core/src/schema/form.ts:148](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/schema/form.ts#L148)
+Defined in: [core/src/schema/form.ts:148](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/form.ts#L148)
 
 Returns a JSON-safe [FormDefinition](/api/core/src/type-aliases/formdefinition/), omitting runtime-only registries.
 
@@ -15,7 +15,7 @@ Returns a JSON-safe [FormDefinition](/api/core/src/type-aliases/formdefinition/)
 
 ### form
 
-[`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
+[`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)
 
 ## Returns
 

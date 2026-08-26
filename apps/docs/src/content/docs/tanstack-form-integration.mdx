@@ -12,7 +12,7 @@ TGB Form does not replace TanStack Form. It generates the parts TanStack Form ca
 
 `toTanStackOptions` returns:
 
-- `defaultValues` from each field's `defaultValue`.
+- `defaultValues` from each field's `defaultValue`, used as a base that any `defaultValues` you pass through in `options` overrides per field.
 - `validators.onSubmit` from the compiled Valibot schema.
 - any extra options you pass through.
 

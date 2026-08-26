@@ -7,7 +7,7 @@ title: "ValidatorRegistry"
 
 > **ValidatorRegistry** = `object`
 
-Defined in: [core/src/validator-registry.ts:28](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/validator-registry.ts#L28)
+Defined in: [core/src/validator-registry.ts:28](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/validator-registry.ts#L28)
 
 Runtime-only registry for [CustomValidatorReference](/api/core/src/type-aliases/customvalidatorreference/) values referenced by name in JSON.
 
@@ -17,7 +17,7 @@ Runtime-only registry for [CustomValidatorReference](/api/core/src/type-aliases/
 
 > `readonly` **get**: (`name`) => [`ValidatorCompiler`](/api/core/src/type-aliases/validatorcompiler/) \| `undefined`
 
-Defined in: [core/src/validator-registry.ts:30](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/validator-registry.ts#L30)
+Defined in: [core/src/validator-registry.ts:30](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/validator-registry.ts#L30)
 
 #### Parameters
 
@@ -35,7 +35,7 @@ Defined in: [core/src/validator-registry.ts:30](https://github.com/VueEasyForm/t
 
 > `readonly` **has**: (`name`) => `boolean`
 
-Defined in: [core/src/validator-registry.ts:31](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/validator-registry.ts#L31)
+Defined in: [core/src/validator-registry.ts:31](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/validator-registry.ts#L31)
 
 #### Parameters
 
@@ -53,7 +53,7 @@ Defined in: [core/src/validator-registry.ts:31](https://github.com/VueEasyForm/t
 
 > `readonly` **names**: () => readonly `string`[]
 
-Defined in: [core/src/validator-registry.ts:32](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/validator-registry.ts#L32)
+Defined in: [core/src/validator-registry.ts:32](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/validator-registry.ts#L32)
 
 #### Returns
 
@@ -65,7 +65,7 @@ readonly `string`[]
 
 > `readonly` **register**: (`name`, `compiler`) => `ValidatorRegistry`
 
-Defined in: [core/src/validator-registry.ts:29](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/validator-registry.ts#L29)
+Defined in: [core/src/validator-registry.ts:29](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/validator-registry.ts#L29)
 
 #### Parameters
 

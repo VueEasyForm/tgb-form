@@ -7,7 +7,7 @@ title: "TgbFormTanStackOptions"
 
 > **TgbFormTanStackOptions**\<`TForm`\> = `object`
 
-Defined in: [core/src/tanstack.ts:54](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/tanstack.ts#L54)
+Defined in: [core/src/tanstack.ts:54](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L54)
 
 Additional options forwarded to `useForm` by [toTanStackOptions](/api/core/src/functions/totanstackoptions/).
 
@@ -23,11 +23,19 @@ Additional options forwarded to `useForm` by [toTanStackOptions](/api/core/src/f
 
 ## Properties
 
+### defaultValues?
+
+> `readonly` `optional` **defaultValues?**: `Partial`\<[`InferFormValues`](/api/core/src/type-aliases/inferformvalues/)\<`TForm`\>\>
+
+Defined in: [core/src/tanstack.ts:57](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L57)
+
+***
+
 ### onSubmit?
 
-> `readonly` `optional` **onSubmit?**: (`props`) => `unknown` \| `Promise`\<`unknown`\>
+> `readonly` `optional` **onSubmit?**: (`props`) => `unknown`
 
-Defined in: [core/src/tanstack.ts:55](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/tanstack.ts#L55)
+Defined in: [core/src/tanstack.ts:55](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L55)
 
 #### Parameters
 
@@ -39,7 +47,7 @@ Defined in: [core/src/tanstack.ts:55](https://github.com/VueEasyForm/tgb-form/bl
 
 #### Returns
 
-`unknown` \| `Promise`\<`unknown`\>
+`unknown`
 
 ***
 
@@ -47,4 +55,4 @@ Defined in: [core/src/tanstack.ts:55](https://github.com/VueEasyForm/tgb-form/bl
 
 > `readonly` `optional` **validators?**: `Record`\<`string`, `unknown`\>
 
-Defined in: [core/src/tanstack.ts:56](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/tanstack.ts#L56)
+Defined in: [core/src/tanstack.ts:56](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L56)

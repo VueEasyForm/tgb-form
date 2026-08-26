@@ -145,9 +145,9 @@ function attachRuntimeOptions(
 /**
  * Returns a JSON-safe {@link FormDefinition}, omitting runtime-only registries.
  */
-export function serializeForm(form: FormDefinition): FormDefinition {
-  const { validators: _v, renderers: _r, ...serializable } = form as RuntimeFormDefinition;
-  return structuredClone(serializable) as FormDefinition;
+export function serializeForm(form: RuntimeFormDefinition): FormDefinition {
+  const { validators: _v, renderers: _r, ...serializable } = form;
+  return structuredClone(serializable);
 }
 
 /**
@@ -157,7 +157,7 @@ export function serializeForm(form: FormDefinition): FormDefinition {
  * code-defined form) to preserve the underlying schema for {@link InferFormValues}.
  */
 export function deserializeForm<const TForm extends FormDefinition = FormDefinition>(
-  input: string | unknown,
+  input: unknown,
   options: DefineFormOptions = {},
 ): RuntimeFormDefinition<TForm> {
   const parsed = typeof input === 'string' ? JSON.parse(input) : input;
@@ -214,8 +214,22 @@ function validateDefaultValue(field: FieldDefinition, path: string) {
 }
 
 function describeValue(value: unknown): string {
-  if (typeof value === 'string') return JSON.stringify(value);
   if (value === null) return 'null';
   if (value === undefined) return 'undefined';
-  return String(value);
+
+  switch (typeof value) {
+    case 'string':
+      return JSON.stringify(value);
+    case 'object':
+      return JSON.stringify(value);
+    case 'number':
+    case 'boolean':
+    case 'bigint':
+    case 'symbol':
+      return String(value);
+    case 'function':
+      return value.toString();
+    default:
+      return JSON.stringify(value);
+  }
 }

@@ -52,8 +52,9 @@ export type InferFormValues<TForm extends FormDefinition> = {
  * Additional options forwarded to `useForm` by {@link toTanStackOptions}.
  */
 export type TgbFormTanStackOptions<TForm extends FormDefinition> = {
-  readonly onSubmit?: (props: { value: InferFormValues<TForm> }) => unknown | Promise<unknown>;
+  readonly onSubmit?: (props: { value: InferFormValues<TForm> }) => unknown;
   readonly validators?: Record<string, unknown>;
+  readonly defaultValues?: Partial<InferFormValues<TForm>>;
   readonly [key: string]: unknown;
 };
 
@@ -96,10 +97,13 @@ export function toTanStackOptions<TForm extends FormDefinition>(
 
   return {
     ...options,
-    defaultValues: getDefaultValues(form),
+    defaultValues: {
+      ...getDefaultValues(form),
+      ...options?.defaultValues,
+    },
     validators: {
       ...options?.validators,
       onSubmit: schema as StandardSchemaV1<InferFormValues<TForm>, unknown>,
     },
-  } as TgbFormTanStackOutput<TForm>;
+  };
 }

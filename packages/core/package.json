@@ -1,6 +1,6 @@
 {
   "name": "@tgb-form/core",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "An easy to use form library, with powerful schema-based form definition capabilities.",
   "homepage": "https://github.com/VueEasyForm/tgb-form#readme",
   "bugs": {

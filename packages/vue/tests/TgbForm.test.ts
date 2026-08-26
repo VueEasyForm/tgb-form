@@ -15,7 +15,7 @@ function createFormStub(
   errors: Record<string, readonly string[]> = {},
 ) {
   return {
-    handleSubmit: vi.fn(),
+    handleSubmit: vi.fn<() => void>(),
     Field: defineComponent({
       name: 'TanStackFieldStub',
       props: {
@@ -32,8 +32,8 @@ function createFormStub(
                   errors: errors[props.name] ?? [],
                 },
               },
-              handleBlur: vi.fn(),
-              handleChange: vi.fn(),
+              handleBlur: vi.fn<() => void>(),
+              handleChange: vi.fn<() => void>(),
             },
             state: {
               value: values[props.name],
@@ -176,7 +176,7 @@ describe('TgbForm', () => {
   });
 
   test('passes field metadata, value, errors, and renderer props to the renderer', () => {
-    const received = vi.fn();
+    const received = vi.fn<() => void>();
     const CapturingRenderer = defineComponent({
       name: 'CapturingRenderer',
       props: {
@@ -304,7 +304,7 @@ describe('TgbForm', () => {
   });
 
   test('submits through an @tanstack/vue-form instance', async () => {
-    const onSubmit = vi.fn();
+    const onSubmit = vi.fn<() => void>();
     const definition = defineForm({
       fields: {
         email: { type: FieldDataType.String, defaultValue: 'ada@example.com' },

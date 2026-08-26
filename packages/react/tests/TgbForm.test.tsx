@@ -29,7 +29,7 @@ type FormHarness = {
 function createFormHarness(
   values: Record<string, unknown>,
   errors: Record<string, readonly unknown[]> = {},
-  handleSubmit: () => void | Promise<void> = vi.fn(),
+  handleSubmit: () => void | Promise<void> = vi.fn<() => void>(),
 ): FormHarness {
   return {
     Field: ({ name, children }) =>
@@ -40,7 +40,7 @@ function createFormHarness(
             errors: errors[name],
           },
         },
-        handleChange: vi.fn(),
+        handleChange: vi.fn<() => void>(),
       }),
     handleSubmit,
   };
@@ -242,7 +242,7 @@ test('submits through the provided TanStack form instance', async () => {
       name: { type: FieldDataType.String, defaultValue: '' },
     },
   });
-  const handleSubmit = vi.fn();
+  const handleSubmit = vi.fn<() => void>();
   const renderers = createReactRendererRegistry({
     byType: { [FieldDataType.String]: TextRenderer },
   });
@@ -260,7 +260,7 @@ test('submits through the provided TanStack form instance', async () => {
 });
 
 test('renders and submits with a real @tanstack/react-form instance', async () => {
-  const onSubmit = vi.fn();
+  const onSubmit = vi.fn<() => void>();
   const definition = defineForm({
     fields: {
       email: { type: FieldDataType.String, defaultValue: 'ada@example.test' },

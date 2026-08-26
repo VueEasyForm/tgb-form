@@ -69,8 +69,8 @@ function TextRenderer({ description, field, label, name, props, value }: ReactRe
       <input
         name={name}
         onChange={(event) => field.handleChange(event.currentTarget.value)}
-        placeholder={String(props?.placeholder ?? '')}
-        value={String(value ?? '')}
+        placeholder={typeof props?.placeholder === 'string' ? props.placeholder : ''}
+        value={typeof value === 'string' ? value : ''}
       />
     </label>
   );

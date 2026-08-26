@@ -293,6 +293,24 @@ describe('TanStack options', () => {
     expect(options.formId).toBe('newsletter');
     expect(options.validators?.onSubmit).toBeDefined();
   });
+
+  test('user-provided defaultValues override schema defaults', () => {
+    const form = defineForm({
+      fields: {
+        email: { type: FieldDataType.String, defaultValue: '' },
+        subscribed: { type: FieldDataType.Boolean, defaultValue: false },
+      },
+    });
+
+    const options = toTanStackOptions(form, {
+      defaultValues: { email: 'ada@example.com' },
+    });
+
+    expect(options.defaultValues).toEqual({
+      email: 'ada@example.com',
+      subscribed: false,
+    });
+  });
 });
 
 describe('renderer registry', () => {

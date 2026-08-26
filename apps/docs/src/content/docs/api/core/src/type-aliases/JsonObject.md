@@ -7,7 +7,7 @@ title: "JsonObject"
 
 > **JsonObject** = `object`
 
-Defined in: [core/src/schema/json.ts:16](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/schema/json.ts#L16)
+Defined in: [core/src/schema/json.ts:16](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/json.ts#L16)
 
 JSON object used for metadata, renderer props, and [CustomValidatorReference](/api/core/src/type-aliases/customvalidatorreference/) options.
 

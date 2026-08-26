@@ -1,5 +1,17 @@
 # @tgb-form/vue
 
+## 0.0.5
+
+### Patch Changes
+
+- Fixed `toTanStackOptions` blindly overriding caller-provided `defaultValues` (initial values) with schema `defaultValue`s. Schema defaults are now the base, and any `defaultValues` passed through `options` override per field, so `useForm` no longer loses initial values.
+
+  Type-system hardening and bug fixes:
+  - `serializeForm` now accepts `RuntimeFormDefinition` (its real input) instead of `FormDefinition`, removing a silencing cast that hid the fact that nothing was being stripped.
+  - `createRendererRegistry` preserves `TByName`/`TByType` literal keys by reference instead of spreading them into a widened object, eliminating the whole-object `as RendererRegistry` cast.
+  - `describeValue` no longer stringifies objects/arrays as `[object Object]` in validation error messages.
+  - `TgbFormTanStackOptions.defaultValues` is now a typed (`Partial<InferFormValues<TForm>>`) option rather than an untyped index-signature value.
+
 ## 0.0.4
 
 ### Patch Changes

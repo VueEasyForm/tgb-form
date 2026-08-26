@@ -7,7 +7,7 @@ title: "FormFieldsDefinitionInput"
 
 > **FormFieldsDefinitionInput**\<`TComponentName`\> = `object`
 
-Defined in: [core/src/schema/form.ts:76](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/schema/form.ts#L76)
+Defined in: [core/src/schema/form.ts:76](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/form.ts#L76)
 
 ## Type Parameters
 

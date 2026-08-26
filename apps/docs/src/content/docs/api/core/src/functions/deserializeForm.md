@@ -7,7 +7,7 @@ title: "deserializeForm"
 
 > **deserializeForm**\<`TForm`\>(`input`, `options?`): [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)\<`TForm`\>
 
-Defined in: [core/src/schema/form.ts:159](https://github.com/VueEasyForm/tgb-form/blob/505349e0f3477e72b1dfc77322d867e6b64238da/packages/core/src/schema/form.ts#L159)
+Defined in: [core/src/schema/form.ts:159](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/form.ts#L159)
 
 Parses a JSON string or unknown value into a normalized [RuntimeFormDefinition](/api/core/src/type-aliases/runtimeformdefinition/).
 

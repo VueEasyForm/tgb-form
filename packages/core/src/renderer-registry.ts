@@ -25,14 +25,20 @@ type ResolvedRenderer<TRegistry extends RendererRegistry> = Exclude<
 export function createRendererRegistry<
   const TByName extends Readonly<Record<string, unknown>> = {},
   const TByType extends Partial<Readonly<Record<FieldDataType, unknown>>> = {},
->(registry: {
-  readonly byName?: TByName;
-  readonly byType?: TByType;
-}): RendererRegistry<TByName, TByType> {
+>(
+  registry: {
+    readonly byName?: TByName;
+    readonly byType?: TByType;
+  } = {},
+): RendererRegistry<TByName, TByType> {
+  // Each field is forwarded by reference, so `TByName`/`TByType` literal keys
+  // are preserved for `resolveRenderer` rather than widened by a spread.
+  // The `?? {}` cast only triggers when the field is omitted, in which case the
+  // generic defaults to `{}`, so `{}` is assignable to `TByName`/`TByType`.
   return {
-    byName: { ...registry.byName },
-    byType: { ...registry.byType },
-  } as RendererRegistry<TByName, TByType>;
+    byName: registry.byName ?? ({} as TByName),
+    byType: registry.byType ?? ({} as TByType),
+  };
 }
 
 /**
