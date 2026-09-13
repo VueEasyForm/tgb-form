@@ -115,7 +115,7 @@ describe('InferFormValues', () => {
     expectTypeOf<T>().toEqualTypeOf<Record<string, JsonValue>>();
   });
 
-  test('types onSubmit through TgbFormTanStackOptions', () => {
+  test('types onSubmit value through TgbFormTanStackOptions', () => {
     const form = defineForm({
       fields: {
         email: { type: FieldDataType.String, defaultValue: '' },
@@ -125,7 +125,7 @@ describe('InferFormValues', () => {
 
     type SubmitProps = Parameters<NonNullable<TgbFormTanStackOptions<typeof form>['onSubmit']>>[0];
 
-    expectTypeOf<SubmitProps>().toEqualTypeOf<{ value: { email: string; age: number } }>();
+    expectTypeOf<SubmitProps['value']>().toEqualTypeOf<{ email: string; age: number }>();
   });
 });
 

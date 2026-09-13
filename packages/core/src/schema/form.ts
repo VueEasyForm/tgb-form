@@ -9,6 +9,7 @@ import {
   type FormFieldsDefinition,
 } from './definitions';
 import { isJsonObject, type JsonObject, type JsonValue } from './json';
+import { type InferFieldValue } from './infer';
 import type { CustomValidatorReference, ValidationRule } from './rules';
 
 /**
@@ -68,7 +69,7 @@ export type FieldDefinitionInput<TComponentName extends string = string> =
     } & FieldInputOptions<TComponentName>)
   | ({
       readonly type: FieldDataType.Array;
-      readonly defaultValue: JsonValue[];
+      readonly defaultValue: readonly JsonValue[];
       /** Authoring definition used for each array element. */
       readonly element?: FieldDefinitionInput<TComponentName>;
     } & FieldInputOptions<TComponentName>);
@@ -110,16 +111,67 @@ type ComponentNameFromOptions<TOptions extends DefineFormOptions> = TOptions ext
   : string;
 
 /**
+ * Compile-time check that an array field's `defaultValue` entries match the
+ * value type inferred from its `element` definition, recursing into nested
+ * object fields and array elements.
+ *
+ * A mismatch resolves the definition to an incompatible marker so
+ * {@link defineForm} fails at the call site instead of silently widening the
+ * array to `JsonValue[]`.
+ */
+export type ValidateFieldDefinitionInput<T> = T extends {
+  readonly type: FieldDataType.Array;
+  readonly element: infer TElement extends FieldDefinitionInput<string>;
+  readonly defaultValue: infer TDefault;
+}
+  ? TDefault extends readonly InferFieldValue<TElement & FieldDefinition>[]
+    ? Omit<T, 'element'> & {
+        readonly element?: ValidateFieldDefinitionInput<TElement>;
+      }
+    : T & {
+        readonly 'ERROR: array defaultValue must match its element definition': readonly InferFieldValue<
+          TElement & FieldDefinition
+        >[];
+      }
+  : T extends {
+        readonly type: FieldDataType.Object;
+        readonly fields: infer TFields extends FormFieldsDefinitionInput<string>;
+      }
+    ? Omit<T, 'fields'> & {
+        readonly fields?: {
+          readonly [TKey in keyof TFields]: ValidateFieldDefinitionInput<TFields[TKey]>;
+        };
+      }
+    : T;
+
+/**
+ * Applies {@link ValidateFieldDefinitionInput} to every top-level field while
+ * preserving field names and sibling properties such as `meta`.
+ */
+export type ValidateFormDefinitionInput<T> = T extends {
+  readonly fields: infer TFields extends FormFieldsDefinitionInput<string>;
+}
+  ? Omit<T, 'fields'> & {
+      readonly fields: {
+        readonly [TKey in keyof TFields]: ValidateFieldDefinitionInput<TFields[TKey]>;
+      };
+    }
+  : T;
+
+/**
  * Validates and normalizes a {@link FormDefinitionInput} while preserving the literal field shape.
  */
 export function defineForm<const TForm extends FormDefinitionInput>(
-  definition: TForm,
+  definition: TForm & ValidateFormDefinitionInput<TForm>,
   options?: undefined,
 ): RuntimeFormDefinition<TForm>;
 export function defineForm<
   const TOptions extends DefineFormOptions,
   const TForm extends FormDefinitionInput<ComponentNameFromOptions<TOptions>>,
->(definition: TForm, options: TOptions): RuntimeFormDefinition<TForm>;
+>(
+  definition: TForm & ValidateFormDefinitionInput<TForm>,
+  options: TOptions,
+): RuntimeFormDefinition<TForm>;
 export function defineForm(
   definition: FormDefinitionInput,
   options: DefineFormOptions = {},

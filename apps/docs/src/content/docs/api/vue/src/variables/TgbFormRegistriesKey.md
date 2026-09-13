@@ -2,9 +2,9 @@
 editUrl: false
 next: false
 prev: false
-title: "TgbFormRegistriesKey"
+title: 'TgbFormRegistriesKey'
 ---
 
-> `const` **TgbFormRegistriesKey**: `InjectionKey`\<[`TgbFormRegistries`](/api/vue/src/type-aliases/tgbformregistries/)\>
+> `const` **TgbFormRegistriesKey**: `InjectionKey`\<[`TgbFormRegistries`](/api/vue/src/type-aliases/tgbformregistries/)>\>
 
-Defined in: [vue/src/context.ts:8](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/context.ts#L8)
+Defined in: [vue/src/context.ts:8](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/context.ts#L8)

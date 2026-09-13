@@ -2,18 +2,18 @@
 editUrl: false
 next: false
 prev: false
-title: "FormFieldsDefinitionInput"
+title: 'FormFieldsDefinitionInput'
 ---
 
-> **FormFieldsDefinitionInput**\<`TComponentName`\> = `object`
+> **FormFieldsDefinitionInput**\<`TComponentName`> \> = `object`
 
-Defined in: [core/src/schema/form.ts:76](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/form.ts#L76)
+Defined in: [core/src/schema/form.ts:77](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/form.ts#L77)
 
 ## Type Parameters
 
 ### TComponentName
 
-`TComponentName` *extends* `string` = `string`
+`TComponentName` _extends_ `string` = `string`
 
 ## Index Signature
 

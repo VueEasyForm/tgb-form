@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "CustomValidatorReference"
+title: 'CustomValidatorReference'
 ---
 
 > **CustomValidatorReference** = `object`
 
-Defined in: [core/src/schema/rules.ts:45](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/rules.ts#L45)
+Defined in: [core/src/schema/rules.ts:45](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/rules.ts#L45)
 
 Reference to a code-defined validator in a [ValidatorRegistry](/api/core/src/type-aliases/validatorregistry/).
 
@@ -17,26 +17,26 @@ Reference to a code-defined validator in a [ValidatorRegistry](/api/core/src/typ
 
 > `readonly` `optional` **message?**: `string`
 
-Defined in: [core/src/schema/rules.ts:49](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/rules.ts#L49)
+Defined in: [core/src/schema/rules.ts:49](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/rules.ts#L49)
 
 Optional message passed to the custom validator factory.
 
-***
+---
 
 ### name
 
 > `readonly` **name**: `string`
 
-Defined in: [core/src/schema/rules.ts:47](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/rules.ts#L47)
+Defined in: [core/src/schema/rules.ts:47](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/rules.ts#L47)
 
 Registry name of the custom validator to run for the field.
 
-***
+---
 
 ### options?
 
 > `readonly` `optional` **options?**: [`JsonObject`](/api/core/src/type-aliases/jsonobject/)
 
-Defined in: [core/src/schema/rules.ts:51](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/rules.ts#L51)
+Defined in: [core/src/schema/rules.ts:51](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/rules.ts#L51)
 
 JSON-safe options passed to the custom validator factory.

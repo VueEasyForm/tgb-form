@@ -1,6 +1,6 @@
 {
   "name": "@tgb-form/vue",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An easy to use form library for Vue, built on top of @tgb-form/core.",
   "homepage": "https://github.com/VueEasyForm/tgb-form#readme",
   "bugs": {
@@ -34,23 +34,23 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
-    "@tanstack/vue-form": "^1.33.2",
+    "@tanstack/vue-form": "^1.33.5",
     "@tgb-form/core": "workspace:*",
-    "@tsdown/css": "^0.22.14",
-    "@types/node": "^26.1.1",
+    "@tsdown/css": "^0.23.0",
+    "@types/node": "^26.5.1",
     "@vitejs/plugin-vue": "^6.0.8",
-    "@vitest/browser-playwright": "^4.1.10",
-    "playwright": "^1.62.0",
-    "tsdown": "^0.22.14",
+    "@vitest/browser-playwright": "^5.0.0",
+    "playwright": "^1.63.0",
+    "tsdown": "^0.23.0",
     "typescript": "^6.0.3",
-    "vite": "^8.1.5",
-    "vitest": "^4.1.10",
-    "vitest-browser-vue": "^2.1.0",
-    "vue": "^3.5.40",
-    "vue-tsc": "^3.3.8"
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0",
+    "vitest-browser-vue": "^3.1.0",
+    "vue": "^3.5.42",
+    "vue-tsc": "^3.3.11"
   },
   "peerDependencies": {
-    "@tanstack/vue-form": "^1.33.0",
-    "vue": "^3.0.0"
+    "@tanstack/vue-form": "^1.33.5",
+    "vue": "^3.5.0"
   }
 }

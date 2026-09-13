@@ -2,10 +2,10 @@
 editUrl: false
 next: false
 prev: false
-title: "FieldDataType"
+title: 'FieldDataType'
 ---
 
-Defined in: [core/src/schema/enums.ts:4](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/enums.ts#L4)
+Defined in: [core/src/schema/enums.ts:4](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/enums.ts#L4)
 
 JSON-safe field data types supported by [FieldDefinition](/api/core/src/type-aliases/fielddefinition/).
 
@@ -15,46 +15,46 @@ JSON-safe field data types supported by [FieldDefinition](/api/core/src/type-ali
 
 > **Array**: `"array"`
 
-Defined in: [core/src/schema/enums.ts:14](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/enums.ts#L14)
+Defined in: [core/src/schema/enums.ts:14](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/enums.ts#L14)
 
 Repeating value stored as a JSON array with an optional element definition.
 
-***
+---
 
 ### Boolean
 
 > **Boolean**: `"boolean"`
 
-Defined in: [core/src/schema/enums.ts:10](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/enums.ts#L10)
+Defined in: [core/src/schema/enums.ts:10](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/enums.ts#L10)
 
 True/false value stored as a JSON boolean.
 
-***
+---
 
 ### Number
 
 > **Number**: `"number"`
 
-Defined in: [core/src/schema/enums.ts:8](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/enums.ts#L8)
+Defined in: [core/src/schema/enums.ts:8](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/enums.ts#L8)
 
 Numeric value stored as a JSON number.
 
-***
+---
 
 ### Object
 
 > **Object**: `"object"`
 
-Defined in: [core/src/schema/enums.ts:12](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/enums.ts#L12)
+Defined in: [core/src/schema/enums.ts:12](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/enums.ts#L12)
 
 Nested value stored as a JSON object with child field definitions.
 
-***
+---
 
 ### String
 
 > **String**: `"string"`
 
-Defined in: [core/src/schema/enums.ts:6](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/enums.ts#L6)
+Defined in: [core/src/schema/enums.ts:6](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/enums.ts#L6)
 
 Text value stored as a JSON string.

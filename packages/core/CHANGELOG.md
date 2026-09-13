@@ -1,5 +1,34 @@
 # @tgb-form/core
 
+## 0.0.6
+
+### Patch Changes
+
+- Type-safe arrays, deep-merged defaults, full TanStack options passthrough, and Vue 3.5 / pnpm 12 toolchain. See CHANGELOG migration notes.
+
+### Migrating from 0.0.5
+
+1. **Array defaults are checked against `element`.** Mismatched entries are now a
+   compile error instead of silently widening to `JsonValue[]`, and non-empty
+   defaults infer the element type. Fix any new type errors by correcting the
+   default or the element definition — they were latent bugs.
+2. **Restore payloads via `getDefaultValues(form, overrides)`.** It replaces
+   `{ ...getDefaultValues(form), ...baseline }` shallow spreads: plain objects
+   merge key-wise (partial payloads keep siblings), arrays replace wholesale.
+   `toTanStackOptions(form, { defaultValues: baseline })` merges the same way.
+3. **Object defaults synthesize missing child keys.** A group default of `{}`
+   now resolves to `{ street: '' }` from its children (explicit keys win), so
+   runtime defaults match `InferFormValues` and satisfy the compiled schema.
+   Adjust any code that relied on the raw `{}` passthrough.
+4. **Explicit `validators.onSubmit` wins over the compiled schema** (previously
+   the schema always overwrote it). Other `on*` validators, listeners, and
+   submit handlers pass through untouched — the full TanStack `FormOptions`
+   surface is accepted without redeclaring it.
+5. **Drop `as never` casts on `toValibotSchema()`.** It now returns a schema
+   typed by `InferFormValues`, directly assignable to TanStack validators.
+6. **`JsonValue` arrays are `readonly`.** Annotate mutable locals accordingly
+   if you mutate JSON values in place.
+
 ## 0.0.5
 
 ### Patch Changes

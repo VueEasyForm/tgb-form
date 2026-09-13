@@ -2,57 +2,37 @@
 editUrl: false
 next: false
 prev: false
-title: "TgbFormTanStackOptions"
+title: 'TgbFormTanStackOptions'
 ---
 
-> **TgbFormTanStackOptions**\<`TForm`\> = `object`
+> **TgbFormTanStackOptions**\<`TForm`> \> = `Omit`\<`Partial`\<`FormOptions`\<`FormValues`\<`TForm`>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>\>\>, `unknown`>>\>\>, `"defaultValues"` \| `"validators"`> \> & `object`
 
-Defined in: [core/src/tanstack.ts:54](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L54)
+Defined in: [core/src/tanstack.ts:51](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/tanstack.ts#L51)
 
 Additional options forwarded to `useForm` by [toTanStackOptions](/api/core/src/functions/totanstackoptions/).
+
+This is TanStack's own `FormOptions` for the inferred values — every `on*`
+TanStack supports (form validators, listeners, submit handlers, debounce
+options, …) is accepted without redeclaring them here. `defaultValues`
+additionally accepts deep partials, which are merged over the definition
+defaults.
+
+## Type Declaration
+
+### defaultValues?
+
+> `readonly` `optional` **defaultValues?**: [`DeepPartial`](/api/core/src/type-aliases/deeppartial/)\<`FormValues`\<`TForm`>>\>\>
+
+Partial overrides merged over the definition defaults (user wins).
+
+### validators?
+
+> `readonly` `optional` **validators?**: `FormValidators`\<`FormValues`\<`TForm`>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenSyncValidator`\<`FormValues`\<`TForm`>>\>\>, `OpenAsyncValidator`\<`FormValues`\<`TForm`>>>\>\>\>
+
+Form-level validators; an explicit `onSubmit` wins over the compiled schema.
 
 ## Type Parameters
 
 ### TForm
 
-`TForm` *extends* [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
-
-## Indexable
-
-> \[`key`: `string`\]: `unknown`
-
-## Properties
-
-### defaultValues?
-
-> `readonly` `optional` **defaultValues?**: `Partial`\<[`InferFormValues`](/api/core/src/type-aliases/inferformvalues/)\<`TForm`\>\>
-
-Defined in: [core/src/tanstack.ts:57](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L57)
-
-***
-
-### onSubmit?
-
-> `readonly` `optional` **onSubmit?**: (`props`) => `unknown`
-
-Defined in: [core/src/tanstack.ts:55](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L55)
-
-#### Parameters
-
-##### props
-
-###### value
-
-[`InferFormValues`](/api/core/src/type-aliases/inferformvalues/)\<`TForm`\>
-
-#### Returns
-
-`unknown`
-
-***
-
-### validators?
-
-> `readonly` `optional` **validators?**: `Record`\<`string`, `unknown`\>
-
-Defined in: [core/src/tanstack.ts:56](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L56)
+`TForm` _extends_ [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)

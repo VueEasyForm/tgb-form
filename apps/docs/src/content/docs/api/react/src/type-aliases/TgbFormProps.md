@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "TgbFormProps"
+title: 'TgbFormProps'
 ---
 
-> **TgbFormProps**\<`TForm`\> = `object` & `Omit`\<`FormHTMLAttributes`\<`HTMLFormElement`\>, `"children"` \| `"onSubmit"`\>
+> **TgbFormProps**\<`TForm`> \> = `object` & `Omit`\<`FormHTMLAttributes`\<`HTMLFormElement`>\>, `"children"` \| `"onSubmit"`>\>
 
-Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/react/src/TgbForm.tsx#L18)
+Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/react/src/TgbForm.tsx#L18)
 
 ## Type Declaration
 
@@ -25,7 +25,7 @@ Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/b
 
 ### instance?
 
-> `readonly` `optional` **instance?**: `Record`\<`string`, `unknown`\>
+> `readonly` `optional` **instance?**: `Record`\<`string`, `unknown`>\>
 
 ### renderers?
 
@@ -33,10 +33,10 @@ Defined in: [react/src/TgbForm.tsx:18](https://github.com/VueEasyForm/tgb-form/b
 
 ### tanstackOptions?
 
-> `readonly` `optional` **tanstackOptions?**: [`TgbFormTanStackOptions`](/api/core/src/type-aliases/tgbformtanstackoptions/)\<`TForm`\>
+> `readonly` `optional` **tanstackOptions?**: [`TgbFormTanStackOptions`](/api/core/src/type-aliases/tgbformtanstackoptions/)\<`TForm`>\>
 
 ## Type Parameters
 
 ### TForm
 
-`TForm` *extends* [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/) = [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)
+`TForm` _extends_ [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/) = [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)

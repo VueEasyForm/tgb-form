@@ -23,24 +23,24 @@
     "check-types": "turbo run typecheck",
     "check-types:packages": "pnpm -r --filter \"./packages/*\" run typecheck",
     "prepare": "husky",
-    "changeset": "changeset",
-    "version": "changeset version",
-    "release": "pnpm build:packages && changeset publish",
+    "change": "pnpm change",
+    "change:status": "pnpm change status",
+    "release:version": "pnpm version -r",
+    "release": "pnpm build:packages && pnpm publish -r",
     "release:check": "pnpm build:packages && pnpm test:packages && pnpm check-types:packages"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.1",
-    "@faker-js/faker": "^10.5.0",
-    "eslint-plugin-astro": "^3.0.1",
+    "@faker-js/faker": "^10.6.0",
+    "eslint-plugin-astro": "^3.1.0",
     "husky": "^9.1.7",
-    "lint-staged": "^17.2.0",
-    "oxfmt": "^0.60.0",
-    "oxlint": "^1.75.0",
+    "lint-staged": "^17.5.1",
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0",
     "oxlint-tsgolint": "^7.0.2001",
-    "turbo": "^2.10.7"
+    "turbo": "^2.10.12"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19.0"
   },
-  "packageManager": "pnpm@11.17.0+sha512.cca3cea332ad254bb84145f966d19f4879615210346fc92c79a047f23a0d7b3cca3c3792f0076ba1f1831d277efbcf0a9119b31a9a60eca7fb3d6231f331ef72"
+  "packageManager": "pnpm@12.4.1+sha512.2e81e399d73fe8390dab25e06aa788ab7a5908248d2f5a370f82b481147a6a7a367bf8048f9a6fdb6460f21a66f0542dedb8b94ca2c8723596741920b1656d4c"
 }

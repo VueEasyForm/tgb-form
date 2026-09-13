@@ -2,34 +2,37 @@
 editUrl: false
 next: false
 prev: false
-title: "TgbFormTanStackOutput"
+title: 'TgbFormTanStackOutput'
 ---
 
-> **TgbFormTanStackOutput**\<`TForm`\> = `Omit`\<[`TgbFormTanStackOptions`](/api/core/src/type-aliases/tgbformtanstackoptions/)\<`TForm`\>, `"validators"`\> & `object`
+> **TgbFormTanStackOutput**\<`TForm`, `TOptions`> \> = `Omit`\<`TOptions`, `"defaultValues"` \| `"validators"`> \> & `object`
 
-Defined in: [core/src/tanstack.ts:67](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/tanstack.ts#L67)
+Defined in: [core/src/tanstack.ts:122](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/tanstack.ts#L122)
 
 TanStack-compatible options generated from a [FormDefinition](/api/core/src/type-aliases/formdefinition/).
 
-Omits `validators` from [TgbFormTanStackOptions](/api/core/src/type-aliases/tgbformtanstackoptions/) to avoid intersecting
-user-provided function validators with the Standard Schema override for `onSubmit`.
+`TOptions` preserves the exact user-supplied config (inferred with `const`),
+so every supported `on*` keeps its type. Merge order is always:
+user-supplied TanStack config wins, then the definition-derived values
+(`defaultValues`, `onSubmit` schema), then everything else passes through
+untouched.
 
 ## Type Declaration
 
 ### defaultValues
 
-> `readonly` **defaultValues**: [`InferFormValues`](/api/core/src/type-aliases/inferformvalues/)\<`TForm`\>
+> `readonly` **defaultValues**: `FormValues`\<`TForm`>\>
 
 ### validators
 
-> `readonly` **validators**: `object`
-
-#### validators.onSubmit
-
-> `readonly` **onSubmit**: `StandardSchemaV1`\<[`InferFormValues`](/api/core/src/type-aliases/inferformvalues/)\<`TForm`\>, `unknown`\>
+> `readonly` **validators**: `OutputValidators`\<`TForm`, `TOptions`>\>
 
 ## Type Parameters
 
 ### TForm
 
-`TForm` *extends* [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
+`TForm` _extends_ [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
+
+### TOptions
+
+`TOptions` _extends_ [`TgbFormTanStackOptions`](/api/core/src/type-aliases/tgbformtanstackoptions/)\<`TForm`\> = [`TgbFormTanStackOptions`](/api/core/src/type-aliases/tgbformtanstackoptions/)\<`TForm`\>

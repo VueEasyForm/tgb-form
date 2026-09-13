@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "deserializeForm"
+title: 'deserializeForm'
 ---
 
-> **deserializeForm**\<`TForm`\>(`input`, `options?`): [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)\<`TForm`\>
+> **deserializeForm**\<`TForm`>\>(`input`, `options?`): [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)\<`TForm`>\>
 
-Defined in: [core/src/schema/form.ts:159](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/form.ts#L159)
+Defined in: [core/src/schema/form.ts:211](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/form.ts#L211)
 
 Parses a JSON string or unknown value into a normalized [RuntimeFormDefinition](/api/core/src/type-aliases/runtimeformdefinition/).
 
@@ -18,7 +18,7 @@ code-defined form) to preserve the underlying schema for [InferFormValues](/api/
 
 ### TForm
 
-`TForm` *extends* [`FormDefinition`](/api/core/src/type-aliases/formdefinition/) = [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
+`TForm` _extends_ [`FormDefinition`](/api/core/src/type-aliases/formdefinition/) = [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
 
 ## Parameters
 

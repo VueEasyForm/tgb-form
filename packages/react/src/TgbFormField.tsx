@@ -30,8 +30,9 @@ export function TgbFormField({ name, field, renderers: propRenderers }: TgbFormF
   return (
     <Field name={name}>
       {(boundField) => {
-        // @ts-expect-error: FieldApi generics ~ ReactRendererField structurally
-        const fieldApi: ReactRendererField = boundField;
+        // Boundary cast: the bound field structurally provides the
+        // state/handleChange surface consumed by renderers.
+        const fieldApi = boundField as unknown as ReactRendererField;
 
         return (
           <Renderer

@@ -2,9 +2,9 @@
 editUrl: false
 next: false
 prev: false
-title: "TgbFormInstanceKey"
+title: 'TgbFormInstanceKey'
 ---
 
-> `const` **TgbFormInstanceKey**: `InjectionKey`\<`unknown`\>
+> `const` **TgbFormInstanceKey**: `InjectionKey`\<[`TgbFormTanStackForm`](/api/vue/src/type-aliases/tgbformtanstackform/)>\>
 
-Defined in: [vue/src/context.ts:9](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/context.ts#L9)
+Defined in: [vue/src/context.ts:9](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/context.ts#L9)

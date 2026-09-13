@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "FieldDefinitionInput"
+title: 'FieldDefinitionInput'
 ---
 
-> **FieldDefinitionInput**\<`TComponentName`\> = `object` & `FieldInputOptions`\<`TComponentName`\> \| `object` & `FieldInputOptions`\<`TComponentName`\> \| `object` & `FieldInputOptions`\<`TComponentName`\> \| `object` & `FieldInputOptions`\<`TComponentName`\> \| `object` & `FieldInputOptions`\<`TComponentName`\>
+> **FieldDefinitionInput**\<`TComponentName`> \> = `object` & `FieldInputOptions`\<`TComponentName`> \> \| `object` & `FieldInputOptions`\<`TComponentName`> \> \| `object` & `FieldInputOptions`\<`TComponentName`> \> \| `object` & `FieldInputOptions`\<`TComponentName`> \> \| `object` & `FieldInputOptions`\<`TComponentName`>\>
 
-Defined in: [core/src/schema/form.ts:50](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/form.ts#L50)
+Defined in: [core/src/schema/form.ts:51](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/form.ts#L51)
 
 Authoring shape for a single [FieldDefinition](/api/core/src/type-aliases/fielddefinition/), discriminated by type
 so the defaultValue always matches the declared data type.
@@ -16,4 +16,4 @@ so the defaultValue always matches the declared data type.
 
 ### TComponentName
 
-`TComponentName` *extends* `string` = `string`
+`TComponentName` _extends_ `string` = `string`

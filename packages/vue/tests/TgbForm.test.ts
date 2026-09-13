@@ -77,7 +77,7 @@ const TraceRenderer = defineComponent({
 });
 
 describe('TgbForm', () => {
-  test('renders fields by order and declaration order with an optional subset', () => {
+  test('renders fields by order and declaration order with an optional subset', async () => {
     const definition = defineForm({
       fields: {
         firstDeclared: { type: FieldDataType.String, defaultValue: '' },
@@ -90,7 +90,7 @@ describe('TgbForm', () => {
       byType: { [FieldDataType.String]: TraceRenderer },
     });
 
-    const page = render(TgbForm, {
+    const page = await render(TgbForm, {
       props: {
         instance: createFormStub(),
         definition,
@@ -106,7 +106,7 @@ describe('TgbForm', () => {
     ).toEqual(['orderedFirst', 'orderedSecond', 'firstDeclared']);
   });
 
-  test('reads renderers from TgbFormProvider', () => {
+  test('reads renderers from TgbFormProvider', async () => {
     const definition = defineForm({
       fields: {
         name: { type: FieldDataType.String, defaultValue: '' },
@@ -116,7 +116,7 @@ describe('TgbForm', () => {
       byType: { [FieldDataType.String]: TraceRenderer },
     });
 
-    const page = render(TgbFormProvider, {
+    const page = await render(TgbFormProvider, {
       props: { renderers: registry },
       slots: {
         default: () =>
@@ -130,7 +130,7 @@ describe('TgbForm', () => {
     expect(page.container.querySelector('output')).toBeInTheDocument();
   });
 
-  test('resolves named renderers before type renderers', () => {
+  test('resolves named renderers before type renderers', async () => {
     const NamedRenderer = defineComponent({
       name: 'NamedRenderer',
       props: { name: { type: String, required: true } },
@@ -156,7 +156,7 @@ describe('TgbForm', () => {
       byType: { [FieldDataType.String]: TypeRenderer },
     });
 
-    const page = render(TgbForm, {
+    const page = await render(TgbForm, {
       props: {
         instance: createFormStub(),
         definition,
@@ -175,7 +175,7 @@ describe('TgbForm', () => {
     ]);
   });
 
-  test('passes field metadata, value, errors, and renderer props to the renderer', () => {
+  test('passes field metadata, value, errors, and renderer props to the renderer', async () => {
     const received = vi.fn<() => void>();
     const CapturingRenderer = defineComponent({
       name: 'CapturingRenderer',
@@ -219,7 +219,7 @@ describe('TgbForm', () => {
       byType: { [FieldDataType.String]: CapturingRenderer },
     });
 
-    render(TgbForm, {
+    await render(TgbForm, {
       props: {
         instance: form,
         definition,
@@ -237,7 +237,7 @@ describe('TgbForm', () => {
     });
   });
 
-  test('throws when no renderer can be resolved', () => {
+  test('throws when no renderer can be resolved', async () => {
     const definition = defineForm({
       fields: {
         email: { type: FieldDataType.String, defaultValue: '' },
@@ -245,7 +245,7 @@ describe('TgbForm', () => {
     });
     const registry = createRendererRegistry({});
 
-    expect(() =>
+    await expect(
       render(TgbForm, {
         props: {
           instance: createFormStub(),
@@ -253,10 +253,10 @@ describe('TgbForm', () => {
           renderers: registry,
         },
       }),
-    ).toThrow('Missing renderer for field type "string"');
+    ).rejects.toThrow('Missing renderer for field type "string"');
   });
 
-  test('throws when TgbFormField is used outside TgbForm', () => {
+  test('throws when TgbFormField is used outside TgbForm', async () => {
     const definition = defineForm({
       fields: {
         x: { type: FieldDataType.String, defaultValue: '' },
@@ -266,7 +266,7 @@ describe('TgbForm', () => {
       byType: { [FieldDataType.String]: TraceRenderer },
     });
 
-    expect(() =>
+    await expect(
       render(TgbFormField, {
         props: {
           name: 'x',
@@ -274,10 +274,10 @@ describe('TgbForm', () => {
           renderers: registry,
         },
       }),
-    ).toThrow('TgbFormField must be used inside a TgbForm component');
+    ).rejects.toThrow('TgbFormField must be used inside a TgbForm component');
   });
 
-  test('delegates form submission to the TanStack form instance', () => {
+  test('delegates form submission to the TanStack form instance', async () => {
     const form = createFormStub();
     const definition = defineForm({
       fields: {
@@ -288,7 +288,7 @@ describe('TgbForm', () => {
       byType: { [FieldDataType.String]: TraceRenderer },
     });
 
-    const page = render(TgbForm, {
+    const page = await render(TgbForm, {
       props: {
         instance: form,
         definition,
@@ -328,7 +328,7 @@ describe('TgbForm', () => {
       },
     });
 
-    const page = render(Host);
+    const page = await render(Host);
     const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
     page.container.querySelector('form')?.dispatchEvent(submitEvent);
     await vi.waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));

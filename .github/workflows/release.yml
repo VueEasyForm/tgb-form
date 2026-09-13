@@ -46,18 +46,18 @@ jobs:
       - name: Verify releasable packages
         run: pnpm release:check
 
-      - name: Create or update release PR
-        id: changesets
-        uses: changesets/action@v1 # v2 is next, compatible with v3 CLI, but we're using v2 --> action v1
-        with:
-          version-script: pnpm version
-          create-github-releases: true
-          commit-mode: github-api
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Apply pending change intents
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          pnpm version -r
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "chore: update versions"
+            git push
+          fi
 
       - name: Publish to npm with trusted publishing
-        if: steps.changesets.outputs.hasChangesets == 'false'
         run: pnpm release
         env:
           NPM_CONFIG_PROVENANCE: 'true'

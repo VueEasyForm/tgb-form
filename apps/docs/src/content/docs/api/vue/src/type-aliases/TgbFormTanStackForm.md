@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "TgbFormTanStackForm"
+title: 'TgbFormTanStackForm'
 ---
 
 > **TgbFormTanStackForm** = `object`
 
-Defined in: [vue/src/types.ts:29](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L29)
+Defined in: [vue/src/types.ts:29](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L29)
 
 ## Indexable
 
@@ -19,15 +19,15 @@ Defined in: [vue/src/types.ts:29](https://github.com/VueEasyForm/tgb-form/blob/4
 
 > `readonly` **Field**: `unknown`
 
-Defined in: [vue/src/types.ts:30](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L30)
+Defined in: [vue/src/types.ts:30](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L30)
 
-***
+---
 
 ### handleSubmit
 
-> `readonly` **handleSubmit**: () => `void` \| `Promise`\<`void`\>
+> `readonly` **handleSubmit**: () => `void` \| `Promise`\<`void`>\>
 
-Defined in: [vue/src/types.ts:31](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L31)
+Defined in: [vue/src/types.ts:31](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L31)
 
 #### Returns
 

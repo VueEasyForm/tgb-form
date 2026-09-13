@@ -6,7 +6,7 @@ export default defineConfig({
   },
   platform: 'neutral',
   dts: {
-    tsgo: true,
+    tsgo: {},
   },
   exports: true,
   sourcemap: true,

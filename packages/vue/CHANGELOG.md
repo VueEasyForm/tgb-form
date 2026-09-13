@@ -1,5 +1,27 @@
 # @tgb-form/vue
 
+## 0.0.6
+
+### Patch Changes
+
+- Type-safe arrays, deep-merged defaults, full TanStack options passthrough, and Vue 3.5 / pnpm 12 toolchain. See CHANGELOG migration notes.
+
+### Migrating from 0.0.5
+
+1. **Drop `as never` on `toValibotSchema()`.** The compiled schema is now
+   typed and plugs directly into `useForm({ validators: { onSubmit } })`.
+2. **Merge baselines with the library, not a shallow spread.**
+   `{ ...getDefaultValues(definition), ...baseline }` wipes nested siblings
+   on partial payloads; use instead:
+   ```ts
+   getDefaultValues(definition, baseline);
+   // or
+   useForm(toTanStackOptions(definition, { defaultValues: baseline, onSubmit }));
+   ```
+3. **`onSubmit: async ({ value }) =>` infers values** from a code-defined
+   `definition` — remove manual `Record<string, unknown>` annotations.
+4. **Vue peer is now `^3.5.0`.** No component API changes.
+
 ## 0.0.5
 
 ### Patch Changes

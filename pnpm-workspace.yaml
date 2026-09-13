@@ -1,10 +1,16 @@
 packages:
   - 'apps/*'
   - 'packages/*'
+versioning:
+  fixed:
+    - ['@tgb-form/core', '@tgb-form/react', '@tgb-form/vue']
+  ignore:
+    - '@tgb-form/docs'
+  changelog:
+    storage: repository
 allowBuilds:
   esbuild: true
   sharp: true
-  simple-git-hooks: set this to true or false
   vue-demi: false
 minimumReleaseAgeExclude:
   - '@typescript/typescript-aix-ppc64@7.0.2'

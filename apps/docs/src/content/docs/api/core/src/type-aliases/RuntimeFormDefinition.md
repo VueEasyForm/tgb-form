@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "RuntimeFormDefinition"
+title: 'RuntimeFormDefinition'
 ---
 
-> **RuntimeFormDefinition**\<`TForm`\> = `TForm` & `object`
+> **RuntimeFormDefinition**\<`TForm`> \> = `TForm` & `object`
 
-Defined in: [core/src/schema/form.ts:99](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/form.ts#L99)
+Defined in: [core/src/schema/form.ts:100](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/form.ts#L100)
 
 Normalized [FormDefinition](/api/core/src/type-aliases/formdefinition/) that preserves the literal shape of the
 authoring [FormDefinitionInput](/api/core/src/type-aliases/formdefinitioninput/) it was built from.
@@ -30,4 +30,4 @@ Runtime-only validator registry attached by [defineForm](/api/core/src/functions
 
 ### TForm
 
-`TForm` *extends* [`FormDefinition`](/api/core/src/type-aliases/formdefinition/) = [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)
+`TForm` _extends_ [`FormDefinition`](/api/core/src/type-aliases/formdefinition/) = [`FormDefinition`](/api/core/src/type-aliases/formdefinition/)

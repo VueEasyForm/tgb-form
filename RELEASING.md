@@ -21,18 +21,24 @@ Trusted publishing setup is documented by npm and avoids storing a long-lived `N
 
 Useful references:
 
+- pnpm release management: https://pnpm.io/versioning
+- pnpm change command: https://pnpm.io/cli/change
 - npm trusted publishing: https://docs.npmjs.com/trusted-publishers/
 - npm provenance: https://docs.npmjs.com/generating-provenance-statements/
-- GitHub OIDC: https://docs.github.com/en/actions/concepts/security/openid-connect
-- Changesets action behavior: https://github.com/changesets/action
+- GitHub OIDC: https://github.com/en/actions/concepts/security/openid-connect
 
 ## Normal release flow
 
-1. Add a changeset in the pull request that changes package behavior.
+Releases are managed natively by pnpm (`pnpm change` / `pnpm version -r` reading
+`.changeset/*.md` intents, configured via the `versioning` key in
+`pnpm-workspace.yaml`). No Changesets CLI is used.
+
+1. Add a change intent in the pull request that changes package behavior
+   (`pnpm change`).
 2. Merge to `main`.
-3. The `Release` workflow will either:
-   - open or update a version PR when there are unreleased changesets, or
-   - publish the already-versioned packages when the version PR has been merged.
+3. The `Release` workflow applies pending intents with `pnpm version -r`,
+   commits the version bumps, and publishes with `pnpm release`
+   (`pnpm publish -r`).
 
 ## Local verification
 
@@ -49,4 +55,4 @@ pnpm --filter @tgb-form/vue pack --dry-run
 
 - Package publishing is intentionally scoped to `packages/*`. Docs failures should not block npm releases.
 - Provenance is enabled in CI through npm trusted publishing and `NPM_CONFIG_PROVENANCE=true`.
-- The repository-level `release` script builds only releasable packages before `changeset publish`.
+- The repository-level `release` script builds only releasable packages before `pnpm publish -r`.

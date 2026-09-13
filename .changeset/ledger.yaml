@@ -1,0 +1,12 @@
+"@tgb-form/core@0.0.6":
+  dir: packages/core
+  intents:
+    - fresh-snails-report
+"@tgb-form/react@0.0.6":
+  dir: packages/react
+  intents:
+    - fresh-snails-report
+"@tgb-form/vue@0.0.6":
+  dir: packages/vue
+  intents:
+    - fresh-snails-report

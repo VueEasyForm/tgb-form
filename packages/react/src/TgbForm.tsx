@@ -58,8 +58,9 @@ export function TgbForm<TForm extends RuntimeFormDefinition = RuntimeFormDefinit
   const renderers = propRenderers ?? ctx?.renderers;
 
   const managedForm = useForm(toTanStackOptions(definition, tanstackOptions));
-  // @ts-expect-error: useForm return ~ ReactTgbFormInstance structurally
-  const form: ReactTgbFormInstance = externalInstance ?? managedForm;
+  // Boundary cast: the managed TanStack form structurally provides the
+  // Field/handleSubmit surface below; external instances are an escape hatch.
+  const form = (externalInstance ?? managedForm) as unknown as ReactTgbFormInstance;
 
   const orderedFields = getOrderedFields(definition, fields);
 

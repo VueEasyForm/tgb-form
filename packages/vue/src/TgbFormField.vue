@@ -48,8 +48,9 @@
       throw new Error('TgbFormField must be used inside a TgbForm component');
     }
 
-    // @ts-expect-error: form.Field is unknown from TgbFormTanStackForm
-    const FieldComponent: Component = markRaw(toRaw(form.Field));
+    // form.Field is the TanStack Field component, kept as unknown on the
+    // minimal form surface until it is mounted here.
+    const FieldComponent: Component = markRaw(toRaw(form.Field as Component));
     const Renderer: Component = markRaw(toRaw(resolveRenderer(props.field, resolveRenderers())));
 
     return h(

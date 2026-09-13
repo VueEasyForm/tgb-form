@@ -21,6 +21,7 @@ export {
   type CustomValidatorReference,
   type ValidationRule,
 } from './rules';
+export type { InferFieldValue, InferFormValues } from './infer';
 export {
   defineForm,
   deserializeForm,
@@ -30,4 +31,6 @@ export {
   type FormDefinitionInput,
   type FormFieldsDefinitionInput,
   type RuntimeFormDefinition,
+  type ValidateFieldDefinitionInput,
+  type ValidateFormDefinitionInput,
 } from './form';

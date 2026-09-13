@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TForm extends RuntimeFormDefinition">
-  import { inject, provide } from 'vue';
+  import { computed, inject, provide } from 'vue';
   import { useForm } from '@tanstack/vue-form';
   import {
     toTanStackOptions,
@@ -23,8 +23,9 @@
   const registries = inject(TgbFormRegistriesKey, null);
   const resolveRenderers = () => props.renderers ?? registries?.renderers;
   const rawForm = useForm(toTanStackOptions(props.definition, props.tanstackOptions));
-  // @ts-expect-error: useForm return ~ TgbFormTanStackForm structurally
-  const form: TgbFormTanStackForm = props.instance ?? rawForm;
+  // Boundary cast: the managed TanStack form structurally provides the
+  // Field/handleSubmit surface below; external instances are an escape hatch.
+  const form = (props.instance ?? rawForm) as unknown as TgbFormTanStackForm;
 
   provide(TgbFormInstanceKey, form);
 
@@ -40,12 +41,14 @@
             (right.field.order ?? Number.POSITIVE_INFINITY) || left.index - right.index,
       );
   }
+
+  const orderedFields = computed(() => getOrderedFields(props.definition, props.fields));
 </script>
 
 <template>
   <form @submit.prevent="form.handleSubmit?.()">
     <TgbFormField
-      v-for="{ name, field } in getOrderedFields(props.definition, props.fields)"
+      v-for="{ name, field } in orderedFields"
       :key="name"
       :name="name"
       :field="field"

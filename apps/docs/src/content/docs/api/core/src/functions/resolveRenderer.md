@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "resolveRenderer"
+title: 'resolveRenderer'
 ---
 
-> **resolveRenderer**\<`TRegistry`\>(`field`, `registry`): `ResolvedRenderer`\<`TRegistry`\>
+> **resolveRenderer**\<`TRegistry`>\>(`field`, `registry`): `ResolvedRenderer`\<`TRegistry`>\>
 
-Defined in: [core/src/renderer-registry.ts:49](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/renderer-registry.ts#L49)
+Defined in: [core/src/renderer-registry.ts:49](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/renderer-registry.ts#L49)
 
 Resolves a [FieldDefinition](/api/core/src/type-aliases/fielddefinition/) renderer by explicit component name first, then by [FieldDataType](/api/core/src/enumerations/fielddatatype/).
 
@@ -17,7 +17,7 @@ Missing explicit component names throw instead of falling back to type renderers
 
 ### TRegistry
 
-`TRegistry` *extends* [`RendererRegistry`](/api/core/src/type-aliases/rendererregistry/)\<`Readonly`\<`Record`\<`string`, `unknown`\>\>, `Partial`\<`Readonly`\<`Record`\<[`FieldDataType`](/api/core/src/enumerations/fielddatatype/), `unknown`\>\>\>\>
+`TRegistry` _extends_ [`RendererRegistry`](/api/core/src/type-aliases/rendererregistry/)\<`Readonly`\<`Record`\<`string`, `unknown`\>\>, `Partial`\<`Readonly`\<`Record`\<[`FieldDataType`](/api/core/src/enumerations/fielddatatype/), `unknown`\>\>\>\>
 
 ## Parameters
 

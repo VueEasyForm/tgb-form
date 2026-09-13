@@ -1,16 +1,20 @@
 import * as v from 'valibot';
 import { FieldDataType, ValidationRuleKind } from './schema/enums';
-import type { FieldDefinition, ValidationRule } from './schema';
+import type { FieldDefinition, FormDefinition, InferFormValues, ValidationRule } from './schema';
 import type { RuntimeFormDefinition } from './schema/form';
 import { compileCustomValidators, type ValibotValidationItem } from './validator-registry';
 
 type AnySchema = v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>;
 
 /**
- * Compiles a normalized {@link FormDefinition} into a Valibot object schema.
+ * Compiles a normalized {@link FormDefinition} into a Valibot object schema
+ * typed by {@link InferFormValues}, so it plugs into TanStack validators
+ * without further casting at the call site.
  */
-export function toValibotSchema(form: RuntimeFormDefinition): AnySchema {
-  return v.object(
+export function toValibotSchema<TForm extends FormDefinition>(
+  form: RuntimeFormDefinition<TForm>,
+): v.BaseSchema<InferFormValues<TForm>, InferFormValues<TForm>, v.BaseIssue<unknown>> {
+  const schema = v.object(
     Object.fromEntries(
       Object.entries(form.fields).map(([name, field]) => [
         name,
@@ -18,6 +22,13 @@ export function toValibotSchema(form: RuntimeFormDefinition): AnySchema {
       ]),
     ),
   );
+  // Dynamically built entries lose their static mapping; the entries above are
+  // compiled from the same definition, so the cast restores the inferred shape.
+  return schema as v.BaseSchema<
+    InferFormValues<TForm>,
+    InferFormValues<TForm>,
+    v.BaseIssue<unknown>
+  >;
 }
 
 function toFieldSchema(

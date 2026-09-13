@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "RendererRegistry"
+title: 'RendererRegistry'
 ---
 
-> **RendererRegistry**\<`TByName`, `TByType`\> = `object`
+> **RendererRegistry**\<`TByName`, `TByType`> \> = `object`
 
-Defined in: [core/src/renderer-registry.ts:7](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/renderer-registry.ts#L7)
+Defined in: [core/src/renderer-registry.ts:7](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/renderer-registry.ts#L7)
 
 Registry used by framework adapters to resolve [FieldDefinition](/api/core/src/type-aliases/fielddefinition/) values to user components.
 
@@ -15,11 +15,11 @@ Registry used by framework adapters to resolve [FieldDefinition](/api/core/src/t
 
 ### TByName
 
-`TByName` *extends* `Readonly`\<`Record`\<`string`, `unknown`\>\> = `Readonly`\<`Record`\<`string`, `unknown`\>\>
+`TByName` _extends_ `Readonly`\<`Record`\<`string`, `unknown`\>\> = `Readonly`\<`Record`\<`string`, `unknown`\>\>
 
 ### TByType
 
-`TByType` *extends* `Partial`\<`Readonly`\<`Record`\<[`FieldDataType`](/api/core/src/enumerations/fielddatatype/), `unknown`\>\>\> = `Partial`\<`Readonly`\<`Record`\<[`FieldDataType`](/api/core/src/enumerations/fielddatatype/), `unknown`\>\>\>
+`TByType` _extends_ `Partial`\<`Readonly`\<`Record`\<[`FieldDataType`](/api/core/src/enumerations/fielddatatype/), `unknown`\>\>\> = `Partial`\<`Readonly`\<`Record`\<[`FieldDataType`](/api/core/src/enumerations/fielddatatype/), `unknown`\>\>\>
 
 ## Properties
 
@@ -27,12 +27,12 @@ Registry used by framework adapters to resolve [FieldDefinition](/api/core/src/t
 
 > `readonly` **byName**: `TByName`
 
-Defined in: [core/src/renderer-registry.ts:13](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/renderer-registry.ts#L13)
+Defined in: [core/src/renderer-registry.ts:13](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/renderer-registry.ts#L13)
 
-***
+---
 
 ### byType
 
 > `readonly` **byType**: `TByType`
 
-Defined in: [core/src/renderer-registry.ts:14](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/renderer-registry.ts#L14)
+Defined in: [core/src/renderer-registry.ts:14](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/renderer-registry.ts#L14)

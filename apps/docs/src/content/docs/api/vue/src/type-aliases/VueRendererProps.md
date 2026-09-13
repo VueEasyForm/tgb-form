@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "VueRendererProps"
+title: 'VueRendererProps'
 ---
 
 > **VueRendererProps** = `object`
 
-Defined in: [vue/src/types.ts:7](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L7)
+Defined in: [vue/src/types.ts:7](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L7)
 
 ## Properties
 
@@ -15,60 +15,60 @@ Defined in: [vue/src/types.ts:7](https://github.com/VueEasyForm/tgb-form/blob/4a
 
 > `readonly` `optional` **description?**: `string`
 
-Defined in: [vue/src/types.ts:12](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L12)
+Defined in: [vue/src/types.ts:12](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L12)
 
-***
+---
 
 ### errors
 
 > `readonly` **errors**: readonly `unknown`[]
 
-Defined in: [vue/src/types.ts:15](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L15)
+Defined in: [vue/src/types.ts:15](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L15)
 
-***
+---
 
 ### field
 
 > `readonly` **field**: [`VueRendererField`](/api/vue/src/type-aliases/vuerendererfield/)
 
-Defined in: [vue/src/types.ts:9](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L9)
+Defined in: [vue/src/types.ts:9](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L9)
 
-***
+---
 
 ### form
 
 > `readonly` **form**: [`TgbFormTanStackForm`](/api/vue/src/type-aliases/tgbformtanstackform/)
 
-Defined in: [vue/src/types.ts:10](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L10)
+Defined in: [vue/src/types.ts:10](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L10)
 
-***
+---
 
 ### label?
 
 > `readonly` `optional` **label?**: `string`
 
-Defined in: [vue/src/types.ts:11](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L11)
+Defined in: [vue/src/types.ts:11](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L11)
 
-***
+---
 
 ### name
 
 > `readonly` **name**: `string`
 
-Defined in: [vue/src/types.ts:8](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L8)
+Defined in: [vue/src/types.ts:8](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L8)
 
-***
+---
 
 ### props?
 
-> `readonly` `optional` **props?**: `Record`\<`string`, `unknown`\>
+> `readonly` `optional` **props?**: `Record`\<`string`, `unknown`>\>
 
-Defined in: [vue/src/types.ts:13](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L13)
+Defined in: [vue/src/types.ts:13](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L13)
 
-***
+---
 
 ### value
 
 > `readonly` **value**: `unknown`
 
-Defined in: [vue/src/types.ts:14](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/vue/src/types.ts#L14)
+Defined in: [vue/src/types.ts:14](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/vue/src/types.ts#L14)

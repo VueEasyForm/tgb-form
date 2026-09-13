@@ -2,18 +2,18 @@
 editUrl: false
 next: false
 prev: false
-title: "TgbForm"
+title: 'TgbForm'
 ---
 
-> **TgbForm**\<`TForm`\>(`__namedParameters`): `Element`
+> **TgbForm**\<`TForm`>\>(`__namedParameters`): `Element`
 
-Defined in: [react/src/TgbForm.tsx:48](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/react/src/TgbForm.tsx#L48)
+Defined in: [react/src/TgbForm.tsx:48](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/react/src/TgbForm.tsx#L48)
 
 ## Type Parameters
 
 ### TForm
 
-`TForm` *extends* [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/) = [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)
+`TForm` _extends_ [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/) = [`RuntimeFormDefinition`](/api/core/src/type-aliases/runtimeformdefinition/)
 
 ## Parameters
 

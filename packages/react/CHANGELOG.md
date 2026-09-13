@@ -1,5 +1,27 @@
 # @tgb-form/react
 
+## 0.0.6
+
+### Patch Changes
+
+- Type-safe arrays, deep-merged defaults, full TanStack options passthrough, and Vue 3.5 / pnpm 12 toolchain. See CHANGELOG migration notes.
+
+### Migrating from 0.0.5
+
+1. **Drop the `Record<string, any>` workaround on `onSubmit`.** Values are now
+   inferred from `definition`, so this compiles as-is:
+   ```tsx
+   tanstackOptions={{
+     onSubmit: async ({ value }) => {
+       console.log(value.schoolStudentId); // string
+     },
+   }}
+   ```
+2. **Every TanStack `on*` is accepted** in `tanstackOptions` (validators,
+   listeners, submit handlers) with values typed — no annotations needed.
+3. Requires `@tgb-form/core@0.0.6` (peer via workspace; `^0.0.5` ranges resolve
+   it automatically).
+
 ## 0.0.5
 
 ### Patch Changes

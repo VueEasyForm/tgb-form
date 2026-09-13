@@ -2,12 +2,12 @@
 editUrl: false
 next: false
 prev: false
-title: "FormDefinition"
+title: 'FormDefinition'
 ---
 
 > **FormDefinition** = `object`
 
-Defined in: [core/src/schema/definitions.ts:57](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/definitions.ts#L57)
+Defined in: [core/src/schema/definitions.ts:57](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/definitions.ts#L57)
 
 A portable form definition that can be parsed by [VFormDefinition](/api/core/src/variables/vformdefinition/).
 
@@ -17,16 +17,16 @@ A portable form definition that can be parsed by [VFormDefinition](/api/core/src
 
 > `readonly` **fields**: [`FormFieldsDefinition`](/api/core/src/type-aliases/formfieldsdefinition/)
 
-Defined in: [core/src/schema/definitions.ts:59](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/definitions.ts#L59)
+Defined in: [core/src/schema/definitions.ts:59](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/definitions.ts#L59)
 
 Top-level fields keyed by form field name.
 
-***
+---
 
 ### meta?
 
 > `readonly` `optional` **meta?**: [`JsonObject`](/api/core/src/type-aliases/jsonobject/)
 
-Defined in: [core/src/schema/definitions.ts:61](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/definitions.ts#L61)
+Defined in: [core/src/schema/definitions.ts:61](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/definitions.ts#L61)
 
 JSON-safe application metadata carried with the form definition.

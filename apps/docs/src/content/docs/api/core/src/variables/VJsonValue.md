@@ -2,11 +2,11 @@
 editUrl: false
 next: false
 prev: false
-title: "VJsonValue"
+title: 'VJsonValue'
 ---
 
-> `const` **VJsonValue**: `CustomSchema`\<[`JsonValue`](/api/core/src/type-aliases/jsonvalue/), `ErrorMessage`\<`CustomIssue`\> \| `undefined`\>
+> `const` **VJsonValue**: `CustomSchema`\<[`JsonValue`](/api/core/src/type-aliases/jsonvalue/), `ErrorMessage`\<`CustomIssue`> \> \| `undefined`>\>
 
-Defined in: [core/src/schema/json.ts:26](https://github.com/VueEasyForm/tgb-form/blob/4abca4e321d3cb38a962279facfd6a43229347a1/packages/core/src/schema/json.ts#L26)
+Defined in: [core/src/schema/json.ts:30](https://github.com/VueEasyForm/tgb-form/blob/c15b3d9af923dd134fe61f8d88685aed586346d1/packages/core/src/schema/json.ts#L30)
 
 Valibot schema for any [JsonValue](/api/core/src/type-aliases/jsonvalue/).

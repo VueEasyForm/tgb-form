@@ -7,8 +7,12 @@ export type JsonPrimitive = string | number | boolean | null;
 
 /**
  * Any JSON-serializable value accepted by {@link VJsonValue}.
+ *
+ * Arrays are readonly: JSON data is never mutated in place, and this keeps
+ * `const`-inferred literals (e.g. `['a', 'b']`) assignable without widening
+ * them to `JsonValue[]`.
  */
-export type JsonValue = JsonPrimitive | JsonObject | JsonValue[];
+export type JsonValue = JsonPrimitive | JsonObject | readonly JsonValue[];
 
 /**
  * JSON object used for metadata, renderer props, and {@link CustomValidatorReference} options.

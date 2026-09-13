@@ -1,6 +1,6 @@
 {
   "name": "@tgb-form/core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An easy to use form library, with powerful schema-based form definition capabilities.",
   "homepage": "https://github.com/VueEasyForm/tgb-form#readme",
   "bugs": {
@@ -33,13 +33,13 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
-    "@types/node": "^26.1.1",
-    "tsdown": "^0.22.14",
+    "@types/node": "^26.5.1",
+    "tsdown": "^0.23.0",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   },
   "peerDependencies": {
-    "@tanstack/form-core": "^1.33.0",
-    "valibot": "^1.4.1"
+    "@tanstack/form-core": "^1.33.5",
+    "valibot": "^1.5.0"
   }
 }

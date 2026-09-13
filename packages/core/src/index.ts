@@ -20,10 +20,14 @@ export {
   type FormDefinitionInput,
   type FormFieldsDefinition,
   type FormFieldsDefinitionInput,
+  type InferFieldValue,
+  type InferFormValues,
   type JsonObject,
   type JsonPrimitive,
   type JsonValue,
   type RuntimeFormDefinition,
+  type ValidateFieldDefinitionInput,
+  type ValidateFormDefinitionInput,
   type ValidationRule,
 } from './schema';
 export {
@@ -40,9 +44,8 @@ export {
 export {
   getDefaultValues,
   toTanStackOptions,
+  type DeepPartial,
   type TgbFormTanStackOptions,
   type TgbFormTanStackOutput,
-  type InferFieldValue,
-  type InferFormValues,
 } from './tanstack';
 export { toValibotSchema } from './valibot-compiler';
