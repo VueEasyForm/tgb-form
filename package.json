@@ -34,10 +34,10 @@
     "eslint-plugin-astro": "^3.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
-    "oxfmt": "^0.67.0",
-    "oxlint": "^1.82.0",
+    "oxfmt": "^0.68.0",
+    "oxlint": "^1.83.0",
     "oxlint-tsgolint": "^7.0.2001",
-    "turbo": "^2.10.12"
+    "turbo": "^2.10.13"
   },
   "engines": {
     "node": ">=20.19.0"
